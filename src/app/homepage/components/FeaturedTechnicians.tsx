@@ -80,15 +80,42 @@ const FeaturedTechnicians = () => {
           {/* Primary Technician Card */}
           <Link
             href="/technician-profiles"
-            className="group md:row-span-2 bg-white rounded-xl overflow-hidden border border-border hover:border-accent transition-smooth block">
+            className="group md:row-span-2 bg-white rounded-xl overflow-hidden border border-border hover:border-accent transition-smooth block relative">
             <div className="relative h-80 md:h-full overflow-hidden">
               <AppImage
                 src={technicians[0].image}
                 alt={technicians[0].alt}
                 className="w-full h-full object-cover group-hover:scale-105 transition-smooth" />
-
+              
+              {/* Gradient overlay for better text readability */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+              
+              {/* Technician info overlay */}
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-2xl font-bold">{technicians[0].name}</h3>
+                  {technicians[0].verified && (
+                    <div className="inline-flex items-center px-3 py-1 bg-accent text-accent-foreground text-xs font-semibold rounded-full shadow-lg">
+                      <Icon name="CheckBadgeIcon" size={16} className="mr-1" />
+                      Verified
+                    </div>
+                  )}
+                </div>
+                <p className="text-white/90 mb-2">{technicians[0].specialization}</p>
+                <div className="flex items-center space-x-4 text-sm">
+                  <div className="flex items-center">
+                    <Icon name="StarIcon" size={18} className="text-warning mr-1" variant="solid" />
+                    <span>{technicians[0].rating} ({technicians[0].reviewCount} reviews)</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Icon name="MapPinIcon" size={16} className="mr-1" />
+                    <span>{technicians[0].location}</span>
+                  </div>
+                </div>
+              </div>
+              
               {technicians[0].verified && (
-                <div className="absolute top-4 right-4 inline-flex items-center px-3 py-1 bg-accent text-accent-foreground text-xs font-semibold rounded-full shadow-lg">
+                <div className="absolute top-4 right-4 inline-flex items-center px-3 py-1 bg-accent text-accent-foreground text-xs font-semibold rounded-full shadow-lg md:hidden">
                   <Icon name="CheckBadgeIcon" size={16} className="mr-1" />
                   Verified
                 </div>
@@ -96,23 +123,6 @@ const FeaturedTechnicians = () => {
             </div>
 
             <div className="p-6">
-              <h3 className="text-xl font-semibold text-primary mb-1 group-hover:text-accent transition-smooth">
-                {technicians[0].name}
-              </h3>
-              <p className="text-text-secondary text-sm mb-4">{technicians[0].specialization}</p>
-
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-1">
-                  <Icon name="StarIcon" size={18} className="text-warning" variant="solid" />
-                  <span className="font-semibold text-primary">{technicians[0].rating}</span>
-                  <span className="text-text-secondary text-sm">({technicians[0].reviewCount})</span>
-                </div>
-                <div className="flex items-center text-text-secondary text-sm">
-                  <Icon name="MapPinIcon" size={16} className="mr-1" />
-                  {technicians[0].location}
-                </div>
-              </div>
-
               <div className="flex items-center justify-between pt-4 border-t border-border">
                 <div className="flex items-center text-sm text-text-secondary">
                   <Icon name="ClockIcon" size={16} className="mr-1" />
@@ -132,7 +142,7 @@ const FeaturedTechnicians = () => {
               <Link
                 key={tech.id}
                 href="/technician-profiles"
-                className="group bg-white rounded-xl overflow-hidden border border-border hover:border-accent transition-smooth block">
+                className="group bg-white rounded-xl overflow-hidden border border-border hover:border-accent transition-smooth block relative">
 
                 <div className="flex">
                   <div className="relative w-24 h-24 flex-shrink-0 overflow-hidden">
@@ -140,24 +150,34 @@ const FeaturedTechnicians = () => {
                       src={tech.image}
                       alt={tech.alt}
                       className="w-full h-full object-cover group-hover:scale-105 transition-smooth" />
+                    {tech.verified && (
+                      <div className="absolute top-1 right-1 inline-flex items-center bg-accent text-accent-foreground text-xs font-semibold rounded-full p-1 shadow-lg">
+                        <Icon name="CheckBadgeIcon" size={12} />
+                      </div>
+                    )}
                   </div>
 
                   <div className="p-4 flex-1">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-semibold text-primary group-hover:text-accent transition-smooth">
+                    <div className="flex items-start justify-between mb-1">
+                      <h3 className="font-semibold text-primary group-hover:text-accent transition-smooth text-sm">
                         {tech.name}
                       </h3>
-                      {tech.verified && (
-                        <Icon name="CheckBadgeIcon" size={16} className="text-accent ml-1 flex-shrink-0" />
-                      )}
                     </div>
 
-                    <p className="text-text-secondary text-xs mb-3">{tech.specialization}</p>
+                    <p className="text-text-secondary text-xs mb-2">{tech.specialization}</p>
 
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center space-x-1">
                         <Icon name="StarIcon" size={14} className="text-warning" variant="solid" />
                         <span className="text-xs font-semibold text-primary">{tech.rating}</span>
+                        <span className="text-text-secondary text-xs">({tech.reviewCount})</span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center text-text-secondary text-xs">
+                        <Icon name="MapPinIcon" size={12} className="mr-1" />
+                        {tech.location}
                       </div>
                       <div className="text-accent text-xs font-medium flex items-center">
                         <span>View</span>

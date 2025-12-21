@@ -83,10 +83,10 @@ const HeroSearch = ({ onSearch }: HeroSearchProps) => {
   }
 
   return (
-    <div className="w-full max-w-4xl bg-white rounded-2xl shadow-card p-5 lg:p-6">
+    <div className="w-full max-w-4xl bg-white rounded-2xl shadow-card p-5 lg:p-6 animate-bounce-in">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
         {/* Location Input */}
-        <div className="relative lg:col-span-2">
+        <div className="relative lg:col-span-2 animate-slide-in-left">
           <label htmlFor="location" className="block text-sm font-medium text-text-secondary mb-2">
             Your Location
           </label>
@@ -128,7 +128,7 @@ const HeroSearch = ({ onSearch }: HeroSearchProps) => {
         </div>
 
         {/* Search Button */}
-        <div className="flex items-end">
+        <div className="flex items-end animate-slide-in-right">
           <button
             onClick={handleSearch}
             className="w-full h-12 bg-accent hover:bg-success text-accent-foreground font-semibold rounded-lg shadow-cta hover:shadow-lg hover:-translate-y-0.5 transition-smooth focus-ring flex items-center justify-center space-x-2 text-sm"
@@ -141,7 +141,7 @@ const HeroSearch = ({ onSearch }: HeroSearchProps) => {
       </div>
 
       {/* Service Input */}
-      <div className="relative mt-3">
+      <div className="relative mt-3 animate-fade-in">
         <label htmlFor="service" className="block text-sm font-medium text-text-secondary mb-2">
           Service Needed
         </label>
@@ -187,14 +187,14 @@ const HeroSearch = ({ onSearch }: HeroSearchProps) => {
       </div>
 
       {/* Quick Links */}
-      <div className="mt-4 flex flex-wrap gap-2">
-        <button className="text-xs text-text-secondary hover:text-primary transition-smooth px-2.5 py-1 bg-surface rounded-md">
+      <div className="mt-4 flex flex-wrap gap-2 animate-fade-in delay-100">
+        <button className="text-xs text-text-secondary hover:text-primary transition-smooth px-2.5 py-1 bg-surface rounded-md animate-staggered-fade-in">
           Emergency Repair
         </button>
-        <button className="text-xs text-text-secondary hover:text-primary transition-smooth px-2.5 py-1 bg-surface rounded-md">
+        <button className="text-xs text-text-secondary hover:text-primary transition-smooth px-2.5 py-1 bg-surface rounded-md animate-staggered-fade-in delay-1">
           Planned Maintenance
         </button>
-        <button className="text-xs text-text-secondary hover:text-primary transition-smooth px-2.5 py-1 bg-surface rounded-md">
+        <button className="text-xs text-text-secondary hover:text-primary transition-smooth px-2.5 py-1 bg-surface rounded-md animate-staggered-fade-in delay-2">
           Installation Services
         </button>
       </div>

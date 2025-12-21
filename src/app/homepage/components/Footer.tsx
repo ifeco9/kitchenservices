@@ -59,32 +59,12 @@ const Footer = () => {
           {/* Brand Section */}
           <div className="lg:col-span-2">
             <Link href="/homepage" className="flex items-center space-x-2 mb-4">
-              <div className="flex items-center justify-center w-10 h-10 bg-accent rounded-lg">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="text-white"
-                >
-                  <path
-                    d="M12 2L2 7V12C2 16.97 5.84 21.5 12 22C18.16 21.5 22 16.97 22 12V7L12 2Z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    fill="currentColor"
-                    fillOpacity="0.2"
-                  />
-                  <path
-                    d="M9 12L11 14L15 10"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+              <div className="flex items-center justify-center w-10 h-10 bg-white rounded-lg border-2 border-accent overflow-hidden">
+                <img 
+                  src="/assets/images/logo.png" 
+                  alt="KitchenServices Logo" 
+                  className="w-full h-full object-contain"
+                />
               </div>
               <span className="text-xl font-bold">KitchenServices</span>
             </Link>

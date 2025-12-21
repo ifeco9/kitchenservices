@@ -24,7 +24,7 @@ const Header = ({ className = '' }: HeaderProps) => {
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 bg-background border-b border-border ${className}`}>
+    <header className={`relative lg:fixed lg:top-0 lg:left-0 lg:right-0 z-50 bg-transparent lg:bg-background lg:border-b lg:border-border ${className}`}>
       <div className="w-full">
         <div className="flex items-center justify-between h-24 px-4 lg:px-8">
           {/* Logo */}
@@ -36,7 +36,7 @@ const Header = ({ className = '' }: HeaderProps) => {
                 className="w-full h-full object-contain scale-150"
               />
             </div>
-            <span className="text-3xl font-bold text-primary hidden sm:block">KitchenServices</span>
+            <span className="text-3xl font-bold text-primary sm:text-white">KitchenServices</span>
           </Link>
 
           {/* Desktop Navigation */}

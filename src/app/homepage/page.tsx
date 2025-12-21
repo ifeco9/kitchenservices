@@ -28,46 +28,53 @@ export default function Homepage() {
             <img 
               src="/assets/images/logo.png" 
               alt="KitchenServices Logo Background" 
-              className="w-3/4 h-3/4 object-contain opacity-30 rounded-full animate-float-slow"
+              className="w-1/2 h-1/2 md:w-3/4 md:h-3/4 object-contain opacity-30 rounded-full animate-float-slow"
             />
           </div>
         </div>
 
         {/* Hero Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mb-12">
-            <h1 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
+          <div className="max-w-3xl mb-12 animate-fade-in">
+            <h1 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight animate-staggered-fade-in">
               Expert Kitchen Appliance Technicians Near You
             </h1>
-            <p className="text-xl text-white opacity-90 leading-relaxed mb-8">
+            <p className="text-xl text-white opacity-90 leading-relaxed mb-8 animate-staggered-fade-in delay-1">
               Verified professionals available 24/7 for emergency repairs, planned maintenance, and installations with transparent pricing
             </p>
           </div>
 
           {/* Hero Search Component */}
-          <HeroSearch />
-
-          {/* Trust Indicators */}
-          <div className="mt-16">
-            <TrustIndicators />
+          <div className="animate-fade-in delay-200">
+            <HeroSearch />
           </div>
         </div>
       </section>
 
       {/* How It Works */}
-      <HowItWorks />
+      <div className="animate-fade-in">
+        <HowItWorks />
+      </div>
 
       {/* Service Categories */}
-      <ServiceCategories />
+      <div className="animate-fade-in delay-100">
+        <ServiceCategories />
+      </div>
 
       {/* Featured Technicians */}
-      <FeaturedTechnicians />
+      <div className="animate-fade-in delay-200">
+        <FeaturedTechnicians />
+      </div>
 
       {/* Testimonials */}
-      <Testimonials />
+      <div className="animate-fade-in delay-300">
+        <Testimonials />
+      </div>
 
       {/* Emergency CTA */}
-      <EmergencyCTA />
+      <div className="animate-fade-in delay-400">
+        <EmergencyCTA />
+      </div>
 
       {/* Footer */}
       <Footer />
