@@ -66,7 +66,7 @@ const HeroSearch = ({ onSearch }: HeroSearchProps) => {
 
   if (!isHydrated) {
     return (
-      <div className="w-full max-w-4xl mx-auto bg-white rounded-2xl shadow-card p-6 lg:p-8">
+      <>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div className="relative">
             <div className="h-14 bg-surface rounded-lg animate-pulse"></div>
@@ -78,12 +78,12 @@ const HeroSearch = ({ onSearch }: HeroSearchProps) => {
         <div className="mt-4">
           <div className="h-14 bg-accent rounded-lg animate-pulse"></div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="w-full max-w-4xl bg-white rounded-2xl shadow-card p-5 lg:p-6 animate-bounce-in">
+    <>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
         {/* Location Input */}
         <div className="relative lg:col-span-2 animate-slide-in-left">
@@ -198,7 +198,7 @@ const HeroSearch = ({ onSearch }: HeroSearchProps) => {
           Installation Services
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

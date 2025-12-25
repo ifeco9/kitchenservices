@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/AppIcon';
-import type { Technician } from './TechnicianCard';
+import type { Technician } from '@/types';
 
 interface MapViewProps {
   technicians: Technician[];
@@ -39,7 +39,7 @@ const MapView = ({ technicians, centerLat, centerLng }: MapViewProps) => {
         src={`https://www.google.com/maps?q=${centerLat},${centerLng}&z=12&output=embed`}
         className="w-full h-full"
       />
-      
+
       {/* Map Legend */}
       <div className="absolute bottom-4 left-4 bg-background/95 backdrop-blur-sm rounded-lg p-4 shadow-lg border border-border">
         <h4 className="text-sm font-semibold text-text-primary mb-3">Availability Legend</h4>

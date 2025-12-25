@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Header from '@/components/common/Header';
+import AuthRedirect from '@/components/common/AuthRedirect';
 import HeroSearch from './components/HeroSearch';
 import TrustIndicators from './components/TrustIndicators';
 import ServiceCategories from './components/ServiceCategories';
@@ -19,6 +20,7 @@ export default function Homepage() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
+      <AuthRedirect />
 
       {/* Hero Section */}
       <section className="relative pt-24 pb-16 lg:pt-32 lg:pb-24 overflow-hidden">

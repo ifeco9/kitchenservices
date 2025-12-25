@@ -2,7 +2,7 @@
 
 import Icon from '@/components/ui/AppIcon';
 import AppImage from '@/components/ui/AppImage';
-import type { Technician } from './TechnicianCard';
+import type { Technician } from '@/types';
 
 interface ComparisonPanelProps {
   technicians: Technician[];
@@ -44,31 +44,32 @@ const ComparisonPanel = ({ technicians, onRemove, onClear }: ComparisonPanelProp
               <div className="flex items-start space-x-3">
                 <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
                   <AppImage
-                    src={tech.image}
-                    alt={tech.alt}
+                    src={tech.avatar_url || 'https://via.placeholder.com/150'}
+                    alt={tech.full_name}
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="text-sm font-semibold text-text-primary truncate mb-1">
-                    {tech.name}
+                    {tech.full_name}
                   </h4>
                   <div className="flex items-center space-x-1 mb-2">
                     <Icon name="StarIcon" size={14} variant="solid" className="text-warning" />
                     <span className="text-xs font-semibold text-text-primary">
-                      {tech.rating.toFixed(1)}
+                      {tech.rating?.toFixed(1) || 'N/A'}
                     </span>
-                    <span className="text-xs text-text-secondary">({tech.reviewCount})</span>
+                    <span className="text-xs text-text-secondary">({tech.review_count || 0})</span>
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-text-secondary">Hourly Rate</span>
-                      <span className="font-semibold text-primary">£{tech.hourlyRate}</span>
+                      <span className="font-semibold text-primary">£{tech.hourly_rate}</span>
                     </div>
-                    <div className="flex items-center justify-between text-xs">
+                    {/* Distance is not available in Technician type yet */}
+                    {/* <div className="flex items-center justify-between text-xs">
                       <span className="text-text-secondary">Distance</span>
                       <span className="font-semibold text-text-primary">{tech.distance} mi</span>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

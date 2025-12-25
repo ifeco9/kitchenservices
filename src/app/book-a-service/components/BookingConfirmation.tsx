@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 import AppImage from '@/components/ui/AppImage';
 import Icon from '@/components/ui/AppIcon';
 
@@ -28,10 +30,43 @@ const BookingConfirmation = ({
   totalAmount,
 }: BookingConfirmationProps) => {
   const [isHydrated, setIsHydrated] = useState(false);
+  const router = useRouter();
+  const { user } = useAuth();
 
   useEffect(() => {
     setIsHydrated(true);
-  }, []);
+    
+    // Save booking to user's account if authenticated
+    if (user && isHydrated) {
+      saveBookingToUserAccount();
+    }
+  }, [user, isHydrated]);
+
+  const saveBookingToUserAccount = () => {
+    if (!user) return;
+    
+    // Get existing bookings from localStorage
+    const existingBookings = JSON.parse(localStorage.getItem(`kitchenpro_bookings_${user.id}`) || '[]');
+    
+    // Create new booking object
+    const newBooking = {
+      id: bookingReference,
+      applianceType,
+      technicianName,
+      technicianPhone,
+      serviceDate,
+      serviceTime,
+      totalAmount,
+      status: 'scheduled',
+      createdAt: new Date().toISOString(),
+    };
+    
+    // Add new booking to existing bookings
+    const updatedBookings = [newBooking, ...existingBookings];
+    
+    // Save back to localStorage
+    localStorage.setItem(`kitchenpro_bookings_${user.id}`, JSON.stringify(updatedBookings));
+  };
 
   const formatDate = (dateString: string): string => {
     if (!isHydrated) return '';
@@ -154,6 +189,24 @@ const BookingConfirmation = ({
           <span className="text-sm font-medium text-text-primary">Email Confirmation</span>
         </button>
       </div>
+      
+      {/* View in Dashboard */}
+      {user && (
+        <button
+          type="button"
+          onClick={() => {
+            if (user.role === 'provider') {
+              router.push('/dashboard/provider/bookings');
+            } else {
+              router.push('/dashboard/customer/bookings');
+            }
+          }}
+          className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-accent text-accent-foreground rounded-lg hover:bg-success transition-smooth focus-ring"
+        >
+          <Icon name="EyeIcon" size={20} />
+          <span className="text-sm font-medium">View in Dashboard</span>
+        </button>
+      )}
 
       {/* Support Info */}
       <div className="p-4 bg-info/10 border border-info/20 rounded-lg">

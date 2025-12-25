@@ -37,7 +37,9 @@ A comprehensive platform connecting customers with professional kitchen service 
 ## 📁 Project Structure
 
 ```
-kitchenservices/
+# Kitchen Services Application
+
+This is a Next.js application for connecting customers with kitchen service technicians.
 ├── public/             # Static assets
 ├── src/
 │   ├── app/            # App router components
@@ -105,3 +107,26 @@ This project also includes Netlify plugin support for easy deployment:
    - Build command: `npm run build`
    - Publish directory: `.next`
 6. Deploy!
+
+## 🗄️ Supabase Database Setup
+
+This project uses Supabase for authentication and database management. The database schema and configuration are located in the `supabase/` directory.
+
+### Configuration
+
+The following Supabase configuration is already set up in the `.env.local` file:
+
+- **Project URL**: https://teqncmgveqiglxnoyxch.supabase.co
+- **Publishable API Key**: sb_publishable_pkrNUfU7S-FLgjAKiHcnww_JNnnDNFd
+
+### Database Schema
+
+The database includes:
+
+- **Profiles table**: User accounts and authentication
+- **Technicians table**: Service provider information
+- **Services table**: Available service catalog
+- **Bookings table**: Service booking management
+- **Reviews table**: Customer feedback system
+
+For detailed setup instructions, please see [README_SUPABASE_SETUP.md](./README_SUPABASE_SETUP.md).

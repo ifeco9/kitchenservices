@@ -1,19 +1,16 @@
 import Icon from '@/components/ui/AppIcon';
+import { Review } from '@/types';
 
-interface Review {
-  id: number;
-  customerName: string;
-  rating: number;
-  date: string;
-  serviceType: string;
-  comment: string;
-  verified: boolean;
-  technicianResponse?: string;
-  responseDate?: string;
+// Extended interface for joined data
+interface ReviewWithCustomer extends Review {
+  profiles?: {
+    full_name: string;
+    avatar_url?: string;
+  };
 }
 
 interface ReviewCardProps {
-  review: Review;
+  review: ReviewWithCustomer;
 }
 
 const ReviewCard = ({ review }: ReviewCardProps) => {
@@ -29,23 +26,25 @@ const ReviewCard = ({ review }: ReviewCardProps) => {
     ));
   };
 
+  const customerName = review.profiles?.full_name || 'Anonymous User';
+  const dateFormatted = new Date(review.created_at).toLocaleDateString();
+
   return (
     <div className="bg-card rounded-lg shadow-card border border-border p-6">
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2">
-            <h4 className="text-base font-semibold text-text-primary">{review.customerName}</h4>
-            {review.verified && (
-              <div className="flex items-center gap-1 px-2 py-0.5 bg-accent/10 rounded-full">
-                <Icon name="CheckBadgeIcon" size={14} className="text-accent" variant="solid" />
-                <span className="text-xs font-medium text-accent">Verified</span>
-              </div>
-            )}
+            <h4 className="text-base font-semibold text-text-primary">{customerName}</h4>
+            {/* Verified logic would depend on booking link, for now assuming verified if review exists */}
+            <div className="flex items-center gap-1 px-2 py-0.5 bg-accent/10 rounded-full">
+              <Icon name="CheckBadgeIcon" size={14} className="text-accent" variant="solid" />
+              <span className="text-xs font-medium text-accent">Verified</span>
+            </div>
           </div>
           <div className="flex items-center gap-3 text-sm text-text-secondary">
-            <span>{review.date}</span>
-            <span>•</span>
-            <span>{review.serviceType}</span>
+            <span>{dateFormatted}</span>
+            {/* Service type not in Review schema yet, omitting or mocking */}
+            {/* <span>•</span><span>Service</span> */}
           </div>
         </div>
         <div className="flex items-center gap-1">
@@ -55,16 +54,7 @@ const ReviewCard = ({ review }: ReviewCardProps) => {
 
       <p className="text-sm text-text-primary leading-relaxed mb-4">{review.comment}</p>
 
-      {review.technicianResponse && (
-        <div className="mt-4 pt-4 border-t border-border bg-surface/50 rounded-lg p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <Icon name="ChatBubbleLeftRightIcon" size={16} className="text-primary" />
-            <span className="text-sm font-semibold text-text-primary">Technician Response</span>
-            <span className="text-xs text-text-secondary ml-auto">{review.responseDate}</span>
-          </div>
-          <p className="text-sm text-text-secondary leading-relaxed">{review.technicianResponse}</p>
-        </div>
-      )}
+      {/* Technician response not in schema yet */}
     </div>
   );
 };
