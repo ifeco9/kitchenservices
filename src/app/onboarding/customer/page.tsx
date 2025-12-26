@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/common/Header';
@@ -11,14 +11,14 @@ export default function CustomerOnboardingPage() {
   const [postcode, setPostcode] = useState('');
   const [preferredContact, setPreferredContact] = useState<'email' | 'phone'>('email');
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const router = useRouter();
   const { user } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     try {
       // In a real implementation, this would save the customer profile to the database
       // For now, we'll just redirect to the dashboard
@@ -30,14 +30,18 @@ export default function CustomerOnboardingPage() {
     }
   };
 
-  if (!user || user.role !== 'customer') {
-    if (!user) {
-      router.push('/auth/signin');
-    } else {
-      router.push('/auth/role-selection');
+
+  // Redirect if user is not authenticated or not a customer
+  useEffect(() => {
+    if (!user || user.role !== 'customer') {
+      if (!user) {
+        router.push('/auth/signin');
+      } else {
+        router.push('/auth/role-selection');
+      }
     }
-    return null;
-  }
+  }, [user, router]);
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -47,7 +51,7 @@ export default function CustomerOnboardingPage() {
           <div className="bg-card p-8 rounded-xl border border-border shadow-lg">
             <h1 className="text-3xl font-bold text-text-primary mb-2">Complete Your Profile</h1>
             <p className="text-text-secondary mb-8">Tell us a bit more about yourself to get started</p>
-            
+
             <form onSubmit={handleSubmit}>
               <div className="mb-6">
                 <label htmlFor="address" className="block text-sm font-medium text-text-secondary mb-2">
@@ -63,7 +67,7 @@ export default function CustomerOnboardingPage() {
                   required
                 />
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
                   <label htmlFor="city" className="block text-sm font-medium text-text-secondary mb-2">
@@ -79,7 +83,7 @@ export default function CustomerOnboardingPage() {
                     required
                   />
                 </div>
-                
+
                 <div>
                   <label htmlFor="postcode" className="block text-sm font-medium text-text-secondary mb-2">
                     Postcode
@@ -95,7 +99,7 @@ export default function CustomerOnboardingPage() {
                   />
                 </div>
               </div>
-              
+
               <div className="mb-8">
                 <label className="block text-sm font-medium text-text-secondary mb-3">
                   Preferred Contact Method
@@ -123,7 +127,7 @@ export default function CustomerOnboardingPage() {
                   </label>
                 </div>
               </div>
-              
+
               <button
                 type="submit"
                 disabled={isLoading}

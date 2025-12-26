@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import Header from '@/components/common/Header';
 import TechnicianProfilesInteractive from './components/TechnicianProfilesInteractive';
@@ -11,7 +12,9 @@ export default function TechnicianProfilesPage() {
   return (
     <>
       <Header />
-      <TechnicianProfilesInteractive />
+      <Suspense fallback={<div className="container mx-auto px-4 py-8">Loading...</div>}>
+        <TechnicianProfilesInteractive />
+      </Suspense>
     </>
   );
 }

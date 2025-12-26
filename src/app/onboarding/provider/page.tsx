@@ -52,15 +52,18 @@ export default function ProviderOnboardingPage() {
     }
   };
 
-  if (!user || (user.profile?.role !== 'technician' && user.profile?.role !== 'provider')) {
-    if (!user) {
-      router.push('/auth/signin');
-    } else {
-      router.push('/auth/role-selection');
+
+  // Redirect if user is not authenticated or not a provider
+  useEffect(() => {
+    if (!user || (user.profile?.role !== 'technician' && user.profile?.role !== 'provider')) {
+      if (!user) {
+        router.push('/auth/signin');
+      } else {
+        router.push('/auth/role-selection');
+      }
     }
-    return null;
-  }
-  
+  }, [user, router]);
+
   // Check if technician profile already exists
   useEffect(() => {
     const checkTechnicianProfile = async () => {
@@ -70,7 +73,7 @@ export default function ProviderOnboardingPage() {
           .select('id')
           .eq('id', user.id)
           .single();
-          
+
         if (data && !error) {
           // Technician profile already exists, redirect to dashboard
           router.push('/dashboard/provider');
@@ -80,7 +83,7 @@ export default function ProviderOnboardingPage() {
         console.log('Technician profile does not exist yet, proceeding with onboarding');
       }
     };
-    
+
     if (user) {
       checkTechnicianProfile();
     }
