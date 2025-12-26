@@ -1,4 +1,4 @@
-export type Role = 'customer' | 'technician' | 'admin';
+export type Role = 'customer' | 'technician' | 'admin' | 'provider';
 export type AvailabilityStatus = 'available' | 'limited' | 'unavailable';
 export type BookingStatus = 'pending' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled';
 
