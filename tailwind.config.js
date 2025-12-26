@@ -76,6 +76,9 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        display: ['Clash Display', 'Montserrat', 'Inter', 'sans-serif'],
+        heading: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+        accent: ['Space Grotesk', 'monospace'],
         mono: ['JetBrains Mono', 'Courier New', 'monospace'],
       },
       fontSize: {
@@ -104,6 +107,16 @@ module.exports = {
       spacing: {
         base: 'var(--spacing-base)', // 8px
       },
+      backgroundImage: {
+        'gradient-sunset': 'linear-gradient(135deg, #FF6B6B 0%, #FF8E53 50%, #FFA94D 100%)',
+        'gradient-ocean': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        'gradient-emerald': 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
+        'gradient-purple': 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+        'gradient-midnight': 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)',
+        'gradient-rose': 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+        'gradient-mesh-warm': 'radial-gradient(at 40% 20%, hsla(28,100%,74%,0.3) 0px, transparent 50%), radial-gradient(at 80% 0%, hsla(189,100%,56%,0.3) 0px, transparent 50%), radial-gradient(at 0% 50%, hsla(355,100%,93%,0.3) 0px, transparent 50%)',
+        'gradient-mesh-cool': 'radial-gradient(at 27% 37%, hsla(215,98%,61%,0.3) 0px, transparent 50%), radial-gradient(at 97% 21%, hsla(125,98%,72%,0.3) 0px, transparent 50%), radial-gradient(at 52% 99%, hsla(354,98%,61%,0.3) 0px, transparent 50%)',
+      },
       boxShadow: {
         subtle: '0 1px 3px rgba(15, 23, 42, 0.1), 0 1px 2px rgba(15, 23, 42, 0.06)',
         cta: '0 4px 6px rgba(15, 23, 42, 0.1)',
@@ -123,11 +136,30 @@ module.exports = {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
+        'glow-pulse': {
+          '0%, 100%': {
+            boxShadow: '0 0 20px rgba(255, 107, 107, 0.4), 0 0 40px rgba(255, 107, 107, 0.2)',
+          },
+          '50%': {
+            boxShadow: '0 0 30px rgba(255, 107, 107, 0.6), 0 0 60px rgba(255, 107, 107, 0.3)',
+          },
+        },
+        'shimmer': {
+          '0%': { backgroundPosition: '-1000px 0' },
+          '100%': { backgroundPosition: '1000px 0' },
+        },
+        'float-gentle': {
+          '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+          '50%': { transform: 'translateY(-20px) rotate(2deg)' },
+        },
       },
       animation: {
         'pulse-availability': 'pulse-availability 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
+        'shimmer': 'shimmer 2s infinite',
+        'float-gentle': 'float-gentle 6s ease-in-out infinite',
       },
       transitionTimingFunction: {
         smooth: 'cubic-bezier(0.4, 0, 0.2, 1)',
