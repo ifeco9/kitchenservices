@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
@@ -11,7 +13,7 @@ import { Booking } from '@/types';
 export default function ProviderDashboardPage() {
   const router = useRouter();
   const { user, loading, signOut } = useAuth();
-  
+
   const handleSignOut = async () => {
     try {
       await signOut();
@@ -172,7 +174,7 @@ export default function ProviderDashboardPage() {
                           </p>
                         </div>
                         <span className={`px-3 py-1 text-xs font-medium rounded-full ${booking.status === 'confirmed' ? 'bg-success/10 text-success' :
-                            booking.status === 'pending' ? 'bg-warning/10 text-warning' : 'bg-surface text-text-secondary'
+                          booking.status === 'pending' ? 'bg-warning/10 text-warning' : 'bg-surface text-text-secondary'
                           }`}>
                           {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
                         </span>
