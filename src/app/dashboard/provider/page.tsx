@@ -83,156 +83,164 @@ export default function ProviderDashboardPage() {
       <Header />
       <div className="pt-16">
         <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-text-primary">Welcome back, {user?.profile?.full_name || user?.email || 'Provider'}!</h1>
-            <p className="text-text-secondary">Here's what's happening with your service profile</p>
+          <div className="mb-8 animate-fade-in">
+            <h1 className="text-4xl lg:text-5xl font-display font-bold text-text-primary mb-2">
+              Welcome back, <span className="gradient-text bg-gradient-animated">{user?.profile?.full_name || user?.email || 'Provider'}</span>!
+            </h1>
+            <p className="text-text-secondary font-heading text-lg">Here's what's happening with your service profile</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             {/* Today's Bookings Card */}
-            <div className="bg-card p-6 rounded-xl border border-border">
-              <div className="flex items-center">
-                <div className="p-3 bg-accent/10 rounded-lg">
-                  <Icon name="CalendarIcon" size={24} className="text-accent" />
+            <div className="bg-gradient-ocean p-6 rounded-2xl shadow-xl magnetic-hover tilt-3d overflow-hidden relative animate-staggered-fade-in">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl float-gentle">
+                    <Icon name="CalendarIcon" size={24} className="text-white" />
+                  </div>
+                  <div className="text-white/60 text-xs font-accent">TODAY</div>
                 </div>
-                <div className="ml-4">
-                  <p className="text-text-secondary text-sm">Today's Bookings</p>
-                  <p className="text-2xl font-bold text-text-primary">{loadingStats ? '...' : todayCount}</p>
-                </div>
+                <p className="text-white/80 text-sm font-heading mb-1">Today's Bookings</p>
+                <p className="text-5xl font-display font-bold text-white mb-2">{loadingStats ? '...' : todayCount}</p>
+                <div className="h-1 w-16 bg-white/30 rounded-full"></div>
               </div>
-              <button
-                onClick={() => router.push('/dashboard/provider/bookings')}
-                className="mt-4 text-accent hover:underline text-sm font-medium"
-              >
-                View all bookings
-              </button>
             </div>
 
-            {/* Earnings Card */}
-            <div className="bg-card p-6 rounded-xl border border-border">
-              <div className="flex items-center">
-                <div className="p-3 bg-success/10 rounded-lg">
-                  <Icon name="CurrencyPoundIcon" size={24} className="text-success" />
+            {/* Total Earnings Card */}
+            <div className="bg-gradient-emerald p-6 rounded-2xl shadow-xl magnetic-hover tilt-3d overflow-hidden relative animate-staggered-fade-in delay-1">
+              <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl float-gentle">
+                    <Icon name="CurrencyPoundIcon" size={24} className="text-white" />
+                  </div>
+                  <div className="text-white/60 text-xs font-accent">EARNINGS</div>
                 </div>
-                <div className="ml-4">
-                  <p className="text-text-secondary text-sm">Total Earnings</p>
-                  <p className="text-2xl font-bold text-text-primary">£{loadingStats ? '...' : earnings.toFixed(2)}</p>
-                </div>
+                <p className="text-white/80 text-sm font-heading mb-1">Total Earnings</p>
+                <p className="text-5xl font-display font-bold text-white mb-2">£{loadingStats ? '...' : earnings.toFixed(2)}</p>
+                <div className="h-1 w-16 bg-white/30 rounded-full"></div>
               </div>
-              <button
-                onClick={() => router.push('/dashboard/provider')}
-                className="mt-4 text-accent hover:underline text-sm font-medium"
-              >
-                View earnings
-              </button>
             </div>
 
-            {/* Availability Card */}
-            <div className="bg-card p-6 rounded-xl border border-border">
-              <div className="flex items-center">
-                <div className="p-3 bg-primary/10 rounded-lg">
-                  <Icon name="ClockIcon" size={24} className="text-primary" />
+            {/* Total Bookings Card */}
+            <div className="bg-gradient-sunset p-6 rounded-2xl shadow-xl magnetic-hover tilt-3d overflow-hidden relative animate-staggered-fade-in delay-2">
+              <div className="absolute top-0 left-1/2 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl float-gentle">
+                    <Icon name="ClipboardDocumentCheckIcon" size={24} className="text-white" />
+                  </div>
+                  <div className="text-white/60 text-xs font-accent">ALL TIME</div>
                 </div>
-                <div className="ml-4">
-                  <p className="text-text-secondary text-sm">Availability</p>
-                  <p className="text-2xl font-bold text-text-primary">Open</p>
-                </div>
+                <p className="text-white/80 text-sm font-heading mb-1">Total Bookings</p>
+                <p className="text-5xl font-display font-bold text-white mb-2">{loadingStats ? '...' : bookings.length}</p>
+                <div className="h-1 w-16 bg-white/30 rounded-full"></div>
               </div>
-              <button
-                onClick={() => router.push('/dashboard/provider/availability')}
-                className="mt-4 text-accent hover:underline text-sm font-medium"
-              >
-                Update schedule
-              </button>
             </div>
           </div>
+          <div className="flex items-center">
+            <div className="p-3 bg-primary/10 rounded-lg">
+              <Icon name="ClockIcon" size={24} className="text-primary" />
+            </div>
+            <div className="ml-4">
+              <p className="text-text-secondary text-sm">Availability</p>
+              <p className="text-2xl font-bold text-text-primary">Open</p>
+            </div>
+          </div>
+          <button
+            onClick={() => router.push('/dashboard/provider/availability')}
+            className="mt-4 text-accent hover:underline text-sm font-medium"
+          >
+            Update schedule
+          </button>
+        </div>
+      </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
-              <div className="bg-card p-6 rounded-xl border border-border">
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-bold text-text-primary">Upcoming Bookings</h2>
-                  <button
-                    onClick={() => router.push('/dashboard/provider/bookings')}
-                    className="text-accent hover:underline text-sm font-medium"
-                  >
-                    View all
-                  </button>
-                </div>
-
-                <div className="space-y-4">
-                  {loadingStats ? (
-                    <p>Loading bookings...</p>
-                  ) : bookings.length > 0 ? (
-                    bookings.slice(0, 5).map((booking: any) => (
-                      <div key={booking.id} className="flex items-center justify-between p-4 border-b border-border last:border-0">
-                        <div>
-                          <h3 className="font-medium text-text-primary">{booking.services?.name || 'Service'}</h3>
-                          <p className="text-sm text-text-secondary">{booking.profiles?.full_name || 'Customer'}</p>
-                          <p className="text-sm text-text-secondary">
-                            {new Date(booking.scheduled_date).toLocaleDateString()} at {new Date(booking.scheduled_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                          </p>
-                        </div>
-                        <span className={`px-3 py-1 text-xs font-medium rounded-full ${booking.status === 'confirmed' ? 'bg-success/10 text-success' :
-                          booking.status === 'pending' ? 'bg-warning/10 text-warning' : 'bg-surface text-text-secondary'
-                          }`}>
-                          {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
-                        </span>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-text-secondary">No upcoming bookings found.</p>
-                  )}
-                </div>
-              </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2">
+          <div className="bg-card p-6 rounded-xl border border-border">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-bold text-text-primary">Upcoming Bookings</h2>
+              <button
+                onClick={() => router.push('/dashboard/provider/bookings')}
+                className="text-accent hover:underline text-sm font-medium"
+              >
+                View all
+              </button>
             </div>
 
-            <div>
-              <div className="bg-card p-6 rounded-xl border border-border">
-                <h2 className="text-xl font-bold text-text-primary mb-6">Service Actions</h2>
-
-                <div className="space-y-3">
-                  <button
-                    onClick={() => router.push('/dashboard/provider/services')}
-                    className="w-full py-3 px-4 text-left text-text-primary hover:bg-surface rounded-lg transition-smooth"
-                  >
-                    <div className="flex items-center">
-                      <Icon name="WrenchScrewdriverIcon" size={20} className="text-accent mr-3" />
-                      <span>Manage Services</span>
+            <div className="space-y-4">
+              {loadingStats ? (
+                <p>Loading bookings...</p>
+              ) : bookings.length > 0 ? (
+                bookings.slice(0, 5).map((booking: any) => (
+                  <div key={booking.id} className="flex items-center justify-between p-4 border-b border-border last:border-0">
+                    <div>
+                      <h3 className="font-medium text-text-primary">{booking.services?.name || 'Service'}</h3>
+                      <p className="text-sm text-text-secondary">{booking.profiles?.full_name || 'Customer'}</p>
+                      <p className="text-sm text-text-secondary">
+                        {new Date(booking.scheduled_date).toLocaleDateString()} at {new Date(booking.scheduled_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </p>
                     </div>
-                  </button>
+                    <span className={`px-3 py-1 text-xs font-medium rounded-full ${booking.status === 'confirmed' ? 'bg-success/10 text-success' :
+                      booking.status === 'pending' ? 'bg-warning/10 text-warning' : 'bg-surface text-text-secondary'
+                      }`}>
+                      {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                    </span>
+                  </div>
+                ))
+              ) : (
+                <p className="text-text-secondary">No upcoming bookings found.</p>
+              )}
+            </div>
+          </div>
+        </div>
 
-                  <button
-                    onClick={() => router.push('/dashboard/provider/availability')}
-                    className="w-full py-3 px-4 text-left text-text-primary hover:bg-surface rounded-lg transition-smooth"
-                  >
-                    <div className="flex items-center">
-                      <Icon name="CalendarDaysIcon" size={20} className="text-accent mr-3" />
-                      <span>Update Availability</span>
-                    </div>
-                  </button>
+        <div>
+          <div className="bg-card p-6 rounded-xl border border-border">
+            <h2 className="text-xl font-bold text-text-primary mb-6">Service Actions</h2>
 
-                  <button
-                    onClick={() => router.push('/dashboard/provider')}
-                    className="w-full py-3 px-4 text-left text-text-primary hover:bg-surface rounded-lg transition-smooth"
-                  >
-                    <div className="flex items-center">
-                      <Icon name="UserCircleIcon" size={20} className="text-accent mr-3" />
-                      <span>Profile Settings</span>
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={handleSignOut}
-                    className="w-full py-3 px-4 text-left text-error hover:bg-error/5 rounded-lg transition-smooth"
-                  >
-                    <div className="flex items-center">
-                      <Icon name="ArrowRightStartOnRectangleIcon" size={20} className="text-error mr-3" />
-                      <span>Sign Out</span>
-                    </div>
-                  </button>
+            <div className="space-y-3">
+              <button
+                onClick={() => router.push('/dashboard/provider/services')}
+                className="w-full py-3 px-4 text-left text-text-primary hover:bg-surface rounded-lg transition-smooth"
+              >
+                <div className="flex items-center">
+                  <Icon name="WrenchScrewdriverIcon" size={20} className="text-accent mr-3" />
+                  <span>Manage Services</span>
                 </div>
-              </div>
+              </button>
+
+              <button
+                onClick={() => router.push('/dashboard/provider/availability')}
+                className="w-full py-3 px-4 text-left text-text-primary hover:bg-surface rounded-lg transition-smooth"
+              >
+                <div className="flex items-center">
+                  <Icon name="CalendarDaysIcon" size={20} className="text-accent mr-3" />
+                  <span>Update Availability</span>
+                </div>
+              </button>
+
+              <button
+                onClick={() => router.push('/dashboard/provider')}
+                className="w-full py-3 px-4 text-left text-text-primary hover:bg-surface rounded-lg transition-smooth"
+              >
+                <div className="flex items-center">
+                  <Icon name="UserCircleIcon" size={20} className="text-accent mr-3" />
+                  <span>Profile Settings</span>
+                </div>
+              </button>
+
+              <button
+                onClick={handleSignOut}
+                className="w-full py-3 px-4 text-left text-error hover:bg-error/5 rounded-lg transition-smooth"
+              >
+                <div className="flex items-center">
+                  <Icon name="ArrowRightStartOnRectangleIcon" size={20} className="text-error mr-3" />
+                  <span>Sign Out</span>
+                </div>
+              </button>
             </div>
           </div>
         </div>
