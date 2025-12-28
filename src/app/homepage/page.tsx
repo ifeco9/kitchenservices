@@ -1,4 +1,6 @@
-import type { Metadata } from 'next';
+'use client';
+
+import { useEffect } from 'react';
 import Header from '@/components/common/Header';
 import AuthRedirect from '@/components/common/AuthRedirect';
 import HeroSearch from './components/HeroSearch';
@@ -12,35 +14,29 @@ import Footer from './components/Footer';
 import AppImage from '@/components/ui/AppImage';
 import Icon from '@/components/ui/AppIcon';
 
-export const metadata: Metadata = {
-  title: 'Homepage - KitchenServices',
-  description: 'Connect with verified kitchen appliance technicians across the UK for emergency repairs, planned maintenance, and professional installations with transparent pricing and instant availability.'
-};
-
 export default function Homepage() {
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const animation = entry.target.getAttribute('data-scroll-animation');
+          if (animation) {
+            entry.target.classList.add('animate-' + animation);
+            observer.unobserve(entry.target);
+          }
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('[data-scroll-animation]').forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <AuthRedirect />
-
-      {/* Scroll Animation Script */}
-      <script dangerouslySetInnerHTML={{
-        __html: `
-          document.addEventListener('DOMContentLoaded', function() {
-            const observer = new IntersectionObserver((entries) => {
-              entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                  const animation = entry.target.getAttribute('data-scroll-animation');
-                  entry.target.classList.add('animate-' + animation);
-                  observer.unobserve(entry.target);
-                }
-              });
-            }, { threshold: 0.1 });
-            
-            document.querySelectorAll('[data-scroll-animation]').forEach(el => observer.observe(el));
-          });
-        `
-      }} />
 
       {/* Hero Section */}
       <section className="relative pt-24 pb-16 lg:pt-32 lg:pb-24 overflow-hidden">
