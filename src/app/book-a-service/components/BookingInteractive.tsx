@@ -26,7 +26,7 @@ interface ServiceDetails {
 // but for now we try to map to what the UI expects or update the UI to use the global type.
 // However, the UI components (TechnicianSelectionCard) might expect specific props.
 // Let's assume we pass the global Technician (with some extensions if needed)
-interface Technician {
+interface UITechnician {
   id: number;
   name: string;
   image: string;
@@ -46,12 +46,12 @@ interface Technician {
 const BookingInteractive = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [serviceDetails, setServiceDetails] = useState<ServiceDetails | null>(null);
-  const [selectedTechnician, setSelectedTechnician] = useState<Technician | null>(null);
+  const [selectedTechnician, setSelectedTechnician] = useState<UITechnician | null>(null);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [bookingReference, setBookingReference] = useState('');
 
-  const [technicians, setTechnicians] = useState<Technician[]>([]);
+  const [technicians, setTechnicians] = useState<UITechnician[]>([]);
   const [loadingTechs, setLoadingTechs] = useState(false);
 
   const { user } = useAuth();
@@ -63,7 +63,24 @@ const BookingInteractive = () => {
       setLoadingTechs(true);
       try {
         const data = await profileService.getTechnicians();
-        setTechnicians(data);
+        // Map global Technician type to UITechnician
+        const mappedTechnicians: UITechnician[] = data.map(tech => ({
+          id: parseInt(tech.id) || Math.floor(Math.random() * 1000), // Fallback if ID is UUID string, but UI needs number. Ideally UI should use string ID.
+          originalId: tech.id,
+          name: tech.full_name,
+          image: tech.avatar_url || '/assets/images/technicians/default.jpg',
+          alt: tech.full_name,
+          rating: tech.rating || 4.8,
+          reviewCount: tech.review_count || 0,
+          specializations: tech.specializations,
+          responseTime: 'Within 2 hours', // Placeholder
+          completedJobs: tech.years_experience * 50, // Estimate
+          verified: tech.is_verified,
+          callOutFee: tech.callout_fee,
+          hourlyRate: tech.hourly_rate,
+          availability: tech.availability_status
+        }));
+        setTechnicians(mappedTechnicians);
       } catch (error) {
         console.error('Failed to fetch technicians', error);
       } finally {
@@ -87,7 +104,7 @@ const BookingInteractive = () => {
     setCurrentStep(2);
   };
 
-  const handleTechnicianSelect = (technician: Technician) => {
+  const handleTechnicianSelect = (technician: UITechnician) => {
     setSelectedTechnician(technician);
   };
 
@@ -137,9 +154,9 @@ const BookingInteractive = () => {
 
       setBookingReference(booking.id.slice(0, 8).toUpperCase());
       setCurrentStep(5);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Booking failed', error);
-      alert('Booking failed. Please try again.');
+      alert(error.message || 'Booking failed. Please try again.');
     }
   };
 

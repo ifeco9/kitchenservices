@@ -13,7 +13,7 @@ export default function RoleSelectionPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
-  const { user, loading } = useAuth();
+  const { user, loading, refreshProfile } = useAuth();
 
   const handleRoleSelect = (role: 'customer' | 'provider') => {
     setSelectedRole(role);
@@ -30,31 +30,39 @@ export default function RoleSelectionPage() {
     setIsLoading(true);
     try {
       if (user && user.id) {
-        // Update profile role in Supabase
-        const { error } = await supabase
+        // Step 1: Upsert Profile
+        const { error: upsertError } = await supabase
           .from('profiles')
-          .update({ role: selectedRole === 'provider' ? 'technician' : 'customer' })
-          .eq('id', user.id);
+          .upsert({
+            id: user.id,
+            email: user.email,
+            role: selectedRole === 'provider' ? 'technician' : 'customer',
+            updated_at: new Date().toISOString()
+          });
 
-        if (error) throw error;
+        if (upsertError) throw upsertError;
 
-        // Force refresh of user profile to get updated role
-        // This ensures the new role is available in the context
+        // Step 2: Refresh local state
+        // We await this to ensure context is updated before redirect
+        try {
+          await refreshProfile();
+        } catch (refreshError) {
+          console.warn('Profile refresh warning:', refreshError);
+          // Continue to redirect even if refresh fails, the next page will try again
+        }
+
         if (selectedRole === 'customer') {
           router.push('/onboarding/customer');
         } else {
-          // If provider, ensuring we create the initial technician record might be good, 
-          // but onboarding flow might handle it. 
-          // Let's rely on onboarding flow to populate the technician table.
           router.push('/onboarding/provider');
         }
       }
-    } catch (err) {
-      setError('Failed to set role. Please try again.');
+    } catch (err: any) {
+      setError(err.message || 'Failed to set role. Please try again.');
       console.error('Role selection error:', err);
-    } finally {
       setIsLoading(false);
     }
+    // Note: We don't set isLoading(false) on success to prevent UI flash before redirect
   };
 
   if (loading) {
@@ -72,15 +80,8 @@ export default function RoleSelectionPage() {
     router.push('/auth/signin');
     return null;
   }
-  
-  // If user already has a role, redirect to appropriate dashboard
-  if (user.profile?.role === 'technician') {
-    router.push('/dashboard/provider');
-    return null;
-  } else if (user.profile?.role === 'customer') {
-    router.push('/dashboard/customer');
-    return null;
-  }
+
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -150,7 +151,12 @@ export default function RoleSelectionPage() {
                   : 'text-text-secondary bg-muted cursor-not-allowed opacity-50'
                   }`}
               >
-                {isLoading ? 'Processing...' : 'Continue'}
+                {isLoading ? (
+                  <span className="flex items-center justify-center">
+                    <Icon name="ArrowPathIcon" size={18} className="animate-spin mr-2" />
+                    {selectedRole ? 'Setting up profile...' : 'Processing...'}
+                  </span>
+                ) : 'Continue'}
               </button>
             </form>
 

@@ -77,5 +77,34 @@ export const profileService = {
             ...tech,
             ...tech.profiles // Flatten profile data
         })) as Technician[];
+    },
+
+    async getPendingTechnicians() {
+        const { data, error } = await supabase
+            .from('technicians')
+            .select(`
+                *,
+                profiles:id (full_name, avatar_url, email)
+            `)
+            .eq('is_verified', false);
+
+        if (error) throw error;
+
+        return data.map((tech: any) => ({
+            ...tech,
+            ...tech.profiles
+        })) as Technician[];
+    },
+
+    async verifyTechnician(technicianId: string) {
+        const { data, error } = await supabase
+            .from('technicians')
+            .update({ is_verified: true, availability_status: 'available' })
+            .eq('id', technicianId)
+            .select()
+            .single();
+
+        if (error) throw error;
+        return data;
     }
 };

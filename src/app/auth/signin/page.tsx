@@ -10,14 +10,14 @@ export default function SignInPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const router = useRouter();
   const { signIn } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    
+
     setIsLoading(true);
     try {
       await signIn(email, password);
@@ -32,23 +32,35 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-midnight relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0 bg-gradient-mesh-cool opacity-40"></div>
+      <div className="absolute top-20 right-10 w-96 h-96 bg-gradient-ocean opacity-20 rounded-full blur-3xl animate-float-slow"></div>
+      <div className="absolute bottom-20 left-10 w-96 h-96 bg-gradient-sunset opacity-20 rounded-full blur-3xl float-gentle"></div>
+
       <Header />
-      <div className="pt-16">
+      <div className="pt-16 relative z-10">
         <div className="max-w-md mx-auto px-4 py-12">
-          <div className="bg-card p-8 rounded-xl border border-border shadow-lg">
-            <h1 className="text-3xl font-bold text-text-primary mb-2">Welcome Back</h1>
-            <p className="text-text-secondary mb-8">Sign in to your account</p>
-            
+          <div className="glass-dark p-8 rounded-2xl shadow-2xl magnetic-hover animate-fade-in">
+            <div className="text-center mb-8">
+              <h1 className="text-4xl font-display font-bold text-white mb-2">
+                Welcome <span className="gradient-text bg-gradient-animated">Back</span>
+              </h1>
+              <p className="text-white/70 font-heading">Sign in to your account</p>
+            </div>
+
             {error && (
-              <div className="mb-6 p-3 bg-error/10 text-error rounded-lg border border-error/20">
-                {error}
+              <div className="mb-6 p-4 bg-error/20 backdrop-blur-sm text-white rounded-xl border border-error/30 animate-bounce-in">
+                <div className="flex items-center space-x-2">
+                  <span className="text-lg">⚠️</span>
+                  <span className="font-heading">{error}</span>
+                </div>
               </div>
             )}
-            
-            <form onSubmit={handleSubmit}>
-              <div className="mb-6">
-                <label htmlFor="email" className="block text-sm font-medium text-text-secondary mb-2">
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="email" className="block text-sm font-heading font-medium text-white/90 mb-2">
                   Email Address
                 </label>
                 <input
@@ -56,14 +68,14 @@ export default function SignInPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 bg-surface border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-smooth"
+                  className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent focus:bg-white/20 transition-smooth font-heading"
                   placeholder="Enter your email"
                   required
                 />
               </div>
-              
-              <div className="mb-8">
-                <label htmlFor="password" className="block text-sm font-medium text-text-secondary mb-2">
+
+              <div>
+                <label htmlFor="password" className="block text-sm font-heading font-medium text-white/90 mb-2">
                   Password
                 </label>
                 <input
@@ -71,30 +83,30 @@ export default function SignInPage() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 bg-surface border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-smooth"
+                  className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent focus:bg-white/20 transition-smooth font-heading"
                   placeholder="Enter your password"
                   required
                 />
               </div>
-              
+
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-3.5 px-6 text-sm font-semibold text-accent-foreground bg-accent rounded-lg hover:bg-success shadow-cta hover:shadow-lg transition-smooth disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-4 px-6 text-base font-heading font-semibold text-white bg-gradient-sunset rounded-xl shadow-cta hover:shadow-lg magnetic-hover glow-pulse focus-ring disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isLoading ? 'Signing In...' : 'Sign In'}
+                {isLoading ? '🔄 Signing In...' : '🚀 Sign In'}
               </button>
             </form>
-            
-            <div className="mt-6 text-center">
-              <p className="text-text-secondary">
+
+            <div className="mt-8 text-center space-y-4">
+              <p className="text-white/70 font-heading">
                 Don't have an account?{' '}
-                <a href="/auth/signup" className="text-accent hover:underline font-medium">
+                <a href="/auth/signup" className="text-white font-semibold hover:text-accent transition-smooth gradient-text-ocean">
                   Sign up
                 </a>
               </p>
-              <p className="text-text-secondary mt-4">
-                <a href="/auth/forgot-password" className="text-accent hover:underline font-medium">
+              <p className="text-white/70 font-heading">
+                <a href="/auth/forgot-password" className="text-white/90 hover:text-white transition-smooth">
                   Forgot your password?
                 </a>
               </p>
