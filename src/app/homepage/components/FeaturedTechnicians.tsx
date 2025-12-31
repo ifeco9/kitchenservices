@@ -45,7 +45,23 @@ const FeaturedTechnicians = () => {
 
   // Fallback if no technicians found (or during initial dev before seeding)
   if (technicians.length === 0) {
-    return null;
+    return (
+      <section className="py-16 lg:py-24 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center py-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-primary mb-4">
+              Meet Our Top-Rated Technicians
+            </h2>
+            <p className="text-lg text-text-secondary max-w-2xl mx-auto mb-8">
+              Verified professionals with proven track records and excellent customer reviews
+            </p>
+            <div className="bg-white border border-border rounded-xl p-12 max-w-2xl mx-auto">
+              <p className="text-text-primary text-lg">No technicians available at the moment. Please check back later or contact us to become a verified technician.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
   }
 
   return (

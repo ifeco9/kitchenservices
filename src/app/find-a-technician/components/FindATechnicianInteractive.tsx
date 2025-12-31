@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Icon from '@/components/ui/AppIcon';
 import FilterSidebar, { type FilterState } from './FilterSidebar';
 import SearchBar from './SearchBar';
@@ -12,13 +13,23 @@ import MapView from './MapView';
 import { Technician } from '@/types';
 import { profileService } from '@/services/profileService';
 
+
+
 const FindATechnicianInteractive = () => {
+  const searchParams = useSearchParams();
   const [isHydrated, setIsHydrated] = useState(false);
+
+  // Initialize state from URL params
+  const initialQuery = searchParams.get('query') || '';
+  const initialLocation = searchParams.get('location') || '';
+
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [currentView, setCurrentView] = useState<'grid' | 'list' | 'map'>('grid');
   const [currentSort, setCurrentSort] = useState('recommended');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [postcode, setPostcode] = useState('');
+
+  const [searchQuery, setSearchQuery] = useState(initialQuery);
+  const [postcode, setPostcode] = useState(initialLocation);
+
   const [filters, setFilters] = useState<FilterState>({
     applianceTypes: [],
     availability: [],
@@ -26,16 +37,22 @@ const FindATechnicianInteractive = () => {
     priceRange: [0, 200],
     certifications: []
   });
-  const [comparedTechnicians, setComparedTechnicians] = useState<string[]>([]);
 
-  // Data State
+  const [comparedTechnicians, setComparedTechnicians] = useState<string[]>([]);
   const [technicians, setTechnicians] = useState<Technician[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setIsHydrated(true);
+    // If params changed, we might want to refetch or just rely on local filter
+    if (initialQuery || initialLocation) {
+      // Option A: Set state (done above)
+      // Option B: Trigger fetch with these params if fetchTechnicians accepts them
+    }
     fetchTechnicians();
-  }, []);
+  }, [searchParams]); // Add searchParams dependency or keep empty if initial only. 
+  // Better to just init state and let the filter logic handle it if it's client side.
+  // displayedTechnicians uses searchQuery, so setting it initally works.
 
   const fetchTechnicians = async () => {
     setLoading(true);

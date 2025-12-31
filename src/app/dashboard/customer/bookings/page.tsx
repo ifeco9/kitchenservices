@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/common/Header';
 import Icon from '@/components/ui/AppIcon';
+import { bookingService } from '@/services/bookingService';
 
 interface Booking {
   id: string;
@@ -36,20 +37,32 @@ export default function CustomerBookingsPage() {
       return;
     }
 
-    // Load bookings from localStorage
-    const storedBookings = localStorage.getItem(`kitchenpro_bookings_${user.id}`);
-    if (storedBookings) {
+    const fetchBookings = async () => {
       try {
-        const parsedBookings = JSON.parse(storedBookings);
-        setBookings(parsedBookings);
+        const data = await bookingService.getBookingsByCustomer(user.id);
+        // Map DB structure to UI structure if needed, or update UI to match DB
+        // The DB returns: { id, status, total_amount, scheduled_date, services: { name }, technicians: { full_name } }
+        // The UI expects: { id, status, totalAmount, serviceDate, serviceTime, applianceType, technicianName }
+        const mappedBookings = data.map((b: any) => ({
+          id: b.id,
+          status: b.status,
+          totalAmount: b.total_amount,
+          serviceDate: b.scheduled_date,
+          serviceTime: new Date(b.scheduled_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          applianceType: b.services?.name || 'Service',
+          technicianName: b.technicians?.full_name || 'Technician',
+          technicianPhone: 'N/A',
+          createdAt: b.created_at
+        }));
+        setBookings(mappedBookings);
       } catch (error) {
-        console.error('Error parsing bookings:', error);
-        setBookings([]);
+        console.error('Error fetching bookings:', error);
+      } finally {
+        setLoadingBookings(false);
       }
-    } else {
-      setBookings([]);
-    }
-    setLoadingBookings(false);
+    };
+
+    fetchBookings();
   }, [user, loading, router]);
 
   if (loading || loadingBookings) {
@@ -110,7 +123,7 @@ export default function CustomerBookingsPage() {
               <div className="p-6 border-b border-border">
                 <h2 className="text-xl font-semibold text-text-primary">Recent Bookings</h2>
               </div>
-              
+
               <div className="divide-y divide-border">
                 {bookings.map((booking) => (
                   <div key={booking.id} className="p-6">
@@ -122,7 +135,7 @@ export default function CustomerBookingsPage() {
                           {formatDate(booking.serviceDate)} at {booking.serviceTime}
                         </p>
                       </div>
-                      
+
                       <div className="flex flex-col items-end space-y-3">
                         <div className="flex items-center space-x-4">
                           <span className={`px-3 py-1 text-xs font-medium rounded-full ${getStatusColor(booking.status)}`}>
@@ -130,7 +143,7 @@ export default function CustomerBookingsPage() {
                           </span>
                           <span className="font-semibold text-text-primary">£{booking.totalAmount.toFixed(2)}</span>
                         </div>
-                        
+
                         <div className="flex space-x-2">
                           <button className="px-3 py-1.5 text-xs font-medium text-accent bg-surface hover:bg-muted rounded-lg transition-smooth">
                             View Details

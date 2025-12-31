@@ -70,27 +70,27 @@ export default function Homepage() {
       </section>
 
       {/* How It Works - Fade Up */}
-      <section data-scroll-animation="fade-up">
+      <section>
         <HowItWorks />
       </section>
 
       {/* Service Categories - Slide In Left */}
-      <section data-scroll-animation="slide-left">
+      <section>
         <ServiceCategories />
       </section>
 
       {/* Featured Technicians - Zoom In */}
-      <section data-scroll-animation="zoom-in">
+      <section>
         <FeaturedTechnicians />
       </section>
 
       {/* Testimonials - Slide In Right */}
-      <section data-scroll-animation="slide-right">
+      <section>
         <Testimonials />
       </section>
 
       {/* Emergency CTA - Bounce In */}
-      <section data-scroll-animation="bounce-in">
+      <section>
         <EmergencyCTA />
       </section>
 

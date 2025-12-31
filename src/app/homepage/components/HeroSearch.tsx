@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Icon from '@/components/ui/AppIcon';
 
 interface HeroSearchProps {
@@ -19,6 +20,8 @@ const HeroSearch = ({ onSearch }: HeroSearchProps) => {
   const [service, setService] = useState('');
   const [showLocationSuggestions, setShowLocationSuggestions] = useState(false);
   const [showServiceSuggestions, setShowServiceSuggestions] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     setIsHydrated(true);
@@ -44,9 +47,21 @@ const HeroSearch = ({ onSearch }: HeroSearchProps) => {
     { id: '6', name: 'Cooker Hood Installation', category: 'Installation' }
   ];
 
+  /* import { useRouter } from 'next/navigation'; */ // Make sure to add this import at the top if not present, checking lines 1-5.
+  // Actually, I should update the imports too. I'll do a larger block replacement.
   const handleSearch = () => {
-    if (isHydrated && onSearch) {
-      onSearch(location, service);
+    if (isHydrated) {
+      if (onSearch) {
+        onSearch(location, service);
+      } else {
+        // Default behavior: navigate to search page
+        const params = new URLSearchParams();
+        if (location) params.append('location', location);
+        if (service) params.append('query', service); // Using 'query' or 'service' depending on target page.
+        // Let's assume 'service' based on HeroSearch state, but standard search usually uses 'q' or 'query'. 
+        // FindATechnicianInteractive likely uses these. I will verify in next step but for now use 'service'.
+        router.push(`/find-a-technician?${params.toString()}`);
+      }
     }
   };
 

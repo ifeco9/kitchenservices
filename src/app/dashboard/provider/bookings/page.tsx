@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/common/Header';
+import { bookingService } from '@/services/bookingService';
 
 export default function ProviderBookingsPage() {
     const router = useRouter();

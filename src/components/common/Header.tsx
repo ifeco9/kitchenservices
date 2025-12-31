@@ -44,19 +44,22 @@ const Header = ({ className = '' }: HeaderProps) => {
   };
 
   return (
-    <header className={`relative lg:fixed lg:top-0 lg:left-0 lg:right-0 z-50 bg-transparent lg:bg-background lg:border-b lg:border-border ${className}`}>
-      <div className="w-full">
-        <div className="flex items-center justify-between h-24 px-4 lg:px-8">
+    <header className={`fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border transition-all duration-300 ${className}`}>
+      <div className="w-full max-w-7xl mx-auto">
+        <div className="flex items-center justify-between h-16 px-4 lg:px-8">
           {/* Logo */}
-          <Link href="/homepage" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-            <div className="flex items-center justify-center w-20 h-20 bg-white rounded-lg border-2 border-primary shadow-xl overflow-hidden">
+          <Link href="/homepage" className="flex items-center space-x-3 hover:opacity-80 transition-opacity group">
+            <div className="flex items-center justify-center w-12 h-12 rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-300">
               <img
                 src="/assets/images/logo.png"
                 alt="KitchenServices Logo"
-                className="w-full h-full object-contain scale-150"
+                className="w-full h-full object-cover scale-100"
               />
             </div>
-            <span className="text-3xl font-bold text-primary sm:text-white">KitchenServices</span>
+            <span className="hidden md:block text-xl font-bold">
+              <span className="text-text-primary">Kitchen</span>
+              <span className="text-accent">Services</span>
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -65,9 +68,10 @@ const Header = ({ className = '' }: HeaderProps) => {
               <Link
                 key={item.href}
                 href={item.href}
-                className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-primary hover:bg-surface rounded-md transition-smooth"
+                className="px-3 py-2 text-sm font-medium text-text-secondary hover:text-primary transition-colors relative group"
               >
                 {item.label}
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
               </Link>
             ))}
           </nav>

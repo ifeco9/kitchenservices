@@ -71,7 +71,7 @@ export default function ProviderOnboardingPage() {
         const { data, error } = await supabase
           .from('technicians')
           .select('id')
-          .eq('id', user.id)
+          .eq('id', user?.id)
           .single();
 
         if (data && !error) {

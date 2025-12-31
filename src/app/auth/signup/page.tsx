@@ -12,31 +12,31 @@ export default function SignUpPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const router = useRouter();
   const { signUp } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    
+
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
-    
+
     if (password.length < 6) {
       setError('Password must be at least 6 characters');
       return;
     }
-    
+
     setIsLoading(true);
     try {
       await signUp(email, password, name);
       // After successful signup, redirect to role selection
       router.push('/auth/role-selection');
-    } catch (err) {
-      setError('Failed to create account. Please try again.');
+    } catch (err: any) {
+      setError(err.message || 'Failed to create account. Please try again.');
       console.error('Sign up error:', err);
     } finally {
       setIsLoading(false);
@@ -51,13 +51,13 @@ export default function SignUpPage() {
           <div className="bg-card p-8 rounded-xl border border-border shadow-lg">
             <h1 className="text-3xl font-bold text-text-primary mb-2">Create Account</h1>
             <p className="text-text-secondary mb-8">Join KitchenServices today</p>
-            
+
             {error && (
               <div className="mb-6 p-3 bg-error/10 text-error rounded-lg border border-error/20">
                 {error}
               </div>
             )}
-            
+
             <form onSubmit={handleSubmit}>
               <div className="mb-6">
                 <label htmlFor="name" className="block text-sm font-medium text-text-secondary mb-2">
@@ -73,7 +73,7 @@ export default function SignUpPage() {
                   required
                 />
               </div>
-              
+
               <div className="mb-6">
                 <label htmlFor="email" className="block text-sm font-medium text-text-secondary mb-2">
                   Email Address
@@ -88,7 +88,7 @@ export default function SignUpPage() {
                   required
                 />
               </div>
-              
+
               <div className="mb-6">
                 <label htmlFor="password" className="block text-sm font-medium text-text-secondary mb-2">
                   Password
@@ -103,7 +103,7 @@ export default function SignUpPage() {
                   required
                 />
               </div>
-              
+
               <div className="mb-8">
                 <label htmlFor="confirmPassword" className="block text-sm font-medium text-text-secondary mb-2">
                   Confirm Password
@@ -118,7 +118,7 @@ export default function SignUpPage() {
                   required
                 />
               </div>
-              
+
               <button
                 type="submit"
                 disabled={isLoading}
@@ -127,7 +127,7 @@ export default function SignUpPage() {
                 {isLoading ? 'Creating Account...' : 'Create Account'}
               </button>
             </form>
-            
+
             <div className="mt-6 text-center">
               <p className="text-text-secondary">
                 Already have an account?{' '}
