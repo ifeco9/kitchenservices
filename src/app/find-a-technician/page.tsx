@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import Header from '@/components/common/Header';
 import FindATechnicianInteractive from './components/FindATechnicianInteractive';
@@ -11,7 +12,9 @@ export default function FindATechnicianPage() {
   return (
     <>
       <Header />
-      <FindATechnicianInteractive />
+      <Suspense fallback={<div className="min-h-screen pt-24 text-center">Loading search...</div>}>
+        <FindATechnicianInteractive />
+      </Suspense>
     </>
   );
 }
