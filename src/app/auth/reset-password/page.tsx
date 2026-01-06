@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/common/Header';
+import { authService } from '@/services/authService';
 
 export default function ResetPasswordPage() {
     const router = useRouter();
@@ -15,8 +16,14 @@ export default function ResetPasswordPage() {
             alert('Passwords do not match');
             return;
         }
-        // TODO: Implement password reset logic
-        router.push('/auth/signin');
+        try {
+            await authService.updatePassword(password);
+            alert('Password updated successfully!');
+            router.push('/auth/signin');
+        } catch (error: any) {
+            console.error('Password update error:', error);
+            alert(error.message || 'Failed to update password. Please try again.');
+        }
     };
 
     return (
