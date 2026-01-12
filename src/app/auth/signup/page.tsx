@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/common/Header';
+import Icon from '@/components/ui/AppIcon';
 
 export default function SignUpPage() {
   const [name, setName] = useState('');
@@ -14,7 +16,11 @@ export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
+
   const { signUp } = useAuth();
+
+  // Use the guard
+  useNavigationGuard();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

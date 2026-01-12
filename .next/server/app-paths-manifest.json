@@ -1,0 +1,9 @@
+{
+  "/onboarding/provider/page": "app/onboarding/provider/page.js",
+  "/dashboard/provider/page": "app/dashboard/provider/page.js",
+  "/auth/signin/page": "app/auth/signin/page.js",
+  "/dashboard/customer/page": "app/dashboard/customer/page.js",
+  "/book-a-service/page": "app/book-a-service/page.js",
+  "/homepage/page": "app/homepage/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js"
+}

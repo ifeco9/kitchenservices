@@ -26,6 +26,7 @@ export default function ProviderDashboardPage() {
   const [earnings, setEarnings] = useState(0);
   const [todayCount, setTodayCount] = useState(0);
   const [loadingStats, setLoadingStats] = useState(true);
+  const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -51,6 +52,36 @@ export default function ProviderDashboardPage() {
 
     if (user) fetchDashboardData();
   }, [user]);
+
+  const handleStatusUpdate = async (bookingId: string, newStatus: 'pending' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled') => {
+    const confirmMessage = `Are you sure you want to change this booking status to "${newStatus}"?`;
+    if (!confirm(confirmMessage)) return;
+
+    setUpdatingStatus(bookingId);
+    try {
+      await bookingService.updateBookingStatus(bookingId, newStatus);
+
+      // Refresh bookings list
+      if (user) {
+        const data = await bookingService.getBookingsByTechnician(user.id);
+        setBookings(data as any);
+      }
+    } catch (error: any) {
+      console.error('Failed to update status:', error);
+      alert(error.message || 'Failed to update booking status');
+    } finally {
+      setUpdatingStatus(null);
+    }
+  };
+
+  const getNextStatus = (currentStatus: string): string | null => {
+    const statusFlow: Record<string, string> = {
+      'pending': 'confirmed',
+      'confirmed': 'in_progress',
+      'in_progress': 'completed'
+    };
+    return statusFlow[currentStatus] || null;
+  };
 
   // Redirect if user is not authenticated or not a technician
   if (loading) {
@@ -175,19 +206,46 @@ export default function ProviderDashboardPage() {
                 <p>Loading bookings...</p>
               ) : bookings.length > 0 ? (
                 bookings.slice(0, 5).map((booking: any) => (
-                  <div key={booking.id} className="flex items-center justify-between p-4 border-b border-border last:border-0">
-                    <div>
-                      <h3 className="font-medium text-text-primary">{booking.services?.name || 'Service'}</h3>
-                      <p className="text-sm text-text-secondary">{booking.profiles?.full_name || 'Customer'}</p>
-                      <p className="text-sm text-text-secondary">
-                        {new Date(booking.scheduled_date).toLocaleDateString()} at {new Date(booking.scheduled_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </p>
+                  <div key={booking.id} className="p-4 border-b border-border last:border-0">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex-1">
+                        <h3 className="font-medium text-text-primary">{booking.services?.name || 'Service'}</h3>
+                        <p className="text-sm text-text-secondary">{booking.profiles?.full_name || 'Customer'}</p>
+                        <p className="text-sm text-text-secondary">
+                          {new Date(booking.scheduled_date).toLocaleDateString()} at {new Date(booking.scheduled_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </p>
+                      </div>
+                      <span className={`px-3 py-1 text-xs font-medium rounded-full whitespace-nowrap ${booking.status === 'completed' ? 'bg-success/10 text-success' :
+                        booking.status === 'in_progress' ? 'bg-accent/10 text-accent' :
+                          booking.status === 'confirmed' ? 'bg-info/10 text-info' :
+                            booking.status === 'pending' ? 'bg-warning/10 text-warning' :
+                              'bg-error/10 text-error'
+                        }`}>
+                        {booking.status.replace('_', ' ').charAt(0).toUpperCase() + booking.status.replace('_', ' ').slice(1)}
+                      </span>
                     </div>
-                    <span className={`px-3 py-1 text-xs font-medium rounded-full ${booking.status === 'confirmed' ? 'bg-success/10 text-success' :
-                      booking.status === 'pending' ? 'bg-warning/10 text-warning' : 'bg-surface text-text-secondary'
-                      }`}>
-                      {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
-                    </span>
+
+                    {/* Status Update Buttons */}
+                    <div className="flex gap-2">
+                      {getNextStatus(booking.status) && (
+                        <button
+                          onClick={() => handleStatusUpdate(booking.id, getNextStatus(booking.status) as any)}
+                          disabled={updatingStatus === booking.id}
+                          className="px-3 py-1.5 text-xs font-medium text-accent bg-accent/10 hover:bg-accent/20 rounded-lg transition-smooth disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {updatingStatus === booking.id ? 'Updating...' : `Mark as ${getNextStatus(booking.status)?.replace('_', ' ')}`}
+                        </button>
+                      )}
+                      {booking.status !== 'cancelled' && booking.status !== 'completed' && (
+                        <button
+                          onClick={() => handleStatusUpdate(booking.id, 'cancelled')}
+                          disabled={updatingStatus === booking.id}
+                          className="px-3 py-1.5 text-xs font-medium text-error bg-error/10 hover:bg-error/20 rounded-lg transition-smooth disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          Cancel
+                        </button>
+                      )}
+                    </div>
                   </div>
                 ))
               ) : (
@@ -223,7 +281,7 @@ export default function ProviderDashboardPage() {
               </button>
 
               <button
-                onClick={() => router.push('/dashboard/provider')}
+                onClick={() => router.push('/onboarding/provider')}
                 className="w-full py-3 px-4 text-left text-text-primary hover:bg-surface rounded-lg transition-smooth"
               >
                 <div className="flex items-center">

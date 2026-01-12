@@ -67,7 +67,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const refreshUserProfile = async (authUser: SupabaseUser) => {
     try {
       const profile = await profileService.getProfile(authUser.id);
-      setUser({ ...authUser, profile });
+      
+      if (profile) {
+        setUser({ ...authUser, profile });
+      } else {
+        // User exists in Auth but not in Profiles table - this is valid state (e.g. just signed up)
+        setUser({ ...authUser });
+      }
     } catch (error) {
       console.error('Error fetching profile:', error);
       // Fallback: set user without profile data

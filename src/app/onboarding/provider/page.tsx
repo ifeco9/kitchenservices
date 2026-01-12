@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { useNavigationGuard } from '@/hooks/useNavigationGuard';
+import { profileService } from '@/services/profileService';
 import Header from '@/components/common/Header';
 import { onboardingService } from '@/services/onboardingService';
 import { supabase } from '@/lib/supabaseClient';
@@ -54,15 +56,17 @@ export default function ProviderOnboardingPage() {
 
 
   // Redirect if user is not authenticated or not a provider
+  // Use the guard
+  useNavigationGuard();
+
+  // Redirect if user is not authenticated or not a provider (Handled by guard largely, but check technician logic)
   useEffect(() => {
-    if (!user || (user.profile?.role !== 'technician' && user.profile?.role !== 'provider')) {
-      if (!user) {
-        router.push('/auth/signin');
-      } else {
-        router.push('/auth/role-selection');
-      }
-    }
-  }, [user, router]);
+    // Additional technician-specific checks can remain if strictly needed, 
+    // but guard should handle the main flow: !role leads to role-select, !complete leads here
+    // This effect might be redundant now, let's keep it minimal or remove if guard covers it.
+    // Guard ensures: If role != technician -> redirect. If phone missing -> stay here.
+    // So we can largely trust the guard.
+  }, [user]);
 
   // Check if technician profile already exists
   useEffect(() => {

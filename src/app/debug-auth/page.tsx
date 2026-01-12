@@ -62,6 +62,19 @@ export default function DebugAuthPage() {
         checkConnection();
     }, []);
 
+    const [seedResult, setSeedResult] = useState<any>(null);
+
+    const handleSeedServices = async () => {
+        setSeedResult('Seeding...');
+        try {
+            const { seedServices } = await import('@/lib/seedServices');
+            const result = await seedServices();
+            setSeedResult(result);
+        } catch (error: any) {
+            setSeedResult({ error: error.message || 'Failed to import or run seeder' });
+        }
+    };
+
     return (
         <div className="p-8 font-mono text-sm">
             <h1 className="text-xl font-bold mb-4">Auth Debugger</h1>
@@ -88,6 +101,24 @@ export default function DebugAuthPage() {
                     {status.rawFetch && (
                         <div className="mt-2">
                             Raw Fetch Status: {status.rawFetch.status} (OK: {String(status.rawFetch.ok)})
+                        </div>
+                    )}
+                </div>
+
+                <div className="p-4 border rounded bg-blue-50 border-blue-200">
+                    <h2 className="font-bold mb-2">Database Tools</h2>
+                    <button
+                        onClick={handleSeedServices}
+                        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                    >
+                        Seed Services Table
+                    </button>
+                    {seedResult && (
+                        <div className="mt-4">
+                            <h3 className="font-bold">Seed Result:</h3>
+                            <pre className="mt-2 p-2 bg-white rounded border overflow-auto max-h-40">
+                                {JSON.stringify(seedResult, null, 2)}
+                            </pre>
                         </div>
                     )}
                 </div>

@@ -3,44 +3,60 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import Header from '@/components/common/Header';
+import { profileService } from '@/services/profileService';
 
 export default function CustomerOnboardingPage() {
+  const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [postcode, setPostcode] = useState('');
   const [preferredContact, setPreferredContact] = useState<'email' | 'phone'>('email');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
 
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError('');
 
     try {
-      // In a real implementation, this would save the customer profile to the database
-      // For now, we'll just redirect to the dashboard
-      router.push('/dashboard/customer');
-    } catch (err) {
+      if (!user?.id) {
+        throw new Error('User not authenticated');
+      }
+
+      // Save customer profile data to database
+      await profileService.updateCustomerProfile(user.id, {
+        phone,
+        address,
+        city,
+        postcode,
+        preferred_contact: preferredContact
+      });
+
+      setSuccess(true);
+
+      // Redirect to dashboard after a brief delay
+      setTimeout(() => {
+        router.push('/dashboard/customer');
+      }, 1500);
+    } catch (err: any) {
       console.error('Customer onboarding error:', err);
+      setError(err.message || 'Failed to save profile. Please try again.');
     } finally {
       setIsLoading(false);
     }
   };
 
+  // Use the guard
+  useNavigationGuard();
 
-  // Redirect if user is not authenticated or not a customer
-  useEffect(() => {
-    if (!user || user.role !== 'customer') {
-      if (!user) {
-        router.push('/auth/signin');
-      } else {
-        router.push('/auth/role-selection');
-      }
-    }
-  }, [user, router]);
+  if (loading) return <div>Loading...</div>; // Simple loading for now as guard handles main logic
 
 
   return (
@@ -52,7 +68,34 @@ export default function CustomerOnboardingPage() {
             <h1 className="text-3xl font-bold text-text-primary mb-2">Complete Your Profile</h1>
             <p className="text-text-secondary mb-8">Tell us a bit more about yourself to get started</p>
 
+            {error && (
+              <div className="mb-6 p-4 bg-error/10 border border-error/20 rounded-lg">
+                <p className="text-error text-sm">{error}</p>
+              </div>
+            )}
+
+            {success && (
+              <div className="mb-6 p-4 bg-success/10 border border-success/20 rounded-lg">
+                <p className="text-success text-sm">Profile saved successfully! Redirecting...</p>
+              </div>
+            )}
+
             <form onSubmit={handleSubmit}>
+              <div className="mb-6">
+                <label htmlFor="phone" className="block text-sm font-medium text-text-secondary mb-2">
+                  Phone Number
+                </label>
+                <input
+                  id="phone"
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="w-full px-4 py-3 bg-surface border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-smooth"
+                  placeholder="Enter your phone number"
+                  required
+                />
+              </div>
+
               <div className="mb-6">
                 <label htmlFor="address" className="block text-sm font-medium text-text-secondary mb-2">
                   Address

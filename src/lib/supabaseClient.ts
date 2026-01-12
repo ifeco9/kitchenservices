@@ -13,4 +13,11 @@ if (!supabaseAnonKey) {
   throw new Error('Missing env. variable: NEXT_PUBLIC_SUPABASE_ANON_KEY');
 }
 
-export const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    lock: async (name: string, acquireTimeout: number, callback: () => any) => {
+      // Bypass navigator.locks in environments where it causes AbortError
+      return await callback();
+    },
+  },
+});

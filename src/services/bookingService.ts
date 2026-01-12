@@ -97,5 +97,48 @@ export const bookingService = {
 
         if (error) throw error;
         return data;
+    },
+
+    async getBookingById(bookingId: string) {
+        const { data, error } = await supabase
+            .from('bookings')
+            .select('*, profiles:customer_id(full_name, avatar_url, email), services:service_id(name), technician:technician_id(full_name)')
+            .eq('id', bookingId)
+            .single();
+
+        if (error) throw error;
+        return data;
+    },
+
+    async updateBookingStatus(bookingId: string, newStatus: 'pending' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled') {
+        // Validate status transitions
+        const booking = await this.getBookingById(bookingId);
+        const currentStatus = booking.status;
+
+        // Define valid transitions
+        const validTransitions: Record<string, string[]> = {
+            'pending': ['confirmed', 'cancelled'],
+            'confirmed': ['in_progress', 'cancelled'],
+            'in_progress': ['completed', 'cancelled'],
+            'completed': [], // Cannot transition from completed
+            'cancelled': [] // Cannot transition from cancelled
+        };
+
+        if (!validTransitions[currentStatus]?.includes(newStatus) && currentStatus !== newStatus) {
+            throw new Error(`Invalid status transition from ${currentStatus} to ${newStatus}`);
+        }
+
+        const { data, error } = await supabase
+            .from('bookings')
+            .update({
+                status: newStatus,
+                updated_at: new Date().toISOString()
+            })
+            .eq('id', bookingId)
+            .select()
+            .single();
+
+        if (error) throw error;
+        return data;
     }
 };

@@ -2,6 +2,9 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { profileService } from '@/services/profileService';
+
+import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/common/Header';
 import Icon from '@/components/ui/AppIcon';
@@ -15,6 +18,12 @@ export default function RoleSelectionPage() {
   const router = useRouter();
   const { user, loading, refreshProfile } = useAuth();
 
+  // Use the guard
+  useNavigationGuard();
+
+  // Redirect if not authenticated (Guard handles this redirect, but we return null to prevent flash)
+  if (!user && !loading) return null;
+
   const handleRoleSelect = (role: 'customer' | 'provider') => {
     setSelectedRole(role);
     setError('');
@@ -22,64 +31,27 @@ export default function RoleSelectionPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedRole) {
-      setError('Please select a role');
-      return;
-    }
+    if (!selectedRole || !user) return;
 
     setIsLoading(true);
     try {
-      if (user && user.id) {
-        // Step 1: Upsert Profile
-        const { error: upsertError } = await supabase
-          .from('profiles')
-          .upsert({
-            id: user.id,
-            email: user.email,
-            role: selectedRole === 'provider' ? 'technician' : 'customer',
-            updated_at: new Date().toISOString()
-          });
+      // Map 'provider' to 'technician' for database compatibility
+      const dbRole = selectedRole === 'provider' ? 'technician' : selectedRole;
+      await profileService.updateProfile(user.id, { role: dbRole });
+      await refreshProfile();
 
-        if (upsertError) throw upsertError;
-
-        // Step 2: Refresh local state
-        // We await this to ensure context is updated before redirect
-        try {
-          await refreshProfile();
-        } catch (refreshError) {
-          console.warn('Profile refresh warning:', refreshError);
-          // Continue to redirect even if refresh fails, the next page will try again
-        }
-
-        if (selectedRole === 'customer') {
-          router.push('/onboarding/customer');
-        } else {
-          router.push('/onboarding/provider');
-        }
+      if (selectedRole === 'customer') {
+        router.push('/onboarding/customer');
+      } else {
+        router.push('/onboarding/provider');
       }
     } catch (err: any) {
-      setError(err.message || 'Failed to set role. Please try again.');
       console.error('Role selection error:', err);
+      setError(err.message || 'Failed to update role. Please try again.');
+    } finally {
       setIsLoading(false);
     }
-    // Note: We don't set isLoading(false) on success to prevent UI flash before redirect
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <Icon name="ArrowPathIcon" size={32} className="text-text-secondary mx-auto animate-spin" />
-          <p className="mt-4 text-text-secondary">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    router.push('/auth/signin');
-    return null;
-  }
 
 
 

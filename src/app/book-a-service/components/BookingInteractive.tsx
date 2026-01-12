@@ -55,6 +55,7 @@ const BookingInteractive = () => {
 
   const [technicians, setTechnicians] = useState<UITechnician[]>([]);
   const [loadingTechs, setLoadingTechs] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const { user } = useAuth();
   const router = useRouter();
@@ -122,11 +123,10 @@ const BookingInteractive = () => {
   };
 
   const handlePaymentSubmit = async (paymentData: any) => {
+    setSubmitError(null);
     if (!user || !selectedTechnician || !serviceDetails) {
-      // Handle unauthenticated case or missing data
-      // For now, valid user required
       if (!user) {
-        alert('Please sign in to complete your booking');
+        setSubmitError('Please sign in to complete your booking');
         return;
       }
       return;
@@ -137,13 +137,19 @@ const BookingInteractive = () => {
       const service = await serviceService.getServiceByApplianceType(serviceDetails.applianceType);
 
       if (!service) {
-        alert('Service not available for this appliance type. Please contact support.');
+        setSubmitError('Service not available for this appliance type. Please contact support.');
+        return;
+      }
+
+      const techId = selectedTechnician.originalId;
+      if (!techId) {
+        setSubmitError('Invalid technician selected. Please try again.');
         return;
       }
 
       const booking = await bookingService.createBooking({
         customer_id: user.id,
-        technician_id: selectedTechnician.originalId || '',
+        technician_id: techId,
         service_id: service.id,
         status: 'confirmed',
         scheduled_date: new Date(`${selectedDate}T${selectedTime}`).toISOString(),
@@ -156,7 +162,7 @@ const BookingInteractive = () => {
       setCurrentStep(6);
     } catch (error: any) {
       console.error('Booking failed', error);
-      alert(error.message || 'Booking failed. Please try again.');
+      setSubmitError(error.message || 'Booking failed. Please try again.');
     }
   };
 
@@ -365,6 +371,11 @@ const BookingInteractive = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
                 <PaymentForm onSubmit={handlePaymentSubmit} totalAmount={calculateTotal()} />
+                {submitError && (
+                  <div className="mt-4 p-4 bg-red-50 text-red-600 rounded-md border border-red-200">
+                    {submitError}
+                  </div>
+                )}
               </div>
               <div className="lg:col-span-1">
                 {selectedTechnician &&

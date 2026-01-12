@@ -8,6 +8,11 @@ export interface Profile {
   full_name: string;
   avatar_url?: string;
   role: Role;
+  phone?: string;
+  address?: string;
+  city?: string;
+  postcode?: string;
+  preferred_contact?: 'email' | 'phone';
   created_at: string;
 }
 

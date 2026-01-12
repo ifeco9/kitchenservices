@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/common/Header';
+import Icon from '@/components/ui/AppIcon';
 
 export default function SignInPage() {
   const [email, setEmail] = useState('');
@@ -12,7 +14,10 @@ export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
-  const { signIn } = useAuth();
+  const { signIn } = useAuth(); // Removed user, loading destructuring as hook handles it separately or we can just pass nothing to it if it uses context internally
+
+  // Use the guard
+  useNavigationGuard();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
