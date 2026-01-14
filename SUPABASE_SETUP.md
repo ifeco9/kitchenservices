@@ -57,6 +57,8 @@ The following tables and features are included in the migration:
 - **reviews**: Customer reviews for technicians
 - **Row Level Security (RLS)**: Proper access controls
 - **Authentication integration**: Automatic profile creation on signup
+- **provider_availability**: Technician weekly schedule
+- **technician_services**: Custom service offerings and pricing for technicians
 - **Storage bucket**: For user avatars
 
 ## Next Steps

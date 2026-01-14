@@ -77,7 +77,7 @@ export const profileService = {
             .from('technicians') // Query the specific table
             .select(`
         *,
-        profiles:id (*)
+        profiles!technicians_id_fkey (*)
       `) // Join with profiles linked by ID
             .eq('id', userId)
             .single();
@@ -108,7 +108,7 @@ export const profileService = {
             .from('technicians')
             .select(`
                 *,
-                profiles:id (full_name, avatar_url)
+                profiles!technicians_id_fkey (full_name, avatar_url)
             `)
             .eq('is_verified', true)
             .eq('availability_status', 'available');
@@ -131,7 +131,7 @@ export const profileService = {
             .from('technicians')
             .select(`
                 *,
-                profiles:id (full_name, avatar_url, email)
+                profiles!technicians_id_fkey (full_name, avatar_url, email)
             `)
             .eq('is_verified', false);
 
@@ -141,6 +141,37 @@ export const profileService = {
             ...tech,
             ...tech.profiles
         })) as Technician[];
+    },
+
+    async getTechniciansByService(serviceId: string) {
+        // Use !inner to filter technicians who have this service
+        // and where is_active is true
+        const { data, error } = await supabase
+            .from('technicians')
+            .select(`
+                *,
+                profiles!technicians_id_fkey (full_name, avatar_url),
+                technician_services!inner(service_id, custom_price, is_active)
+            `)
+            .eq('is_verified', true)
+            .eq('availability_status', 'available')
+            .eq('technician_services.service_id', serviceId)
+            .eq('technician_services.is_active', true);
+
+        if (error) throw error;
+
+        return data.map((tech: any) => {
+            // Flatten and include custom price if needed
+            const techService = tech.technician_services[0];
+            return {
+                ...tech,
+                ...tech.profiles,
+                // We could override hourly_rate with custom_price here if we wanted, 
+                // but let's keep base rate for now or handle it in UI.
+                // Or maybe attach it?
+                service_price: techService?.custom_price
+            };
+        }) as (Technician & { service_price?: number })[];
     },
 
     // Haversine formula to calculate distance between two points
@@ -162,7 +193,7 @@ export const profileService = {
             .from('technicians')
             .select(`
                 *,
-                profiles:id (full_name, avatar_url)
+                profiles!technicians_id_fkey (full_name, avatar_url)
             `)
             // .eq('is_verified', true) // Commented out for testing/demo purposes
             // .eq('availability_status', 'available');

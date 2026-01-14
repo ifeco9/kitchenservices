@@ -1,8 +1,10 @@
 {
-  "/dashboard/provider/page": "app/dashboard/provider/page.js",
-  "/auth/signin/page": "app/auth/signin/page.js",
   "/dashboard/customer/page": "app/dashboard/customer/page.js",
+  "/find-a-technician/page": "app/find-a-technician/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/auth/signin/page": "app/auth/signin/page.js",
   "/book-a-service/page": "app/book-a-service/page.js",
+  "/dashboard/customer/bookings/page": "app/dashboard/customer/bookings/page.js",
   "/homepage/page": "app/homepage/page.js",
-  "/_not-found/page": "app/_not-found/page.js"
+  "/favicon.ico/route": "app/favicon.ico/route.js"
 }

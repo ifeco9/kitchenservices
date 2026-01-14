@@ -35,12 +35,50 @@ export const bookingService = {
     },
 
     async checkAvailability(technicianId: string, scheduledDate: string, durationHours: number = 2): Promise<boolean> {
-        // Calculate the time window for the requested booking
-        const newStart = new Date(scheduledDate).getTime();
+        const dateObj = new Date(scheduledDate);
+        const newStart = dateObj.getTime();
         const newEnd = newStart + (durationHours * 60 * 60 * 1000);
 
-        // Fetch existing bookings for the technician on the same day
-        // Optimization: checking only same day +/- some buffer
+        // 1. Check Provider's Weekly Schedule
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const dayOfWeek = days[dateObj.getDay()];
+
+        const { data: schedule, error: scheduleError } = await supabase
+            .from('provider_availability')
+            .select('*')
+            .eq('technician_id', technicianId)
+            .eq('day_of_week', dayOfWeek)
+            .single();
+
+        if (scheduleError && scheduleError.code !== 'PGRST116') { // PGRST116 is "no rows found"
+            console.error('Error fetching provider schedule:', scheduleError);
+            // Fallback: If no schedule defined, assume unavailable or default hours?
+            // Let's assume unavailable if they haven't set a schedule, or maybe default 9-5?
+            // Sticking to "must have schedule" for now to enforce usage.
+            return false;
+        }
+
+        if (!schedule || !schedule.is_available) {
+            return false; // Technician not working this day
+        }
+
+        // Parse schedule times
+        // format is HH:MM:SS
+        const [startH, startM] = schedule.start_time.split(':').map(Number);
+        const [endH, endM] = schedule.end_time.split(':').map(Number);
+
+        const scheduleStart = new Date(dateObj);
+        scheduleStart.setHours(startH, startM, 0, 0);
+
+        const scheduleEnd = new Date(dateObj);
+        scheduleEnd.setHours(endH, endM, 0, 0);
+
+        // Check if booking fits within working hours
+        if (newStart < scheduleStart.getTime() || newEnd > scheduleEnd.getTime()) {
+            return false;
+        }
+
+        // 2. Check Existing Bookings (Overlaps)
         const dayStart = new Date(scheduledDate);
         dayStart.setHours(0, 0, 0, 0);
         const dayEnd = new Date(scheduledDate);
@@ -55,17 +93,14 @@ export const bookingService = {
             .lte('scheduled_date', dayEnd.toISOString());
 
         if (error) {
-            console.error('Error checking availability:', error);
-            // Fail safe: assume available or throw? Let's assume available to not block, but log error.
-            // Better to throw so we don't double book during outage.
+            console.error('Error checking existing bookings:', error);
             throw error;
         }
 
-        // Check for overlaps
         if (bookings && bookings.length > 0) {
             for (const existingBooking of bookings) {
                 const existingStart = new Date(existingBooking.scheduled_date).getTime();
-                const existingEnd = existingStart + (2 * 60 * 60 * 1000); // Assuming 2 hours for existing bookings too
+                const existingEnd = existingStart + (2 * 60 * 60 * 1000); // Assuming 2 hours for now. Ideally should be stored.
 
                 // Overlap exists if (StartA < EndB) and (EndA > StartB)
                 if (existingStart < newEnd && existingEnd > newStart) {

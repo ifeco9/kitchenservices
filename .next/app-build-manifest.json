@@ -16,15 +16,10 @@
       "static/chunks/main-app.js",
       "static/chunks/app/not-found.js"
     ],
-    "/dashboard/customer/page": [
+    "/_not-found/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/dashboard/customer/page.js"
-    ],
-    "/book-a-service/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/book-a-service/page.js"
+      "static/chunks/app/_not-found/page.js"
     ],
     "/auth/signup/page": [
       "static/chunks/webpack.js",
@@ -36,11 +31,6 @@
       "static/chunks/main-app.js",
       "static/chunks/app/auth/role-selection/page.js"
     ],
-    "/_not-found/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/_not-found/page.js"
-    ],
     "/onboarding/provider/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -51,10 +41,40 @@
       "static/chunks/main-app.js",
       "static/chunks/app/dashboard/provider/page.js"
     ],
+    "/dashboard/provider/availability/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/dashboard/provider/availability/page.js"
+    ],
     "/auth/signin/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/auth/signin/page.js"
+    ],
+    "/dashboard/customer/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/dashboard/customer/page.js"
+    ],
+    "/find-a-technician/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/find-a-technician/page.js"
+    ],
+    "/dashboard/provider/services/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/dashboard/provider/services/page.js"
+    ],
+    "/book-a-service/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/book-a-service/page.js"
+    ],
+    "/dashboard/customer/bookings/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/dashboard/customer/bookings/page.js"
     ]
   }
 }
