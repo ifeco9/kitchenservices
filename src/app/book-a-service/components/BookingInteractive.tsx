@@ -61,26 +61,43 @@ const BookingInteractive = () => {
   const router = useRouter();
 
   useEffect(() => {
-    // Fetch technicians when component mounts
+    // Fetch technicians when component mounts or service details change
     const fetchTechnicians = async () => {
+      if (currentStep !== 3) return; // Only fetch when on step 3
+
       setLoadingTechs(true);
       try {
-        const data = await profileService.getTechnicians();
+        let data: any[] = [];
+
+        // If we have service details, try to filter by service
+        if (serviceDetails?.applianceType) {
+          const service = await serviceService.getServiceByApplianceType(serviceDetails.applianceType);
+          if (service) {
+            data = await profileService.getTechniciansByService(service.id);
+          } else {
+            // Fallback if no service found (shouldn't happen with valid types)
+            data = await profileService.getTechnicians();
+          }
+        } else {
+          data = await profileService.getTechnicians();
+        }
+
         // Map global Technician type to UITechnician
-        const mappedTechnicians: UITechnician[] = data.map(tech => ({
-          id: parseInt(tech.id) || Math.floor(Math.random() * 1000),
-          originalId: tech.id,
+        // Note: type assertion needed as data contains Technician + possible extras
+        const mappedTechnicians: UITechnician[] = data.map((tech: any) => ({
+          id: parseInt(tech.id) || Math.floor(Math.random() * 1000), // Helper for UI keys if UUID not supported by UI
+          originalId: tech.id, // Important: Use UUID
           name: tech.full_name,
           image: tech.avatar_url || '/assets/images/technicians/default.jpg',
           alt: tech.full_name,
           rating: tech.rating || 0,
           reviewCount: tech.review_count || 0,
-          specializations: tech.specializations,
-          responseTime: 'Contact for availability', // Not in DB schema yet
-          completedJobs: 0, // Not in DB schema yet
+          specializations: tech.specializations || [],
+          responseTime: 'Contact for availability',
+          completedJobs: 0,
           verified: tech.is_verified,
           callOutFee: tech.callout_fee,
-          hourlyRate: tech.hourly_rate,
+          hourlyRate: tech.service_price || tech.hourly_rate, // Use custom price if available
           availability: tech.availability_status
         }));
         setTechnicians(mappedTechnicians);
@@ -92,7 +109,7 @@ const BookingInteractive = () => {
     };
 
     fetchTechnicians();
-  }, []);
+  }, [currentStep, serviceDetails]); // Re-run when step becomes 3 or details change
 
   const steps = [
     { number: 1, label: 'Service Details', icon: 'ClipboardDocumentListIcon' },

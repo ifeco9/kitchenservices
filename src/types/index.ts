@@ -23,6 +23,28 @@ export interface Certification {
   renewal_date?: string;
 }
 
+
+export interface ProviderAvailability {
+  id: string;
+  technician_id: string;
+  day_of_week: string;
+  start_time: string;
+  end_time: string;
+  is_available: boolean;
+  created_at: string;
+}
+
+export interface TechnicianService {
+  id: string;
+  technician_id: string;
+  service_id: string;
+  custom_price?: number;
+  is_active: boolean;
+  created_at: string;
+  // Computed/Joined
+  service?: Service;
+}
+
 export interface Technician extends Profile {
   bio?: string;
   specializations: string[];
