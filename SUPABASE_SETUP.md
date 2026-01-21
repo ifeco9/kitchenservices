@@ -15,9 +15,15 @@
 Create a `.env.local` file in your project root with the following content:
 
 ```
-NEXT_PUBLIC_SUPABASE_URL=https://teqncmgveqiglxnoyxch.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_pkrNUfU7S-FLgjAKiHcnww_JNnnDNFd
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url_here
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key_here
 ```
+
+**To get your credentials**:
+1. Go to your [Supabase Dashboard](https://app.supabase.com)
+2. Select your project
+3. Go to Project Settings > API
+4. Copy the "Project URL" and "anon/public" API key
 
 ### 2. Database Migration
 
@@ -30,8 +36,10 @@ To apply the database schema to your Supabase project, follow these steps:
 
 2. Link your local project to your Supabase project:
    ```bash
-   supabase link --project-ref teqncmgveqiglxnoyxch
+   supabase link --project-ref your_project_ref
    ```
+   
+   Replace `your_project_ref` with your actual project reference ID from the Supabase dashboard.
 
 3. Run the database migrations:
    ```bash
@@ -42,7 +50,8 @@ To apply the database schema to your Supabase project, follow these steps:
 
 If you prefer to run the SQL commands directly:
 
-1. Go to your Supabase Dashboard: https://app.supabase.com/project/teqncmgveqiglxnoyxch/sql/new
+1. Go to your Supabase Dashboard > SQL Editor
+   - Navigate to https://app.supabase.com/project/YOUR_PROJECT_ID/sql/new
 2. Copy and paste the contents of `supabase/migrations/20250101000000_kitchen_services_schema.sql`
 3. Click "Run" to execute the SQL commands
 

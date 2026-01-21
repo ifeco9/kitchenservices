@@ -1,4 +1,4 @@
-export type Role = 'customer' | 'technician' | 'admin' | 'provider';
+export type Role = 'customer' | 'technician' | 'admin';
 export type AvailabilityStatus = 'available' | 'limited' | 'unavailable';
 export type BookingStatus = 'pending' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled';
 
@@ -24,7 +24,7 @@ export interface Certification {
 }
 
 
-export interface ProviderAvailability {
+export interface TechnicianAvailability {
   id: string;
   technician_id: string;
   day_of_week: string;
@@ -80,6 +80,7 @@ export interface Booking {
   service_id: string;
   status: BookingStatus;
   scheduled_date: string;
+  duration_hours?: number; // Duration of the booking in hours (default: 2)
   total_amount: number;
   description?: string;
   address: string;

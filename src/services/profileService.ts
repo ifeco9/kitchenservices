@@ -195,9 +195,8 @@ export const profileService = {
                 *,
                 profiles!technicians_id_fkey (full_name, avatar_url)
             `)
-            // .eq('is_verified', true) // Commented out for testing/demo purposes
-            // .eq('availability_status', 'available');
-            ;
+            .eq('is_verified', true)
+            .eq('availability_status', 'available');
 
         if (error) throw error;
 

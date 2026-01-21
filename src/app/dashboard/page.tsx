@@ -14,7 +14,7 @@ export default function DashboardPage() {
                 router.push('/auth/signin');
             } else if (user.profile?.role === 'customer') {
                 router.push('/dashboard/customer');
-            } else if (user.profile?.role === 'technician' || user.profile?.role === 'provider') {
+            } else if (user.profile?.role === 'technician') {
                 router.push('/dashboard/provider');
             } else {
                 router.push('/auth/role-selection');

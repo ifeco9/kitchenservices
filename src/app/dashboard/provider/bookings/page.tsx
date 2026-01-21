@@ -11,7 +11,7 @@ export default function ProviderBookingsPage() {
     const { user, loading } = useAuth();
 
     useEffect(() => {
-        if (!loading && (!user || (user.profile?.role !== 'technician' && user.profile?.role !== 'provider'))) {
+        if (!loading && (!user || user.profile?.role !== 'technician')) {
             router.push('/auth/signin');
         }
     }, [user, loading, router]);

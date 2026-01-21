@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/common/Header';
 import { supabase } from '@/lib/supabaseClient';
 import { Service, TechnicianService } from '@/types';
+import toast, { Toaster } from 'react-hot-toast';
 
 interface ServiceState {
     serviceId: string;
@@ -24,7 +25,7 @@ export default function ProviderServicesPage() {
     const [saving, setSaving] = useState(false);
 
     useEffect(() => {
-        if (!authLoading && (!user || (user.profile?.role !== 'technician' && user.profile?.role !== 'provider'))) {
+        if (!authLoading && (!user || user.profile?.role !== 'technician')) {
             router.push('/auth/signin');
             return;
         }
@@ -70,7 +71,7 @@ export default function ProviderServicesPage() {
             setServiceStates(mergedState);
         } catch (error) {
             console.error('Error fetching services:', error);
-            alert('Failed to load services');
+            toast.error('Failed to load services');
         } finally {
             setLoading(false);
         }
@@ -108,10 +109,10 @@ export default function ProviderServicesPage() {
 
             if (error) throw error;
 
-            alert('Services saved successfully!');
+            toast.success('Services saved successfully!');
         } catch (error: any) {
             console.error('Error saving services:', error);
-            alert(`Failed to save: ${error.message}`);
+            toast.error(`Failed to save: ${error.message}`);
         } finally {
             setSaving(false);
         }
@@ -134,6 +135,7 @@ export default function ProviderServicesPage() {
 
     return (
         <div className="min-h-screen bg-background">
+            <Toaster position="top-right" />
             <Header />
             <div className="pt-24 pb-12 px-4">
                 <div className="max-w-4xl mx-auto">

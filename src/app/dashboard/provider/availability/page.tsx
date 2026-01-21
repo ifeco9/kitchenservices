@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/common/Header';
 import { supabase } from '@/lib/supabaseClient';
-import { ProviderAvailability } from '@/types';
-import { toast } from 'react-hot-toast'; // Assuming we have this, or I'll implement a simple alert
+import { TechnicianAvailability } from '@/types';
+import toast, { Toaster } from 'react-hot-toast';
 
 const DAYS_OF_WEEK = [
     'Monday',
@@ -40,7 +40,7 @@ export default function ProviderAvailabilityPage() {
     const [saving, setSaving] = useState(false);
 
     useEffect(() => {
-        if (!authLoading && (!user || (user.profile?.role !== 'technician' && user.profile?.role !== 'provider'))) {
+        if (!authLoading && (!user || user.profile?.role !== 'technician')) {
             router.push('/auth/signin');
             return;
         }
@@ -81,7 +81,7 @@ export default function ProviderAvailabilityPage() {
             }
         } catch (error) {
             console.error('Error fetching availability:', error);
-            // toast.error('Failed to load availability');
+            toast.error('Failed to load availability');
         } finally {
             setLoading(false);
         }
@@ -121,10 +121,10 @@ export default function ProviderAvailabilityPage() {
 
             if (error) throw error;
 
-            alert('Availability saved successfully!');
+            toast.success('Availability saved successfully!');
         } catch (error: any) {
             console.error('Error saving availability:', error);
-            alert(`Failed to save: ${error.message}`);
+            toast.error(`Failed to save: ${error.message}`);
         } finally {
             setSaving(false);
         }
@@ -140,6 +140,7 @@ export default function ProviderAvailabilityPage() {
 
     return (
         <div className="min-h-screen bg-background">
+            <Toaster position="top-right" />
             <Header />
             <div className="pt-24 pb-12 px-4">
                 <div className="max-w-4xl mx-auto">

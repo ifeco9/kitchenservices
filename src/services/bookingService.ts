@@ -8,7 +8,8 @@ export const bookingService = {
         if (booking.technician_id && booking.scheduled_date) {
             const isAvailable = await this.checkAvailability(
                 booking.technician_id,
-                booking.scheduled_date
+                booking.scheduled_date,
+                booking.duration_hours || 2 // Use provided duration or default to 2 hours
             );
 
             if (!isAvailable) {
@@ -86,7 +87,7 @@ export const bookingService = {
 
         const { data: bookings, error } = await supabase
             .from('bookings')
-            .select('scheduled_date')
+            .select('scheduled_date, duration_hours')
             .eq('technician_id', technicianId)
             .neq('status', 'cancelled')
             .gte('scheduled_date', dayStart.toISOString())
@@ -100,7 +101,8 @@ export const bookingService = {
         if (bookings && bookings.length > 0) {
             for (const existingBooking of bookings) {
                 const existingStart = new Date(existingBooking.scheduled_date).getTime();
-                const existingEnd = existingStart + (2 * 60 * 60 * 1000); // Assuming 2 hours for now. Ideally should be stored.
+                const existingDuration = (existingBooking as any).duration_hours || 2; // Use stored duration or default to 2 hours
+                const existingEnd = existingStart + (existingDuration * 60 * 60 * 1000);
 
                 // Overlap exists if (StartA < EndB) and (EndA > StartB)
                 if (existingStart < newEnd && existingEnd > newStart) {

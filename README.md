@@ -108,16 +108,22 @@ This project also includes Netlify plugin support for easy deployment:
    - Publish directory: `.next`
 6. Deploy!
 
-## 🗄️ Supabase Database Setup
+## 🗄 Supabase Database Setup
 
 This project uses Supabase for authentication and database management. The database schema and configuration are located in the `supabase/` directory.
 
 ### Configuration
 
-The following Supabase configuration is already set up in the `.env.local` file:
+Create a `.env.local` file in the project root with your Supabase credentials:
 
-- **Project URL**: https://teqncmgveqiglxnoyxch.supabase.co
-- **Publishable API Key**: sb_publishable_pkrNUfU7S-FLgjAKiHcnww_JNnnDNFd
+```
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url_here
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key_here
+```
+
+You can find these values in your [Supabase Dashboard](https://app.supabase.com) under Project Settings > API.
+
+See `.env.example` for a template.
 
 ### Database Schema
 

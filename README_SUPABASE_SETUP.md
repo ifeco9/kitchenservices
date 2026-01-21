@@ -16,10 +16,22 @@ Before setting up the database, ensure you have:
 
 ## Environment Configuration
 
-The following environment variables have been configured in your `.env.local` file:
+To configure your environment variables:
 
-- `NEXT_PUBLIC_SUPABASE_URL`: https://teqncmgveqiglxnoyxch.supabase.co
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: sb_publishable_pkrNUfU7S-FLgjAKiHcnww_JNnnDNFd
+1. Copy `.env.example` to `.env.local`:
+   ```bash
+   cp .env.example .env.local
+   ```
+
+2. Update `.env.local` with your actual Supabase credentials:
+   - `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anon/public API key
+
+**To find your credentials**:
+1. Visit your [Supabase Dashboard](https://app.supabase.com)
+2. Select your project
+3. Navigate to Project Settings > API
+4. Copy the "Project URL" and "anon/public" key
 
 ## Database Schema
 

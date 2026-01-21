@@ -7,6 +7,7 @@ import Header from '@/components/common/Header';
 import Icon from '@/components/ui/AppIcon';
 import { bookingService } from '@/services/bookingService';
 import { Booking } from '@/types';
+import toast, { Toaster } from 'react-hot-toast';
 
 // ...
 
@@ -30,10 +31,10 @@ export default function ProviderDashboardPage() {
 
   useEffect(() => {
     const fetchDashboardData = async () => {
-      if (user && user.role === 'provider' || user?.role === 'technician') { // Normalized role check
+      if (user && user.profile?.role === 'technician') {
         try {
           const data = await bookingService.getBookingsByTechnician(user.id);
-          setBookings(data as any); // Type assertion if needed based on join result
+          setBookings(data as any);
 
           // Calculate stats
           const total = data.reduce((acc, b) => acc + (b.total_amount || 0), 0);
@@ -43,10 +44,13 @@ export default function ProviderDashboardPage() {
           const todayBookings = data.filter(b => b.scheduled_date.startsWith(today));
           setTodayCount(todayBookings.length);
         } catch (err) {
-          console.error(err);
+          console.error('Error fetching dashboard data:', err);
+          toast.error('Failed to load dashboard data. Please try again.');
         } finally {
           setLoadingStats(false);
         }
+      } else {
+        setLoadingStats(false);
       }
     };
 
@@ -66,9 +70,10 @@ export default function ProviderDashboardPage() {
         const data = await bookingService.getBookingsByTechnician(user.id);
         setBookings(data as any);
       }
+      toast.success(`Booking status updated to ${newStatus}`);
     } catch (error: any) {
       console.error('Failed to update status:', error);
-      alert(error.message || 'Failed to update booking status');
+      toast.error(error.message || 'Failed to update booking status');
     } finally {
       setUpdatingStatus(null);
     }
@@ -95,7 +100,7 @@ export default function ProviderDashboardPage() {
     );
   }
 
-  if (!user || (user.profile?.role !== 'technician' && user.profile?.role !== 'provider')) {
+  if (!user || user.profile?.role !== 'technician') {
     // Redirect to appropriate page if not authorized
     if (!user) {
       router.push('/auth/signin');
@@ -111,6 +116,7 @@ export default function ProviderDashboardPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      <Toaster position="top-right" />
       <Header />
       <div className="pt-16">
         <div className="max-w-7xl mx-auto px-4 py-8">

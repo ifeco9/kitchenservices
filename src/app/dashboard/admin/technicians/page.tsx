@@ -7,6 +7,7 @@ import Header from '@/components/common/Header';
 import Icon from '@/components/ui/AppIcon';
 import { profileService } from '@/services/profileService';
 import { Technician } from '@/types';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function AdminTechniciansPage() {
     const router = useRouter();
@@ -22,6 +23,7 @@ export default function AdminTechniciansPage() {
                 setPendingTechnicians(data);
             } catch (error) {
                 console.error('Failed to fetch pending technicians:', error);
+                toast.error('Failed to load pending technicians');
             } finally {
                 setLoadingTechs(false);
             }
@@ -40,17 +42,15 @@ export default function AdminTechniciansPage() {
     }, [user, loading, router]);
 
     const handleVerify = async (technicianId: string) => {
-        if (!confirm('Are you sure you want to verify this technician?')) return;
-
         setVerifying(technicianId);
         try {
             await profileService.verifyTechnician(technicianId);
             // Remove from pending list
             setPendingTechnicians(prev => prev.filter(t => t.id !== technicianId));
-            alert('Technician verified successfully!');
+            toast.success('Technician verified successfully!');
         } catch (error: any) {
             console.error('Failed to verify technician:', error);
-            alert(error.message || 'Failed to verify technician');
+            toast.error(error.message || 'Failed to verify technician');
         } finally {
             setVerifying(null);
         }
@@ -69,6 +69,7 @@ export default function AdminTechniciansPage() {
 
     return (
         <div className="min-h-screen bg-background">
+            <Toaster position="top-right" />
             <Header />
             <div className="pt-16">
                 <div className="max-w-7xl mx-auto px-4 py-8">

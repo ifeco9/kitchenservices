@@ -35,7 +35,7 @@ const BookingConfirmation = ({
 
   useEffect(() => {
     setIsHydrated(true);
-    
+
     // Save booking to user's account if authenticated
     if (user && isHydrated) {
       saveBookingToUserAccount();
@@ -44,10 +44,10 @@ const BookingConfirmation = ({
 
   const saveBookingToUserAccount = () => {
     if (!user) return;
-    
+
     // Get existing bookings from localStorage
     const existingBookings = JSON.parse(localStorage.getItem(`kitchenpro_bookings_${user.id}`) || '[]');
-    
+
     // Create new booking object
     const newBooking = {
       id: bookingReference,
@@ -60,10 +60,10 @@ const BookingConfirmation = ({
       status: 'scheduled',
       createdAt: new Date().toISOString(),
     };
-    
+
     // Add new booking to existing bookings
     const updatedBookings = [newBooking, ...existingBookings];
-    
+
     // Save back to localStorage
     localStorage.setItem(`kitchenpro_bookings_${user.id}`, JSON.stringify(updatedBookings));
   };
@@ -189,13 +189,13 @@ const BookingConfirmation = ({
           <span className="text-sm font-medium text-text-primary">Email Confirmation</span>
         </button>
       </div>
-      
+
       {/* View in Dashboard */}
       {user && (
         <button
           type="button"
           onClick={() => {
-            if (user.role === 'provider') {
+            if (user.role === 'technician') {
               router.push('/dashboard/provider/bookings');
             } else {
               router.push('/dashboard/customer/bookings');

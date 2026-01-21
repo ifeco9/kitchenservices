@@ -52,7 +52,7 @@ export const useNavigationGuard = (
                 if (pathname !== '/onboarding/customer') {
                     router.push('/onboarding/customer');
                 }
-            } else if (role === 'provider' || role === 'technician') {
+            } else if (role === 'technician') {
                 if (pathname !== '/onboarding/provider') {
                     router.push('/onboarding/provider');
                 }
@@ -68,7 +68,7 @@ export const useNavigationGuard = (
         if (isProfileComplete && (isAuthPage || isOnboardingPage || isRoot)) {
             if (role === 'customer') {
                 router.push('/dashboard/customer');
-            } else if (role === 'provider' || role === 'technician') {
+            } else if (role === 'technician') {
                 router.push('/dashboard/provider');
             } else if (role === 'admin') {
                 router.push('/dashboard/admin');
