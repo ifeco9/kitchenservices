@@ -44,7 +44,7 @@ const ComparisonPanel = ({ technicians, onRemove, onClear }: ComparisonPanelProp
               <div className="flex items-start space-x-3">
                 <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
                   <AppImage
-                    src={tech.avatar_url || 'https://via.placeholder.com/150'}
+                    src={tech.avatar_url || '/assets/images/logo.png'}
                     alt={tech.full_name}
                     className="w-full h-full object-cover"
                   />

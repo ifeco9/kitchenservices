@@ -24,36 +24,36 @@ const Testimonials = () => {
   }, []);
 
   const testimonials: Testimonial[] = [
-  {
-    id: '1',
-    name: 'Emma Richardson',
-    location: 'London',
-    rating: 5,
-    comment: 'My oven broke down on Christmas Eve and I was panicking. Found a technician through KitchenServices within 30 minutes who came out the same day. Absolutely brilliant service and very reasonable pricing.',
-    service: 'Emergency Oven Repair',
-    image: "https://img.rocket.new/generatedImages/rocket_gen_img_1104c87ff-1765607754886.png",
-    alt: 'Smiling woman with long blonde hair in casual blue sweater in bright modern home'
-  },
-  {
-    id: '2',
-    name: 'Michael O\'Brien',
-    location: 'Manchester',
-    rating: 5,
-    comment: 'As a landlord managing multiple properties, KitchenServices has been a game-changer. Verified technicians, transparent pricing, and quick response times. Highly recommend for property managers.',
-    service: 'Dishwasher Installation',
-    image: "https://img.rocket.new/generatedImages/rocket_gen_img_12ef1a455-1763296313102.png",
-    alt: 'Professional man with short dark hair in navy business suit smiling confidently'
-  },
-  {
-    id: '3',
-    name: 'Priya Patel',
-    location: 'Birmingham',
-    rating: 5,
-    comment: 'The booking process was so straightforward and the technician was incredibly professional. Fixed my washing machine in under an hour and explained everything clearly. Will definitely use again.',
-    service: 'Washing Machine Repair',
-    image: "https://img.rocket.new/generatedImages/rocket_gen_img_1f953953d-1763294126115.png",
-    alt: 'South Asian woman with long dark hair in professional attire smiling warmly'
-  }];
+    {
+      id: '1',
+      name: 'Emma Richardson',
+      location: 'London',
+      rating: 5,
+      comment: 'My oven broke down on Christmas Eve and I was panicking. Found a technician through KitchenServices within 30 minutes who came out the same day. Absolutely brilliant service and very reasonable pricing.',
+      service: 'Emergency Oven Repair',
+      image: "https://img.rocket.new/generatedImages/rocket_gen_img_1104c87ff-1765607754886.png",
+      alt: 'Smiling woman with long blonde hair in casual blue sweater in bright modern home'
+    },
+    {
+      id: '2',
+      name: 'Michael O\'Brien',
+      location: 'Manchester',
+      rating: 5,
+      comment: 'As a landlord managing multiple properties, KitchenServices has been a game-changer. Verified technicians, transparent pricing, and quick response times. Highly recommend for property managers.',
+      service: 'Dishwasher Installation',
+      image: "https://img.rocket.new/generatedImages/rocket_gen_img_12ef1a455-1763296313102.png",
+      alt: 'Professional man with short dark hair in navy business suit smiling confidently'
+    },
+    {
+      id: '3',
+      name: 'Priya Patel',
+      location: 'Birmingham',
+      rating: 5,
+      comment: 'The booking process was so straightforward and the technician was incredibly professional. Fixed my washing machine in under an hour and explained everything clearly. Will definitely use again.',
+      service: 'Washing Machine Repair',
+      image: "https://img.rocket.new/generatedImages/rocket_gen_img_1f953953d-1763294126115.png",
+      alt: 'South Asian woman with long dark hair in professional attire smiling warmly'
+    }];
 
 
   const handlePrevious = () => {
@@ -104,15 +104,15 @@ const Testimonials = () => {
             <div className="absolute top-6 right-6 text-accent opacity-10 text-8xl font-serif leading-none">
               &ldquo;
             </div>
-            
+
             <div className="flex items-center mb-6">
               {[...Array(5)].map((_, i) =>
-              <Icon
-                key={i}
-                name="StarIcon"
-                size={24}
-                variant="solid"
-                className={i < currentTestimonial.rating ? 'text-warning' : 'text-border'} />
+                <Icon
+                  key={i}
+                  name="StarIcon"
+                  size={24}
+                  variant="solid"
+                  className={i < currentTestimonial.rating ? 'text-warning' : 'text-border'} />
 
               )}
             </div>
@@ -141,7 +141,7 @@ const Testimonials = () => {
               <div className="flex items-center space-x-2">
                 <button
                   onClick={handlePrevious}
-                  className="w-10 h-10 flex items-center justify-center bg-surface hover:bg-accent hover:text-accent-foreground rounded-full transition-smooth focus-ring"
+                  className="w-10 h-10 flex items-center justify-center bg-surface hover:bg-accent hover:text-accent-foreground rounded-full focus-ring btn-hover"
                   aria-label="Previous testimonial">
                   <Icon name="ChevronLeftIcon" size={20} />
                 </button>
@@ -152,7 +152,7 @@ const Testimonials = () => {
                   <Icon name="ChevronRightIcon" size={20} />
                 </button>
               </div>
-              
+
               <div className="text-sm text-text-secondary">
                 {currentIndex + 1} of {testimonials.length}
               </div>

@@ -1,6 +1,7 @@
 export type Role = 'customer' | 'technician' | 'admin';
 export type AvailabilityStatus = 'available' | 'limited' | 'unavailable';
 export type BookingStatus = 'pending' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled';
+export type NotificationType = 'booking_update' | 'new_booking' | 'review_received' | 'message';
 
 export interface Profile {
   id: string;
@@ -95,4 +96,26 @@ export interface Review {
   rating: number;
   comment?: string;
   created_at: string;
+}
+
+export interface Notification {
+  id: string;
+  user_id: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  data?: Record<string, any>;
+  read: boolean;
+  created_at: string;
+}
+
+export interface BookingItem {
+  id: string;
+  booking_id: string;
+  service_id: string;
+  quantity: number;
+  price_at_booking: number;
+  created_at: string;
+  // Computed/Joined
+  service?: Service;
 }

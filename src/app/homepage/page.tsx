@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '@/components/common/Header';
 import AuthRedirect from '@/components/common/AuthRedirect';
 import HeroSearch from './components/HeroSearch';
@@ -15,22 +15,38 @@ import AppImage from '@/components/ui/AppImage';
 import Icon from '@/components/ui/AppIcon';
 
 export default function Homepage() {
+  const [scrollY, setScrollY] = useState(0);
+
   useEffect(() => {
+    // Parallax scroll effect
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Scroll animation observer - adds animation class when element enters viewport
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const animation = entry.target.getAttribute('data-scroll-animation');
-          if (animation) {
-            entry.target.classList.add('animate-' + animation);
-            observer.unobserve(entry.target);
-          }
+          // Add the animation class when element is in view
+          entry.target.classList.add('animate-fade-in-up');
+          // Optionally unobserve after animating once
+          observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.1 });
+    }, {
+      threshold: 0.1, // Trigger when 10% of element is visible
+      rootMargin: '0px 0px -50px 0px' // Trigger slightly before element enters viewport
+    });
 
-    document.querySelectorAll('[data-scroll-animation]').forEach(el => observer.observe(el));
+    // Observe all sections with the scroll-animate class
+    document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
 
-    return () => observer.disconnect();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      observer.disconnect();
+    };
   }, []);
 
   return (
@@ -42,11 +58,15 @@ export default function Homepage() {
       <section className="relative pt-24 pb-16 lg:pt-32 lg:pb-24 overflow-hidden">
         {/* Simple Dark Background */}
         <div className="absolute inset-0 z-0 bg-slate-900">
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div
+            className="absolute inset-0 flex items-center justify-center"
+            style={{ transform: `translateY(${scrollY * 0.5}px)` }}
+          >
             <img
               src="/assets/images/logo.png"
-              alt="KitchenServices Logo Background"
+              alt="KitchenServices Logo Watermark"
               className="w-1/2 h-1/2 md:w-3/4 md:h-3/4 object-contain opacity-30 rounded-full animate-float-slow"
+              style={{ transform: `scale(${1 + scrollY * 0.0005})` }}
             />
           </div>
         </div>
@@ -69,28 +89,24 @@ export default function Homepage() {
         </div>
       </section>
 
-      {/* How It Works - Fade Up */}
-      <section>
+      {/* Sections with scroll animations */}
+      <section className="scroll-animate">
         <HowItWorks />
       </section>
 
-      {/* Service Categories - Slide In Left */}
-      <section>
+      <section className="scroll-animate">
         <ServiceCategories />
       </section>
 
-      {/* Featured Technicians - Zoom In */}
-      <section>
+      <section className="scroll-animate">
         <FeaturedTechnicians />
       </section>
 
-      {/* Testimonials - Slide In Right */}
-      <section>
+      <section className="scroll-animate">
         <Testimonials />
       </section>
 
-      {/* Emergency CTA - Bounce In */}
-      <section>
+      <section className="scroll-animate">
         <EmergencyCTA />
       </section>
 

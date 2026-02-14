@@ -78,7 +78,7 @@ const FeaturedTechnicians = () => {
           </div>
           <Link
             href="/find-a-technician"
-            className="inline-flex items-center text-accent font-semibold hover:text-success transition-smooth mt-4 lg:mt-0">
+            className="inline-flex items-center text-accent font-semibold hover:text-success transition-all duration-300 mt-4 lg:mt-0 link-underline">
 
             <span>View All Technicians</span>
             <Icon name="ArrowRightIcon" size={20} className="ml-2" />
@@ -90,12 +90,12 @@ const FeaturedTechnicians = () => {
           {technicians[0] && (
             <Link
               href={`/technician-profiles?id=${technicians[0].id}`}
-              className="group md:row-span-2 bg-white rounded-xl overflow-hidden border border-border hover:border-accent transition-smooth block relative">
+              className="group md:row-span-2 bg-white rounded-xl overflow-hidden border border-border hover:border-accent block relative card-hover">
               <div className="relative h-80 md:h-full overflow-hidden">
                 <AppImage
-                  src={technicians[0].avatar_url || 'https://via.placeholder.com/400'}
+                  src={technicians[0].avatar_url || '/assets/images/logo.png'}
                   alt={technicians[0].full_name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-smooth" />
+                  className="w-full h-full object-cover group-hover:scale-110 transition-all duration-500" />
 
                 {/* Gradient overlay for better text readability */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -146,14 +146,14 @@ const FeaturedTechnicians = () => {
               <Link
                 key={tech.id}
                 href={`/technician-profiles?id=${tech.id}`}
-                className="group bg-white rounded-xl overflow-hidden border border-border hover:border-accent transition-smooth block relative">
+                className="group bg-white rounded-xl overflow-hidden border border-border hover:border-accent block relative card-hover">
 
                 <div className="flex">
                   <div className="relative w-24 h-24 flex-shrink-0 overflow-hidden">
                     <AppImage
-                      src={tech.avatar_url || 'https://via.placeholder.com/150'}
+                      src={tech.avatar_url || '/assets/images/logo.png'}
                       alt={tech.full_name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-smooth" />
+                      className="w-full h-full object-cover group-hover:scale-110 transition-all duration-500" />
                     {tech.is_verified && (
                       <div className="absolute top-1 right-1 inline-flex items-center bg-accent text-accent-foreground text-xs font-semibold rounded-full p-1 shadow-lg">
                         <Icon name="CheckBadgeIcon" size={12} />
@@ -163,7 +163,7 @@ const FeaturedTechnicians = () => {
 
                   <div className="p-4 flex-1">
                     <div className="flex items-start justify-between mb-1">
-                      <h3 className="font-semibold text-primary group-hover:text-accent transition-smooth text-sm">
+                      <h3 className="font-semibold text-primary group-hover:text-accent transition-all duration-300 text-sm">
                         {tech.full_name}
                       </h3>
                     </div>

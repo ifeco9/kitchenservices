@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/AppIcon';
 import { reviewService } from '@/services/reviewService';
+import toast from 'react-hot-toast';
 
 interface ReviewModalProps {
     isOpen: boolean;
@@ -23,7 +24,10 @@ const ReviewModal = ({ isOpen, onClose, bookingId, technicianId, technicianName,
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (rating === 0) return;
+        if (rating === 0) {
+            toast.error('Please select a rating');
+            return;
+        }
 
         setIsSubmitting(true);
         try {
@@ -34,10 +38,14 @@ const ReviewModal = ({ isOpen, onClose, bookingId, technicianId, technicianName,
                 rating,
                 comment
             });
+            toast.success('Review submitted successfully!');
+            // Reset form
+            setRating(0);
+            setComment('');
             onClose();
-            // Ideally show success toast
-        } catch (error) {
+        } catch (error: any) {
             console.error('Failed to submit review', error);
+            toast.error(error.message || 'Failed to submit review. Please try again.');
         } finally {
             setIsSubmitting(false);
         }
@@ -74,8 +82,8 @@ const ReviewModal = ({ isOpen, onClose, bookingId, technicianId, technicianName,
                                     name="StarIcon"
                                     size={32}
                                     className={`${star <= (hoverRating || rating)
-                                            ? 'text-warning fill-current'
-                                            : 'text-border'
+                                        ? 'text-warning fill-current'
+                                        : 'text-border'
                                         } transition-colors`}
                                 />
                             </button>

@@ -96,7 +96,7 @@ const FindATechnicianInteractive = () => {
   // Filter logic (client-side for prototype)
   const displayedTechnicians = technicians.filter(tech => {
     // Basic text search
-    if (searchQuery && !tech.full_name.toLowerCase().includes(searchQuery.toLowerCase())) {
+    if (searchQuery && tech.full_name && !tech.full_name.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false;
     }
     // Filter checks can be added here

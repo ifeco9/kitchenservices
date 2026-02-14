@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import Header from '@/components/common/Header';
+import ImageUpload from '@/components/common/ImageUpload';
 import { profileService } from '@/services/profileService';
 
 export default function CustomerOnboardingPage() {
@@ -13,6 +14,7 @@ export default function CustomerOnboardingPage() {
   const [city, setCity] = useState('');
   const [postcode, setPostcode] = useState('');
   const [preferredContact, setPreferredContact] = useState<'email' | 'phone'>('email');
+  const [avatarUrl, setAvatarUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -36,7 +38,8 @@ export default function CustomerOnboardingPage() {
         address,
         city,
         postcode,
-        preferred_contact: preferredContact
+        preferred_contact: preferredContact,
+        avatar_url: avatarUrl || undefined
       });
 
       setSuccess(true);
@@ -81,6 +84,16 @@ export default function CustomerOnboardingPage() {
             )}
 
             <form onSubmit={handleSubmit}>
+              {/* Profile Picture */}
+              <div className="mb-8 p-6 bg-surface rounded-lg border border-border">
+                <h2 className="text-xl font-semibold text-text-primary mb-4 text-center">Profile Picture (Optional)</h2>
+                <ImageUpload
+                  currentImageUrl={avatarUrl}
+                  onUploadComplete={(url) => setAvatarUrl(url)}
+                  userId={user?.id || ''}
+                />
+              </div>
+
               <div className="mb-6">
                 <label htmlFor="phone" className="block text-sm font-medium text-text-secondary mb-2">
                   Phone Number

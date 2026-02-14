@@ -54,8 +54,8 @@ const HowItWorks = () => {
                 <div className="absolute -left-11 w-8 h-8 rounded-full bg-accent flex items-center justify-center">
                   <span className="text-accent-foreground font-bold text-sm">{step.number.replace('0', '')}</span>
                 </div>
-                
-                <div className="bg-white border border-border rounded-xl p-6 shadow-card hover:shadow-lg transition-smooth">
+
+                <div className="bg-white border border-border rounded-xl p-6 shadow-card card-hover">
                   <div className="flex items-start space-x-4 mb-4">
                     <div className="flex-shrink-0 w-10 h-10 bg-surface rounded-lg flex items-center justify-center">
                       <Icon name={step.icon as any} size={20} className="text-primary" />
@@ -72,7 +72,7 @@ const HowItWorks = () => {
         <div className="text-center mt-12">
           <Link
             href="/how-it-works"
-            className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-secondary shadow-cta hover:shadow-lg hover:-translate-y-0.5 transition-smooth focus-ring"
+            className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg shadow-cta focus-ring btn-hover btn-ripple"
           >
             <span>Learn More About Our Process</span>
             <Icon name="ArrowRightIcon" size={20} className="ml-2" />

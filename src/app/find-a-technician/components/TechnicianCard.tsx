@@ -42,7 +42,7 @@ const TechnicianCard = ({ technician, onCompare, isComparing, distance }: Techni
         {/* Technician Image */}
         <div className="relative h-48 overflow-hidden bg-muted">
           <AppImage
-            src={technician.avatar_url || 'https://via.placeholder.com/400'}
+            src={technician.avatar_url || '/assets/images/logo.png'}
             alt={technician.full_name}
             className="w-full h-full object-cover"
           />

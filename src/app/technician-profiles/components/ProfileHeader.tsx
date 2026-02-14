@@ -41,7 +41,7 @@ const ProfileHeader = ({ profile }: ProfileHeaderProps) => {
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="relative w-48 h-48 rounded-full overflow-hidden border-4 border-background shadow-lg">
             <AppImage
-              src={profile.avatar_url || 'https://via.placeholder.com/400'}
+              src={profile.avatar_url || '/assets/images/logo.png'}
               alt={profile.full_name}
               className="w-full h-full object-cover"
             />

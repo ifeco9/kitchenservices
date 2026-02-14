@@ -40,6 +40,22 @@ export default function RoleSelectionPage() {
       await profileService.updateProfile(user.id, { role: dbRole });
       await refreshProfile();
 
+      // Send welcome email
+      try {
+        await fetch('/api/send-welcome-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: user.email,
+            name: user.user_metadata?.full_name || 'User',
+            role: selectedRole
+          })
+        });
+      } catch (emailError) {
+        console.error('Failed to send welcome email:', emailError);
+        // Don't block the flow if email fails
+      }
+
       if (selectedRole === 'customer') {
         router.push('/onboarding/customer');
       } else {

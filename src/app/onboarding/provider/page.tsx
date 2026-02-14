@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { profileService } from '@/services/profileService';
 import Header from '@/components/common/Header';
+import ImageUpload from '@/components/common/ImageUpload';
 import { onboardingService } from '@/services/onboardingService';
 import { supabase } from '@/lib/supabaseClient';
 import toast, { Toaster } from 'react-hot-toast';
@@ -22,6 +23,7 @@ export default function ProviderOnboardingPage() {
   const [city, setCity] = useState('');
   const [postcode, setPostcode] = useState('');
   const [phone, setPhone] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [locationLoading, setLocationLoading] = useState(false);
 
@@ -69,12 +71,13 @@ export default function ProviderOnboardingPage() {
     try {
       if (!user) throw new Error('User not authenticated');
 
-      // First update profile with phone and address
+      // First update profile with phone, address, and avatar
       await profileService.updateProfile(user.id, {
         phone,
         address: `${address}, ${city}, ${postcode}`,
         city,
-        postcode
+        postcode,
+        avatar_url: avatarUrl || undefined
       });
 
       // Map certifications string[] to Certification[] structure
@@ -173,6 +176,16 @@ export default function ProviderOnboardingPage() {
             <p className="text-text-secondary mb-8">Complete your professional profile to start receiving bookings</p>
 
             <form onSubmit={handleSubmit}>
+              {/* Profile Picture */}
+              <div className="mb-8 p-6 bg-surface rounded-lg border border-border">
+                <h2 className="text-xl font-semibold text-text-primary mb-4 text-center">Profile Picture</h2>
+                <ImageUpload
+                  currentImageUrl={avatarUrl}
+                  onUploadComplete={(url) => setAvatarUrl(url)}
+                  userId={user?.id || ''}
+                />
+              </div>
+
               {/* Contact Information */}
               <div className="mb-8 p-6 bg-surface rounded-lg border border-border">
                 <h2 className="text-xl font-semibold text-text-primary mb-4">Contact Information</h2>
