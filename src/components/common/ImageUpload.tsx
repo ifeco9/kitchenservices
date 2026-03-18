@@ -8,46 +8,43 @@ interface ImageUploadProps {
     currentImageUrl?: string;
     onUploadComplete: (url: string) => void;
     userId: string;
+    /** If true, immediately persists the url to profiles.avatar_url in DB */
+    persistToProfile?: boolean;
 }
 
-export default function ImageUpload({ currentImageUrl, onUploadComplete, userId }: ImageUploadProps) {
+export default function ImageUpload({ currentImageUrl, onUploadComplete, userId, persistToProfile = false }: ImageUploadProps) {
     const [uploading, setUploading] = useState(false);
     const [preview, setPreview] = useState(currentImageUrl);
     const [error, setError] = useState<string | null>(null);
+    const [saved, setSaved] = useState(false);
 
     const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
         try {
             setUploading(true);
             setError(null);
+            setSaved(false);
 
-            if (!event.target.files || event.target.files.length === 0) {
-                return;
-            }
+            if (!event.target.files || event.target.files.length === 0) return;
 
             const file = event.target.files[0];
 
-            // Validate file
             if (!file.type.startsWith('image/')) {
                 setError('Please upload an image file');
                 return;
             }
 
-            if (file.size > 5 * 1024 * 1024) { // 5MB limit
+            if (file.size > 5 * 1024 * 1024) {
                 setError('Image must be less than 5MB');
                 return;
             }
 
-            // Create unique filename
             const fileExt = file.name.split('.').pop();
             const fileName = `${userId}/${Date.now()}.${fileExt}`;
 
             // Upload to Supabase Storage
-            const { data, error: uploadError } = await supabase.storage
+            const { error: uploadError } = await supabase.storage
                 .from('avatars')
-                .upload(fileName, file, {
-                    cacheControl: '3600',
-                    upsert: true
-                });
+                .upload(fileName, file, { cacheControl: '3600', upsert: true });
 
             if (uploadError) throw uploadError;
 
@@ -59,9 +56,23 @@ export default function ImageUpload({ currentImageUrl, onUploadComplete, userId 
             setPreview(publicUrl);
             onUploadComplete(publicUrl);
 
-        } catch (error: any) {
-            console.error('Error uploading image:', error);
-            setError(error.message || 'Failed to upload image');
+            // Immediately persist to profiles table if requested
+            if (persistToProfile && userId) {
+                const { error: updateError } = await supabase
+                    .from('profiles')
+                    .update({ avatar_url: publicUrl, updated_at: new Date().toISOString() })
+                    .eq('id', userId);
+
+                if (updateError) {
+                    console.error('Failed to persist avatar to profile:', updateError);
+                } else {
+                    setSaved(true);
+                }
+            }
+
+        } catch (err: any) {
+            console.error('Error uploading image:', err);
+            setError(err.message || 'Failed to upload image');
         } finally {
             setUploading(false);
         }
@@ -78,6 +89,11 @@ export default function ImageUpload({ currentImageUrl, onUploadComplete, userId 
                         👤
                     </div>
                 )}
+                {uploading && (
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                        <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    </div>
+                )}
             </div>
 
             {/* Upload Button */}
@@ -92,12 +108,16 @@ export default function ImageUpload({ currentImageUrl, onUploadComplete, userId 
                 />
             </label>
 
+            {/* Saved confirmation */}
+            {saved && (
+                <p className="text-sm text-green-500 font-medium">✓ Profile picture updated!</p>
+            )}
+
             {/* Error Message */}
             {error && (
                 <p className="text-sm text-error">{error}</p>
             )}
 
-            {/* Helper Text */}
             <p className="text-xs text-text-secondary text-center">
                 Max file size: 5MB<br />
                 Supported formats: JPG, PNG, GIF

@@ -55,7 +55,7 @@ const FeaturedTechnicians = () => {
             <p className="text-lg text-text-secondary max-w-2xl mx-auto mb-8">
               Verified professionals with proven track records and excellent customer reviews
             </p>
-            <div className="bg-white border border-border rounded-xl p-12 max-w-2xl mx-auto">
+            <div className="bg-card border border-border rounded-xl p-12 max-w-2xl mx-auto">
               <p className="text-text-primary text-lg">No technicians available at the moment. Please check back later or contact us to become a verified technician.</p>
             </div>
           </div>
@@ -90,7 +90,7 @@ const FeaturedTechnicians = () => {
           {technicians[0] && (
             <Link
               href={`/technician-profiles?id=${technicians[0].id}`}
-              className="group md:row-span-2 bg-white rounded-xl overflow-hidden border border-border hover:border-accent block relative card-hover">
+              className="group md:row-span-2 bg-card rounded-xl overflow-hidden border border-border hover:border-accent block relative card-hover">
               <div className="relative h-80 md:h-full overflow-hidden">
                 <AppImage
                   src={technicians[0].avatar_url || '/assets/images/logo.png'}
@@ -146,7 +146,7 @@ const FeaturedTechnicians = () => {
               <Link
                 key={tech.id}
                 href={`/technician-profiles?id=${tech.id}`}
-                className="group bg-white rounded-xl overflow-hidden border border-border hover:border-accent block relative card-hover">
+                className="group bg-card rounded-xl overflow-hidden border border-border hover:border-accent block relative card-hover">
 
                 <div className="flex">
                   <div className="relative w-24 h-24 flex-shrink-0 overflow-hidden">

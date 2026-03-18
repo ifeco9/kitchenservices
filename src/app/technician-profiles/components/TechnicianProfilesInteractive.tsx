@@ -191,14 +191,36 @@ const TechnicianProfilesInteractive = () => {
 
   if (!profileData) {
     return (
-      <div className="min-h-screen bg-background pt-16 flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-2">Technician Not Found</h2>
-          <p>We couldn't find the technician you were looking for.</p>
+      <div className="min-h-screen bg-background pt-16 flex items-center justify-center px-4">
+        <div className="max-w-md w-full text-center">
+          <div className="flex items-center justify-center w-20 h-20 rounded-full bg-surface mx-auto mb-6">
+            <Icon name="UserCircleIcon" size={48} className="text-text-secondary" />
+          </div>
+          <h2 className="text-2xl font-bold text-text-primary mb-2">Technician Not Found</h2>
+          <p className="text-text-secondary mb-8">
+            We couldn't find this technician profile. They may have been removed or the link might be incorrect.
+          </p>
+          <div className="flex flex-col gap-3">
+            <a
+              href="/find-a-technician"
+              className="w-full inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-accent-foreground bg-accent rounded-lg hover:opacity-90 transition-smooth"
+            >
+              <Icon name="MagnifyingGlassIcon" size={18} className="mr-2" />
+              Browse All Technicians
+            </a>
+            <a
+              href="/book-a-service"
+              className="w-full inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-text-primary border border-border rounded-lg hover:bg-muted transition-smooth"
+            >
+              <Icon name="CalendarIcon" size={18} className="mr-2" />
+              Book Without a Technician
+            </a>
+          </div>
         </div>
       </div>
     );
   }
+
 
   return (
     <div className="min-h-screen bg-background pt-16">

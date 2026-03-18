@@ -53,6 +53,7 @@ export const profileService = {
         city?: string;
         postcode?: string;
         preferred_contact?: 'email' | 'phone';
+        avatar_url?: string;
     }) {
         const { data, error } = await supabase
             .from('profiles')
@@ -62,6 +63,7 @@ export const profileService = {
                 city: customerData.city,
                 postcode: customerData.postcode,
                 preferred_contact: customerData.preferred_contact || 'email',
+                avatar_url: customerData.avatar_url || undefined,
                 updated_at: new Date().toISOString()
             })
             .eq('id', userId)
@@ -104,6 +106,7 @@ export const profileService = {
     },
 
     async getTechnicians(limit?: number) {
+        // First try: verified technicians only
         let query = supabase
             .from('technicians')
             .select(`
@@ -111,16 +114,34 @@ export const profileService = {
                 profiles!technicians_id_fkey (full_name, avatar_url)
             `)
             .eq('is_verified', true)
-            .eq('availability_status', 'available');
+            .order('rating', { ascending: false });
 
         if (limit) {
             query = query.limit(limit);
         }
 
-        const { data, error } = await query;
+        let { data, error } = await query;
         if (error) throw error;
 
-        return data.map((tech: any) => ({
+        // Fallback: if no verified technicians, show any technicians
+        if (!data || data.length === 0) {
+            let fallbackQuery = supabase
+                .from('technicians')
+                .select(`
+                    *,
+                    profiles!technicians_id_fkey (full_name, avatar_url)
+                `)
+                .order('created_at', { ascending: false });
+
+            if (limit) {
+                fallbackQuery = fallbackQuery.limit(limit);
+            }
+
+            const fallback = await fallbackQuery;
+            if (!fallback.error) data = fallback.data;
+        }
+
+        return (data || []).map((tech: any) => ({
             ...tech,
             ...tech.profiles // Flatten profile data
         })) as Technician[];

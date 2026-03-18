@@ -91,6 +91,7 @@ export default function CustomerOnboardingPage() {
                   currentImageUrl={avatarUrl}
                   onUploadComplete={(url) => setAvatarUrl(url)}
                   userId={user?.id || ''}
+                  persistToProfile={true}
                 />
               </div>
 

@@ -73,10 +73,10 @@ const Testimonials = () => {
       <section className="py-16 lg:py-24 bg-surface">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <div className="h-10 bg-white rounded w-64 mx-auto mb-4 animate-pulse"></div>
-            <div className="h-6 bg-white rounded w-96 mx-auto animate-pulse"></div>
+            <div className="h-10 bg-card rounded w-64 mx-auto mb-4 animate-pulse"></div>
+            <div className="h-6 bg-card rounded w-96 mx-auto animate-pulse"></div>
           </div>
-          <div className="max-w-4xl mx-auto bg-white rounded-xl p-8 animate-pulse">
+          <div className="max-w-4xl mx-auto bg-card rounded-xl p-8 animate-pulse">
             <div className="h-32 bg-surface rounded"></div>
           </div>
         </div>
@@ -99,7 +99,7 @@ const Testimonials = () => {
         </div>
 
         <div className="max-w-4xl mx-auto mb-12">
-          <div className="bg-white rounded-xl shadow-card p-8 lg:p-12 relative">
+          <div className="bg-card rounded-xl shadow-card p-8 lg:p-12 relative">
             {/* Large Quote Mark */}
             <div className="absolute top-6 right-6 text-accent opacity-10 text-8xl font-serif leading-none">
               &ldquo;
@@ -163,7 +163,7 @@ const Testimonials = () => {
         {/* Supporting Testimonials */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {testimonials.filter((_, index) => index !== currentIndex).slice(0, 2).map((testimonial) => (
-            <div key={testimonial.id} className="bg-white border border-border rounded-lg p-6">
+            <div key={testimonial.id} className="bg-card border border-border rounded-lg p-6">
               <div className="flex items-center mb-4">
                 {[...Array(5)].map((_, i) =>
                   <Icon

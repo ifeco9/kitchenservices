@@ -55,7 +55,7 @@ const HowItWorks = () => {
                   <span className="text-accent-foreground font-bold text-sm">{step.number.replace('0', '')}</span>
                 </div>
 
-                <div className="bg-white border border-border rounded-xl p-6 shadow-card card-hover">
+                <div className="bg-card border border-border rounded-xl p-6 shadow-card card-hover">
                   <div className="flex items-start space-x-4 mb-4">
                     <div className="flex-shrink-0 w-10 h-10 bg-surface rounded-lg flex items-center justify-center">
                       <Icon name={step.icon as any} size={20} className="text-primary" />

@@ -200,42 +200,72 @@ const BookingInteractive = () => {
     return subtotal + vat;
   };
 
+  // ── Auth gate: show sign-in prompt before step 1 ──────────────────────
+  if (!user && currentStep === 1) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center px-4">
+        <div className="max-w-md w-full text-center p-10 rounded-2xl border border-border bg-surface shadow-xl">
+          <div className="flex items-center justify-center w-16 h-16 rounded-full bg-accent/10 mx-auto mb-6">
+            <Icon name="LockClosedIcon" size={32} className="text-accent" />
+          </div>
+          <h2 className="text-2xl font-bold text-text-primary mb-2">Sign in to Book a Service</h2>
+          <p className="text-base text-text-secondary mb-8">
+            Create an account or sign in to schedule your appointment and manage your bookings.
+          </p>
+          <div className="flex flex-col gap-3">
+            <a
+              href="/auth/signin?redirect=/book-a-service"
+              className="w-full inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-accent-foreground bg-accent rounded-lg hover:opacity-90 transition-smooth"
+            >
+              <Icon name="ArrowRightOnRectangleIcon" size={18} className="mr-2" />
+              Sign In
+            </a>
+            <a
+              href="/auth/signup?redirect=/book-a-service"
+              className="w-full inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-text-primary border border-border rounded-lg hover:bg-muted transition-smooth"
+            >
+              Create Account
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
-      {/* Progress Steps */}
-      {currentStep < 5 &&
+      {/* Progress Steps — shown on all steps 1-5 */}
+      {currentStep < 6 &&
         <div className="bg-card border-b border-border sticky top-16 z-40">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div className="flex items-center justify-between">
-              {steps.slice(0, 4).map((step, index) =>
-                <div key={step.number} className="flex items-center flex-1">
-                  <div className="flex items-center space-x-3">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex items-center justify-between overflow-x-auto pb-1">
+              {steps.map((step, index) =>
+                <div key={step.number} className="flex items-center flex-shrink-0">
+                  <div className="flex items-center space-x-2">
                     <div
-                      className={`flex items-center justify-center w-10 h-10 rounded-full transition-smooth ${currentStep >= step.number ?
+                      className={`flex items-center justify-center w-9 h-9 rounded-full transition-smooth ${currentStep > step.number ?
                         'bg-accent text-accent-foreground' :
-                        'bg-surface text-text-secondary'}`
+                        currentStep === step.number ?
+                          'bg-accent text-accent-foreground ring-2 ring-accent ring-offset-2 ring-offset-card' :
+                          'bg-surface text-text-secondary'}`
                       }>
-
                       {currentStep > step.number ?
-                        <Icon name="CheckIcon" size={20} /> :
-
-                        <Icon name={step.icon as any} size={20} />
+                        <Icon name="CheckIcon" size={16} /> :
+                        <Icon name={step.icon as any} size={16} />
                       }
                     </div>
-                    <div className="hidden sm:block">
+                    <div className="hidden md:block">
                       <p
-                        className={`text-sm font-medium ${currentStep >= step.number ? 'text-text-primary' : 'text-text-secondary'}`
+                        className={`text-xs font-medium whitespace-nowrap ${currentStep >= step.number ? 'text-text-primary' : 'text-text-secondary'}`
                         }>
-
                         {step.label}
                       </p>
                     </div>
                   </div>
-                  {index < 3 &&
+                  {index < steps.length - 1 &&
                     <div
-                      className={`flex-1 h-0.5 mx-4 transition-smooth ${currentStep > step.number ? 'bg-accent' : 'bg-border'}`
+                      className={`w-8 lg:w-16 h-0.5 mx-2 transition-smooth flex-shrink-0 ${currentStep > step.number ? 'bg-accent' : 'bg-border'}`
                       } />
-
                   }
                 </div>
               )}
@@ -409,7 +439,7 @@ const BookingInteractive = () => {
             <div className="flex items-center justify-start max-w-2xl mx-auto mt-8">
               <button
                 type="button"
-                onClick={() => setCurrentStep(3)}
+                onClick={() => setCurrentStep(4)}
                 className="inline-flex items-center px-6 py-3 text-sm font-medium text-text-secondary bg-surface rounded-lg hover:bg-muted transition-smooth focus-ring">
 
                 <Icon name="ArrowLeftIcon" size={20} className="mr-2" />

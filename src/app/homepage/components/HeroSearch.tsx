@@ -121,11 +121,11 @@ const HeroSearch = ({ onSearch }: HeroSearchProps) => {
               }}
               onFocus={() => setShowLocationSuggestions(location.length > 0)}
               placeholder="Enter postcode or city"
-              className="w-full h-12 pl-10 pr-4 bg-white/90 backdrop-blur-sm border border-white/20 rounded-lg text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent focus:bg-white transition-smooth text-sm font-heading"
+              className="w-full h-12 pl-10 pr-4 bg-card/90 backdrop-blur-sm border border-white/20 rounded-lg text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent focus:bg-card transition-smooth text-sm font-heading"
             />
           </div>
           {showLocationSuggestions && (
-            <div className="absolute z-10 w-full mt-2 bg-white border border-border rounded-lg shadow-lg max-h-48 overflow-y-auto">
+            <div className="absolute z-10 w-full mt-2 bg-card border border-border rounded-lg shadow-lg max-h-48 overflow-y-auto">
               {locationSuggestions
                 .filter((loc) => loc.toLowerCase().includes(location.toLowerCase()))
                 .map((loc) => (
@@ -176,11 +176,11 @@ const HeroSearch = ({ onSearch }: HeroSearchProps) => {
             }}
             onFocus={() => setShowServiceSuggestions(service.length > 0)}
             placeholder="e.g., Oven repair, Dishwasher installation"
-            className="w-full h-12 pl-10 pr-4 bg-white/90 backdrop-blur-sm border border-white/20 rounded-lg text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent focus:bg-white transition-smooth text-sm font-heading"
+            className="w-full h-12 pl-10 pr-4 bg-card/90 backdrop-blur-sm border border-white/20 rounded-lg text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent focus:bg-card transition-smooth text-sm font-heading"
           />
         </div>
         {showServiceSuggestions && (
-          <div className="absolute z-10 w-full mt-2 bg-white border border-border rounded-lg shadow-lg max-h-48 overflow-y-auto">
+          <div className="absolute z-10 w-full mt-2 bg-card border border-border rounded-lg shadow-lg max-h-48 overflow-y-auto">
             {serviceSuggestions
               .filter((svc) => svc.name.toLowerCase().includes(service.toLowerCase()))
               .map((svc) => (
@@ -203,10 +203,10 @@ const HeroSearch = ({ onSearch }: HeroSearchProps) => {
 
       {/* Quick Links */}
       <div className="mt-4 flex flex-wrap gap-2 animate-fade-in delay-100">
-        <button className="text-xs text-white hover:text-white transition-smooth px-3 py-2 bg-white/10 hover:bg-gradient-sunset rounded-lg backdrop-blur-sm animate-staggered-fade-in magnetic-hover border border-white/20">
+        <button className="text-xs text-white hover:text-white transition-smooth px-3 py-2 bg-card/10 hover:bg-gradient-sunset rounded-lg backdrop-blur-sm animate-staggered-fade-in magnetic-hover border border-white/20">
           🚨 Emergency Repair
         </button>
-        <button className="text-xs text-white hover:text-white transition-smooth px-3 py-2 bg-white/10 hover:bg-gradient-ocean rounded-lg backdrop-blur-sm animate-staggered-fade-in delay-1 magnetic-hover border border-white/20">
+        <button className="text-xs text-white hover:text-white transition-smooth px-3 py-2 bg-card/10 hover:bg-gradient-ocean rounded-lg backdrop-blur-sm animate-staggered-fade-in delay-1 magnetic-hover border border-white/20">
           🔧 Planned Maintenance
         </button>
         <button className="text-xs text-white hover:text-white transition-smooth px-3 py-2 bg-white/10 hover:bg-gradient-emerald rounded-lg backdrop-blur-sm animate-staggered-fade-in delay-2 magnetic-hover border border-white/20">

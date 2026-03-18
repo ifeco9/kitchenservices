@@ -57,7 +57,7 @@ const TechnicianCard = ({ technician, onCompare, isComparing, distance }: Techni
           </div>
           {/* Compare Checkbox */}
           <div className="absolute top-4 left-4">
-            <label className="flex items-center space-x-2 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-md cursor-pointer hover:bg-white transition-smooth">
+            <label className="flex items-center space-x-2 bg-card/90 backdrop-blur-sm px-3 py-2 rounded-md cursor-pointer hover:bg-card transition-smooth">
               <input
                 type="checkbox"
                 checked={isComparing}

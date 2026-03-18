@@ -53,7 +53,7 @@ const ServiceCategories = () => {
             <Link
               key={category.id}
               href={category.href}
-              className="group bg-white border border-border rounded-xl p-6 hover:border-accent block card-hover"
+              className="group bg-card border border-border rounded-xl p-6 hover:border-accent block card-hover"
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-surface group-hover:bg-accent rounded-lg transition-all duration-300 flex-shrink-0">

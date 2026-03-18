@@ -117,6 +117,7 @@ export default function ProviderOnboardingPage() {
   };
 
   // Check if technician profile already exists
+  // If it does AND we're not in edit mode, redirect to dashboard
   useEffect(() => {
     const checkTechnicianProfile = async () => {
       try {
@@ -127,10 +128,12 @@ export default function ProviderOnboardingPage() {
           .single();
 
         if (data && !error) {
-          router.push('/dashboard/provider');
+          // Profile exists — send them to the profile edit page instead
+          router.push('/dashboard/provider/profile');
         }
       } catch (err) {
-        console.log('Technician profile does not exist yet, proceeding with onboarding');
+        // Profile doesn't exist yet, proceed with onboarding
+        console.log('No technician profile yet — showing onboarding form');
       }
     };
 
@@ -183,6 +186,7 @@ export default function ProviderOnboardingPage() {
                   currentImageUrl={avatarUrl}
                   onUploadComplete={(url) => setAvatarUrl(url)}
                   userId={user?.id || ''}
+                  persistToProfile={true}
                 />
               </div>
 
@@ -393,7 +397,7 @@ export default function ProviderOnboardingPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full pyp-3.5 px-6 text-sm font-semibold text-accent-foreground bg-accent rounded-lg hover:bg-success shadow-cta hover:shadow-lg transition-smooth disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3.5 px-6 text-sm font-semibold text-accent-foreground bg-accent rounded-lg hover:bg-success shadow-cta hover:shadow-lg transition-smooth disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? 'Creating Profile...' : 'Complete Profile & Continue'}
               </button>

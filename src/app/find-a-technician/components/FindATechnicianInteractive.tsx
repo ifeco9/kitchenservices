@@ -240,23 +240,32 @@ const FindATechnicianInteractive = () => {
               <div className="text-center py-16">
                 <Icon name="MagnifyingGlassIcon" size={64} className="text-text-secondary mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-text-primary mb-2">No Technicians Found</h3>
-                <p className="text-text-secondary mb-6">
-                  Try adjusting your filters or search criteria to find more results.
+                <p className="text-text-secondary mb-2">
+                  Try adjusting your filters or expanding your search area.
                 </p>
-                <button
-                  onClick={() =>
-                    setFilters({
-                      applianceTypes: [],
-                      availability: [],
-                      locationRadius: 10,
-                      priceRange: [0, 200],
-                      certifications: []
-                    })
-                  }
-                  className="px-6 py-3 text-sm font-semibold text-white bg-accent hover:bg-success rounded-lg shadow-cta transition-smooth">
-
-                  Clear All Filters
-                </button>
+                <p className="text-sm text-text-secondary mb-8">
+                  Our network is growing — if no one is available near you, book via our general form and we'll match you manually.
+                </p>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <button
+                    onClick={() =>
+                      setFilters({
+                        applianceTypes: [],
+                        availability: [],
+                        locationRadius: 10,
+                        priceRange: [0, 200],
+                        certifications: []
+                      })
+                    }
+                    className="px-6 py-3 text-sm font-semibold text-white bg-accent hover:bg-success rounded-lg shadow-cta transition-smooth">
+                    Clear All Filters
+                  </button>
+                  <a
+                    href="/book-a-service"
+                    className="px-6 py-3 text-sm font-semibold text-text-primary border border-border rounded-lg hover:bg-muted transition-smooth">
+                    Book via General Form →
+                  </a>
+                </div>
               </div>
             }
           </div>

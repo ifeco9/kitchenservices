@@ -1,7 +1,7 @@
 /* Premium Font Stack */
 @import url('https://api.fontshare.com/v2/css?f[]=clash-display@700,600,500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -11,60 +11,69 @@
 @layer base {
   :root {
     /* Primary Colors - Neutral Dark */
-    --color-primary: #0f172a;
-    /* slate-900 - Professional authority */
+    --color-primary: #9333ea;
+    /* purple accent */
     --color-primary-foreground: #ffffff;
     /* white */
 
-    /* Secondary Colors - Light Gray */
-    --color-secondary: #f1f5f9;
-    /* slate-100 - Supporting navigation */
-    --color-secondary-foreground: #1e293b;
-    /* slate-800 */
+    /* Dark Design System */
+    --color-dark-bg: #0a0710;
+    --color-dark-surface: #0e0a1a;
+    --color-dark-elevated: #1a1030;
+    --color-dark-border: #2d1f44;
+    --color-dark-muted: #13091f;
+    --color-dark-text-secondary: #a855f7;
+    --color-dark-text-muted: #6b7280;
 
-    /* Accent Colors - Single Brand Color */
-    --color-accent: #e11d48;
-    /* rose-600 - Brand accent */
+    /* Secondary Colors */
+    --color-secondary: #13091f;
+    /* dark purple secondary */
+    --color-secondary-foreground: #ffffff;
+    /* white */
+
+    /* Accent Colors */
+    --color-accent: #a855f7;
+    /* vibrant purple accent */
     --color-accent-foreground: #ffffff;
     /* white */
 
     /* Background Colors */
-    --color-background: #ffffff;
-    /* white - Clean content canvas */
-    --color-foreground: #1e293b;
-    /* slate-800 - Primary text */
+    --color-background: #0a0710;
+    /* dark purple bg */
+    --color-foreground: #ffffff;
+    /* white primary text */
 
     /* Surface Colors */
-    --color-surface: #f8fafc;
-    /* slate-50 - Card backgrounds */
-    --color-surface-foreground: #1e293b;
-    /* slate-800 */
+    --color-surface: #0e0a1a;
+    /* purple surface */
+    --color-surface-foreground: #ffffff;
+    /* white */
 
     /* Muted Colors */
-    --color-muted: #f1f5f9;
-    /* slate-100 */
-    --color-muted-foreground: #64748b;
-    /* slate-500 - Secondary text */
+    --color-muted: #1a1030;
+    /* dark muted */
+    --color-muted-foreground: #9ca3af;
+    /* gray-400 */
 
     /* Card Colors */
-    --color-card: #ffffff;
+    --color-card: #0e0a1a;
+    /* dark card */
+    --color-card-foreground: #ffffff;
     /* white */
-    --color-card-foreground: #1e293b;
-    /* slate-800 */
 
     /* Popover Colors */
-    --color-popover: #ffffff;
+    --color-popover: #0e0a1a;
+    /* dark popover */
+    --color-popover-foreground: #ffffff;
     /* white */
-    --color-popover-foreground: #1e293b;
-    /* slate-800 */
 
     /* Border Colors */
-    --color-border: #e2e8f0;
-    /* slate-200 */
-    --color-input: #e2e8f0;
-    /* slate-200 */
-    --color-ring: #e11d48;
-    /* rose-600 */
+    --color-border: #2d1f44;
+    /* purple border */
+    --color-input: #1a1030;
+    /* purple input */
+    --color-ring: #9333ea;
+    /* primary purple */
 
     /* Status Colors */
     --color-success: #059669;
@@ -94,10 +103,10 @@
     /* white */
 
     /* Text Colors */
-    --color-text-primary: #1e293b;
-    /* slate-800 - High contrast */
-    --color-text-secondary: #64748b;
-    /* slate-500 - Supporting information */
+    --color-text-primary: #ffffff;
+    /* white text */
+    --color-text-secondary: #9ca3af;
+    /* gray-400 */
 
     /* Spacing & Layout */
     --radius: 0.5rem;
@@ -127,6 +136,28 @@
     --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
   }
 
+  /* ── Light section overrides for homepage lower sections ─────────── */
+  .light-sections {
+    --color-background: #ffffff;
+    --color-foreground: #1e1b4b;
+    --color-surface: #f5f3ff;
+    --color-surface-foreground: #1e1b4b;
+    --color-primary: #7c3aed;
+    --color-primary-foreground: #ffffff;
+    --color-secondary: #ede9fe;
+    --color-secondary-foreground: #4c1d95;
+    --color-accent: #7c3aed;
+    --color-accent-foreground: #ffffff;
+    --color-muted: #ede9fe;
+    --color-muted-foreground: #6d28d9;
+    --color-card: #ffffff;
+    --color-card-foreground: #1e1b4b;
+    --color-border: #ddd6fe;
+    --color-input: #ede9fe;
+    --color-text-primary: #1e1b4b;
+    --color-text-secondary: #6b7280;
+  }
+
   * {
     @apply border-border;
   }
@@ -152,7 +183,7 @@
   /* Typography Scale */
   h1 {
     @apply text-4xl font-bold tracking-tight;
-    font-family: 'Clash Display', 'Montserrat', 'Inter', sans-serif;
+    font-family: 'Space Grotesk', 'Clash Display', 'Montserrat', 'Inter', sans-serif;
   }
 
   h2 {
@@ -870,6 +901,22 @@
         #f0f0f0 100%);
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
+  }
+
+  /* ===== FLOAT & SPIN ANIMATIONS ===== */
+
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-16px); }
+  }
+
+  .animate-float-slow {
+    animation: float-slow 6s ease-in-out infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 
   /* ===== PAGE TRANSITION ANIMATIONS ===== */
