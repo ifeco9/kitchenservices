@@ -13,13 +13,11 @@ interface PricingBreakdownProps {
 const PricingBreakdown = ({ callOutFee, hourlyRate, estimatedHours, partsEstimate, isEmergency }: PricingBreakdownProps) => {
   const emergencySurcharge = isEmergency ? 25.0 : 0;
   const labourCost = hourlyRate * estimatedHours;
-  const subtotal = callOutFee + labourCost + partsEstimate + emergencySurcharge;
-  const vat = subtotal * 0.2; // 20% VAT
-  const total = subtotal + vat;
+  const total = callOutFee + labourCost + partsEstimate + emergencySurcharge;
 
   const priceItems = [
     { label: 'Call-out Fee', value: callOutFee, icon: 'TruckIcon' },
-    { label: `Labour (${estimatedHours}h @ £${hourlyRate.toFixed(2)}/hr)`, value: labourCost, icon: 'WrenchScrewdriverIcon' },
+    { label: `Labour (${estimatedHours}h @ ₦${hourlyRate.toLocaleString()}/hr)`, value: labourCost, icon: 'WrenchScrewdriverIcon' },
     { label: 'Parts Estimate', value: partsEstimate, icon: 'CubeIcon' },
   ];
 
@@ -41,27 +39,15 @@ const PricingBreakdown = ({ callOutFee, hourlyRate, estimatedHours, partsEstimat
               </div>
               <span className="text-sm text-text-secondary">{item.label}</span>
             </div>
-            <span className="text-sm font-medium text-text-primary">£{item.value.toFixed(2)}</span>
+            <span className="text-sm font-medium text-text-primary">₦{item.value.toLocaleString()}</span>
           </div>
         ))}
-      </div>
-
-      {/* Subtotal */}
-      <div className="flex items-center justify-between py-3 border-t border-border">
-        <span className="text-sm font-medium text-text-primary">Subtotal</span>
-        <span className="text-sm font-medium text-text-primary">£{subtotal.toFixed(2)}</span>
-      </div>
-
-      {/* VAT */}
-      <div className="flex items-center justify-between py-3 border-t border-border">
-        <span className="text-sm text-text-secondary">VAT (20%)</span>
-        <span className="text-sm font-medium text-text-primary">£{vat.toFixed(2)}</span>
       </div>
 
       {/* Total */}
       <div className="flex items-center justify-between py-4 border-t-2 border-border">
         <span className="text-base font-semibold text-text-primary">Total</span>
-        <span className="text-2xl font-bold text-accent">£{total.toFixed(2)}</span>
+        <span className="text-2xl font-bold text-accent">₦{total.toLocaleString()}</span>
       </div>
 
       {/* Info Box */}

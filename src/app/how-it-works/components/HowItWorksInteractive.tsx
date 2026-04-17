@@ -128,7 +128,7 @@ export default function HowItWorksInteractive() {
     description: 'Every technician undergoes rigorous background checks, certification validation, and insurance verification before joining our platform.'
   },
   {
-    icon: 'CurrencyPoundIcon',
+    icon: 'BanknotesIcon',
     title: 'Transparent Pricing',
     description: 'See upfront pricing with no hidden fees. Compare rates across technicians and choose the best value for your needs.'
   },
@@ -205,7 +205,7 @@ export default function HowItWorksInteractive() {
     title: 'Background Verification',
     duration: '3-5 business days',
     requirements: [
-    'DBS (Disclosure and Barring Service) check completion',
+    'Background verification and credential checks',
     'Professional reference verification from previous clients',
     'Trade association membership validation',
     'Credit and business history review'],
@@ -274,7 +274,7 @@ export default function HowItWorksInteractive() {
   const testimonials: Testimonial[] = [
   {
     name: 'Sarah Mitchell',
-    role: 'Homeowner, London',
+    role: 'Homeowner, Lagos',
     image: "https://img.rocket.new/generatedImages/rocket_gen_img_1af7ed335-1764908799246.png",
     alt: 'Professional woman with long brown hair smiling warmly at camera in bright indoor setting',
     quote: 'My dishwasher broke on a Sunday evening, and I had guests coming the next day. I found a verified technician through KitchenServices who came the very next morning. The transparent pricing and instant booking saved me so much stress!',
@@ -282,7 +282,7 @@ export default function HowItWorksInteractive() {
   },
   {
     name: 'James Thompson',
-    role: 'Appliance Technician, Manchester',
+    role: 'Appliance Technician, Lagos',
     image: "https://img.rocket.new/generatedImages/rocket_gen_img_116d13f35-1765612681795.png",
     alt: 'Middle-aged man with short grey hair in blue work shirt smiling confidently outdoors',
     quote: 'Joining KitchenServices transformed my business. I went from struggling to find clients to having a steady stream of bookings. The platform handles all the admin work, so I can focus on what I do best - fixing appliances.',
@@ -290,7 +290,7 @@ export default function HowItWorksInteractive() {
   },
   {
     name: 'Emma Roberts',
-    role: 'Property Manager, Birmingham',
+    role: 'Property Manager, Abuja',
     image: "https://img.rocket.new/generatedImages/rocket_gen_img_1f8f896f2-1763299689286.png",
     alt: 'Young professional woman with blonde hair in business attire smiling in modern office',
     quote: 'Managing 50+ rental properties means appliance issues are constant. KitchenServices gives me access to verified technicians across the city with transparent pricing. It\'s made my job so much easier and my tenants happier.',
@@ -331,7 +331,7 @@ export default function HowItWorksInteractive() {
   },
   {
     question: 'What insurance coverage is required for technicians?',
-    answer: 'All technicians must maintain valid public liability insurance (minimum £2 million coverage) and professional indemnity insurance. We verify insurance documentation during the verification process and require annual renewal confirmation.',
+    answer: 'All technicians must maintain valid public liability insurance (minimum ₦50 million coverage) and professional indemnity insurance. We verify insurance documentation during the verification process and require annual renewal confirmation.',
     category: 'Verification'
   },
   {
@@ -346,7 +346,7 @@ export default function HowItWorksInteractive() {
   },
   {
     question: 'What certifications do technicians need to have?',
-    answer: 'Required certifications vary by specialization. Gas appliance technicians must be Gas Safe registered. Electrical appliance technicians need relevant electrical qualifications. All certifications are verified during our onboarding process and must be kept current.',
+    answer: 'Required certifications vary by specialization. All technicians need relevant trade qualifications. Gas and electrical appliance technicians need appropriate professional certifications. All certifications are verified during our onboarding process and must be kept current.',
     category: 'Verification'
   },
   {

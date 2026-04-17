@@ -88,7 +88,7 @@ export const emailService = {
                 <p><strong>Date:</strong> ${bookingDetails.date}</p>
                 <p><strong>Time:</strong> ${bookingDetails.time}</p>
                 <p><strong>Address:</strong> ${bookingDetails.address}</p>
-                <p><strong>Total:</strong> £${bookingDetails.total}</p>
+                <p><strong>Total:</strong> ₦${bookingDetails.total.toLocaleString('en-NG')}</p>
               </div>
 
               <p>Your technician will arrive at the scheduled time. If you have any questions, please don't hesitate to contact us.</p>

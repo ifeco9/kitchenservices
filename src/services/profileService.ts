@@ -51,7 +51,7 @@ export const profileService = {
         phone?: string;
         address?: string;
         city?: string;
-        postcode?: string;
+        state?: string;
         preferred_contact?: 'email' | 'phone';
         avatar_url?: string;
     }) {
@@ -61,7 +61,7 @@ export const profileService = {
                 phone: customerData.phone,
                 address: customerData.address,
                 city: customerData.city,
-                postcode: customerData.postcode,
+                state: customerData.state,
                 preferred_contact: customerData.preferred_contact || 'email',
                 avatar_url: customerData.avatar_url || undefined,
                 updated_at: new Date().toISOString()
@@ -236,7 +236,7 @@ export const profileService = {
                     distance: Math.round(distance * 10) / 10 // Round to 1 decimal
                 };
             })
-            .filter((tech: any) => tech.distance <= tech.service_radius_miles)
+            .filter((tech: any) => tech.distance <= tech.service_radius_km)
             .sort((a: any, b: any) => a.distance - b.distance);
 
         if (limit) {

@@ -4,16 +4,16 @@ import { useState } from 'react';
 import Icon from '@/components/ui/AppIcon';
 
 interface SearchBarProps {
-  onSearch: (query: string, postcode: string) => void;
+  onSearch: (query: string, location: string) => void;
 }
 
 const SearchBar = ({ onSearch }: SearchBarProps) => {
   const [query, setQuery] = useState('');
-  const [postcode, setPostcode] = useState('');
+  const [location, setLocation] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSearch(query, postcode);
+    onSearch(query, location);
   };
 
   return (
@@ -44,9 +44,9 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
           />
           <input
             type="text"
-            value={postcode}
-            onChange={(e) => setPostcode(e.target.value)}
-            placeholder="Enter postcode"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            placeholder="Enter state or city (e.g., Lagos, Abuja)"
             className="w-full pl-12 pr-4 py-3.5 text-sm bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-smooth"
           />
         </div>

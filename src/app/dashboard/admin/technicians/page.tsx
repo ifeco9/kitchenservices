@@ -134,10 +134,10 @@ export default function AdminTechniciansPage() {
                                         <div>
                                             <p className="text-sm text-text-secondary mb-1">Rates</p>
                                             <p className="text-text-primary">
-                                                £{tech.hourly_rate}/hr • £{tech.callout_fee} callout fee
+                                                ₦{tech.hourly_rate}/hr • ₦{tech.callout_fee} callout fee
                                             </p>
                                             <p className="text-text-secondary text-sm">
-                                                Service radius: {tech.service_radius_miles} miles
+                                                Service radius: {tech.service_radius_km} km
                                             </p>
                                         </div>
                                     </div>

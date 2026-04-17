@@ -11,7 +11,7 @@ import Footer from './components/Footer';
 
 export const metadata: Metadata = {
   title: 'For Technicians - KitchenServices',
-  description: 'Join the UK\'s most trusted platform for kitchen and appliance technicians. Get verified once, get booked consistently. Access business growth tools, automated booking management, and guaranteed payment protection.',
+  description: 'Join Nigeria\'s most trusted platform for kitchen and appliance technicians. Get verified once, get booked consistently. Access business growth tools, automated booking management, and guaranteed payment protection.',
 };
 
 export default function ForTechniciansPage() {

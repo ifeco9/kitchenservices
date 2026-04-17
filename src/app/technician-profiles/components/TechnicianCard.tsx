@@ -102,11 +102,11 @@ const TechnicianCard = ({ technician, onViewProfile, onBookNow }: TechnicianCard
         <div className="space-y-3 mb-4">
           <div className="flex items-center justify-between text-sm">
             <span className="text-text-secondary">Hourly Rate:</span>
-            <span className="font-semibold text-text-primary">£{technician.hourlyRate}/hr</span>
+            <span className="font-semibold text-text-primary">₦{technician.hourlyRate.toLocaleString('en-NG')}/hr</span>
           </div>
           <div className="flex items-center justify-between text-sm">
             <span className="text-text-secondary">Call-out Fee:</span>
-            <span className="font-semibold text-text-primary">£{technician.callOutFee}</span>
+            <span className="font-semibold text-text-primary">₦{technician.callOutFee.toLocaleString('en-NG')}</span>
           </div>
           <div className="flex items-center justify-between text-sm">
             <span className="text-text-secondary">Response Time:</span>

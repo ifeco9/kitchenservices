@@ -60,7 +60,7 @@ export default function CustomerDashboardPage() {
     try { await signOut(); router.push('/'); } catch (error) { console.error('Sign out error:', error); }
   };
 
-  const todayStr = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+  const todayStr = new Date().toLocaleDateString('en-NG', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
 
   const statusColors: Record<string, { bg: string; text: string }> = {
     completed:   { bg: '#0d1a0d', text: '#22C55E' },

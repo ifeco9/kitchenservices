@@ -28,7 +28,7 @@ const FindATechnicianInteractive = () => {
   const [currentSort, setCurrentSort] = useState('recommended');
 
   const [searchQuery, setSearchQuery] = useState(initialQuery);
-  const [postcode, setPostcode] = useState(initialLocation);
+  const [location, setLocation] = useState(initialLocation);
 
   const [filters, setFilters] = useState<FilterState>({
     applianceTypes: [],
@@ -67,9 +67,9 @@ const FindATechnicianInteractive = () => {
     }
   };
 
-  const handleSearch = (query: string, postcodeValue: string) => {
+  const handleSearch = (query: string, locationValue: string) => {
     setSearchQuery(query);
-    setPostcode(postcodeValue);
+    setLocation(locationValue);
     // Trigger refetch or filter locally
   };
 

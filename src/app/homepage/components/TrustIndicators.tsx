@@ -96,7 +96,7 @@ const TrustIndicators = () => {
           <div className="flex flex-wrap justify-center items-center gap-6">
             <div className="flex items-center space-x-2">
               <Icon name="ShieldCheckIcon" size={20} className="text-accent" />
-              <span className="text-sm text-text-secondary">Gas Safe Registered</span>
+              <span className="text-sm text-text-secondary">Professionally Certified</span>
             </div>
             <div className="flex items-center space-x-2">
               <Icon name="DocumentCheckIcon" size={20} className="text-accent" />

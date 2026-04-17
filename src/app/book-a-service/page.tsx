@@ -4,7 +4,7 @@ import BookingInteractive from './components/BookingInteractive';
 
 export const metadata: Metadata = {
   title: 'Book a Service - KitchenServices',
-  description: 'Schedule your appliance repair with verified technicians. Transparent pricing, instant confirmation, and flexible scheduling for all kitchen and household appliances across the UK.',
+  description: 'Schedule your appliance repair with verified technicians. Transparent pricing, instant confirmation, and flexible scheduling for all kitchen and household appliances across Nigeria.',
 };
 
 export default function BookAServicePage() {

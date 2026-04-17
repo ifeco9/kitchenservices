@@ -1,7 +1,5 @@
 {
   "/homepage/page": "app/homepage/page.js",
-  "/dashboard/provider/availability/page": "app/dashboard/provider/availability/page.js",
-  "/dashboard/customer/page": "app/dashboard/customer/page.js",
-  "/onboarding/provider/page": "app/onboarding/provider/page.js",
-  "/dashboard/provider/profile/page": "app/dashboard/provider/profile/page.js"
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/find-a-technician/page": "app/find-a-technician/page.js"
 }

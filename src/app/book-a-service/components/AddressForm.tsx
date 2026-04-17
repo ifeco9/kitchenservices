@@ -13,7 +13,7 @@ export interface AddressData {
     addressLine1: string;
     addressLine2: string;
     city: string;
-    postcode: string;
+    postcode: string; // area/state code
 }
 
 const AddressForm = ({ onNext, onBack, initialAddress }: AddressFormProps) => {
@@ -45,9 +45,7 @@ const AddressForm = ({ onNext, onBack, initialAddress }: AddressFormProps) => {
             newErrors.city = 'City is required';
         }
         if (!formData.postcode.trim()) {
-            newErrors.postcode = 'Postcode is required';
-        } else if (!/^[A-Z]{1,2}\d{1,2}[A-Z]?\s?\d[A-Z]{2}$/i.test(formData.postcode.trim())) {
-            newErrors.postcode = 'Invalid UK postcode format';
+            newErrors.postcode = 'Area / State is required';
         }
 
         setErrors(newErrors);
@@ -103,7 +101,7 @@ const AddressForm = ({ onNext, onBack, initialAddress }: AddressFormProps) => {
                         id="city"
                         value={formData.city}
                         onChange={(e) => handleInputChange('city', e.target.value)}
-                        placeholder="London"
+                        placeholder="Lagos"
                         className={`w-full px-4 py-3 bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring transition-smooth ${errors.city ? 'border-error' : 'border-border'
                             }`}
                     />
@@ -112,14 +110,14 @@ const AddressForm = ({ onNext, onBack, initialAddress }: AddressFormProps) => {
 
                 <div>
                     <label htmlFor="postcode" className="block text-sm font-medium text-text-primary mb-2">
-                        Postcode <span className="text-error">*</span>
+                        Area / State <span className="text-error">*</span>
                     </label>
                     <input
                         type="text"
                         id="postcode"
                         value={formData.postcode}
-                        onChange={(e) => handleInputChange('postcode', e.target.value.toUpperCase())}
-                        placeholder="SW1A 1AA"
+                        onChange={(e) => handleInputChange('postcode', e.target.value)}
+                        placeholder="e.g. Ikeja, Victoria Island"
                         className={`w-full px-4 py-3 bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring transition-smooth ${errors.postcode ? 'border-error' : 'border-border'
                             }`}
                     />

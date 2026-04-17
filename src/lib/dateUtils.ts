@@ -35,7 +35,7 @@ export function formatDistanceToNow(dateString: string): string {
 
 export function formatDate(dateString: string): string {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-GB', {
+    return date.toLocaleDateString('en-NG', {
         day: 'numeric',
         month: 'short',
         year: 'numeric'
@@ -44,7 +44,7 @@ export function formatDate(dateString: string): string {
 
 export function formatDateTime(dateString: string): string {
     const date = new Date(dateString);
-    return date.toLocaleString('en-GB', {
+    return date.toLocaleString('en-NG', {
         day: 'numeric',
         month: 'short',
         year: 'numeric',

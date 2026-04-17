@@ -52,7 +52,7 @@ const Footer = () => {
               <span className="text-xl font-bold">KitchenServices</span>
             </Link>
             <p className="text-gray-200 leading-relaxed mb-6">
-              Connecting verified kitchen and appliance technicians with homeowners across the UK.
+              Connecting verified kitchen and appliance technicians with homeowners across Nigeria.
             </p>
             <div className="flex items-center space-x-4">
               {socialLinks.map((social) => (

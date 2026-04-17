@@ -30,8 +30,8 @@ const BenefitsComparison = () => {
     },
     {
       feature: "Marketing Costs",
-      independent: "£200-500/month",
-      platform: "£0 - Commission based"
+      independent: "₦200,000-500,000/month",
+      platform: "₦0 - Commission based"
     },
     {
       feature: "Customer Trust",
@@ -78,7 +78,7 @@ const BenefitsComparison = () => {
       description: "Our verification badge instantly builds customer confidence, eliminating the trust barrier."
     },
     {
-      icon: "CurrencyPoundIcon",
+      icon: "BanknotesIcon",
       title: "Guaranteed Payments",
       description: "Secure payment processing with automatic invoicing and fast payouts directly to your account."
     },

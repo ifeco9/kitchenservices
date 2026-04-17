@@ -71,7 +71,7 @@ const BookingConfirmation = ({
   const formatDate = (dateString: string): string => {
     if (!isHydrated) return '';
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    return date.toLocaleDateString('en-NG', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   };
 
   const preparationChecklist = [
@@ -150,10 +150,9 @@ const BookingConfirmation = ({
             </div>
           </div>
           <div className="flex items-start space-x-3">
-            <Icon name="CurrencyPoundIcon" size={20} className="text-text-secondary mt-0.5" />
+            <Icon name="BanknotesIcon" size={20} className="text-text-secondary mt-0.5" />
             <div>
-              <p className="text-sm font-medium text-text-primary">£{totalAmount.toFixed(2)}</p>
-              <p className="text-xs text-text-secondary">Including VAT</p>
+              <p className="text-sm font-medium text-text-primary">₦{totalAmount.toLocaleString('en-NG')}</p>
             </div>
           </div>
         </div>

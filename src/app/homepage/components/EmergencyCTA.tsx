@@ -44,7 +44,7 @@ const EmergencyCTA = () => {
               <span className="text-sm font-medium">Verified technicians</span>
             </div>
             <div className="flex items-center space-x-2">
-              <Icon name="CurrencyPoundIcon" size={18} />
+              <Icon name="BanknotesIcon" size={18} />
               <span className="text-sm font-medium">Transparent pricing</span>
             </div>
           </div>

@@ -21,11 +21,11 @@ const SuccessStories = () => {
   {
     id: 1,
     name: "Robert Taylor",
-    location: "Leeds",
+    location: "Ibadan",
     image: "https://img.rocket.new/generatedImages/rocket_gen_img_132868c4c-1764848456328.png",
     alt: "Middle-aged male technician in red work shirt smiling confidently with arms crossed in workshop",
-    beforeEarnings: "£1,800/month",
-    afterEarnings: "£4,500/month",
+    beforeEarnings: "₦1,800,000/month",
+    afterEarnings: "₦4,500,000/month",
     timeframe: "8 months",
     testimonial: "I was struggling to find consistent work before joining KitchenServices. Now I have more bookings than I can handle and I've been able to hire an assistant. The platform completely transformed my business.",
     achievements: [
@@ -38,15 +38,15 @@ const SuccessStories = () => {
   {
     id: 2,
     name: "Lisa Anderson",
-    location: "Bristol",
+    location: "Kano",
     image: "https://img.rocket.new/generatedImages/rocket_gen_img_1e9f7a797-1765107320838.png",
     alt: "Professional female technician in blue work uniform holding tablet and smiling in modern kitchen",
-    beforeEarnings: "£2,200/month",
-    afterEarnings: "£5,100/month",
+    beforeEarnings: "₦2,200,000/month",
+    afterEarnings: "₦5,100,000/month",
     timeframe: "6 months",
     testimonial: "As a woman in this industry, building trust with customers was always challenging. The verification badge gave me instant credibility, and the platform's support helped me grow faster than I ever imagined.",
     achievements: [
-    "Became top-rated technician in Bristol",
+    "Became top-rated technician in Kano",
     "Achieved 98% customer satisfaction rate",
     "Doubled service offerings",
     "Featured in platform success stories"]
@@ -55,11 +55,11 @@ const SuccessStories = () => {
   {
     id: 3,
     name: "Mohammed Khan",
-    location: "Glasgow",
+    location: "Enugu",
     image: "https://img.rocket.new/generatedImages/rocket_gen_img_1ff09c345-1764769536232.png",
     alt: "Young South Asian male technician in grey uniform examining appliance with professional tools",
-    beforeEarnings: "£1,500/month",
-    afterEarnings: "£3,800/month",
+    beforeEarnings: "₦1,500,000/month",
+    afterEarnings: "₦3,800,000/month",
     timeframe: "5 months",
     testimonial: "I started my business just before joining the platform. Within five months, I went from barely covering costs to having a thriving business with regular customers. The automated booking system saves me hours every week.",
     achievements: [
@@ -84,7 +84,7 @@ const SuccessStories = () => {
             Technicians Who Transformed Their Business
           </h2>
           <p className="text-lg text-text-secondary max-w-3xl mx-auto">
-            Discover how real technicians across the UK have grown their businesses and increased their earnings through our platform.
+            Discover how real technicians across Nigeria have grown their businesses and increased their earnings through our platform.
           </p>
         </div>
 

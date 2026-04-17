@@ -23,7 +23,7 @@ export default function ProviderProfilePage() {
   const [bio, setBio] = useState('');
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
-  const [postcode, setPostcode] = useState('');
+  const [state, setState] = useState(''); // Nigerian state
 
   const [hourlyRate, setHourlyRate] = useState('');
   const [calloutFee, setCalloutFee] = useState('');
@@ -45,7 +45,7 @@ export default function ProviderProfilePage() {
       setAvatarUrl(user.profile?.avatar_url || '');
       setAddress(user.profile?.address || '');
       setCity(user.profile?.city || '');
-      setPostcode(user.profile?.postcode || '');
+      setState(user.profile?.state || '');
 
       const { data } = await supabase
         .from('technicians')
@@ -57,7 +57,7 @@ export default function ProviderProfilePage() {
         setBio(data.bio || '');
         setHourlyRate(data.hourly_rate?.toString() || '');
         setCalloutFee(data.callout_fee?.toString() || '');
-        setServiceRadius(data.service_radius_miles?.toString() || '10');
+        setServiceRadius(data.service_radius_km?.toString() || '10');
         setYearsExperience(data.years_experience?.toString() || '');
         setSpecializations(data.specializations || []);
         setAvailabilityStatus(data.availability_status || 'available');
@@ -94,7 +94,7 @@ export default function ProviderProfilePage() {
         phone,
         address,
         city,
-        postcode,
+        state,
         avatar_url: avatarUrl || undefined,
       });
 
@@ -104,7 +104,7 @@ export default function ProviderProfilePage() {
           bio,
           hourly_rate: parseFloat(hourlyRate) || 0,
           callout_fee: parseFloat(calloutFee) || 0,
-          service_radius_miles: parseInt(serviceRadius),
+          service_radius_km: parseInt(serviceRadius),
           years_experience: parseInt(yearsExperience) || 0,
           specializations,
           availability_status: availabilityStatus,
@@ -234,11 +234,11 @@ export default function ProviderProfilePage() {
                     placeholder="Street address" />
                 </div>
                 <div>
-                  <label className="block text-sm mb-1" style={{ color: '#9ca3af' }}>Postcode</label>
-                  <input type="text" value={postcode} onChange={e => setPostcode(e.target.value)}
+                  <label className="block text-sm mb-1" style={{ color: '#9ca3af' }}>State</label>
+                  <input type="text" value={state} onChange={e => setState(e.target.value)}
                     className="w-full px-4 py-3 rounded-lg text-sm"
                     style={{ backgroundColor: '#13091f', border: '1px solid #2d1f44', color: '#ffffff' }}
-                    placeholder="SW1A 1AA" />
+                    placeholder="e.g., Lagos, Abuja" />
                 </div>
               </div>
             </div>
@@ -255,14 +255,14 @@ export default function ProviderProfilePage() {
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
-                  <label className="block text-sm mb-1" style={{ color: '#9ca3af' }}>Hourly Rate (£)</label>
+                  <label className="block text-sm mb-1" style={{ color: '#9ca3af' }}>Hourly Rate (₦)</label>
                   <input type="number" min="10" value={hourlyRate} onChange={e => setHourlyRate(e.target.value)}
                     className="w-full px-4 py-3 rounded-lg text-sm"
                     style={{ backgroundColor: '#13091f', border: '1px solid #2d1f44', color: '#ffffff' }}
                     placeholder="65" />
                 </div>
                 <div>
-                  <label className="block text-sm mb-1" style={{ color: '#9ca3af' }}>Callout Fee (£)</label>
+                  <label className="block text-sm mb-1" style={{ color: '#9ca3af' }}>Callout Fee (₦)</label>
                   <input type="number" min="0" value={calloutFee} onChange={e => setCalloutFee(e.target.value)}
                     className="w-full px-4 py-3 rounded-lg text-sm"
                     style={{ backgroundColor: '#13091f', border: '1px solid #2d1f44', color: '#ffffff' }}

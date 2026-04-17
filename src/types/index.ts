@@ -12,7 +12,7 @@ export interface Profile {
   phone?: string;
   address?: string;
   city?: string;
-  postcode?: string;
+  state?: string; // Nigerian state (e.g., Lagos, Abuja, Rivers)
   preferred_contact?: 'email' | 'phone';
   created_at: string;
 }
@@ -53,7 +53,7 @@ export interface Technician extends Profile {
   years_experience: number;
   hourly_rate: number;
   callout_fee: number;
-  service_radius_miles: number;
+  service_radius_km: number; // Kilometers (Nigeria uses metric system)
   is_verified: boolean;
   availability_status: AvailabilityStatus;
   location_lat?: number;

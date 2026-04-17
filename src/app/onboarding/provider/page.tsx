@@ -21,7 +21,7 @@ export default function ProviderOnboardingPage() {
   const [serviceRadius, setServiceRadius] = useState('10');
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
-  const [postcode, setPostcode] = useState('');
+  const [state, setState] = useState(''); // Nigerian state
   const [phone, setPhone] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -62,7 +62,7 @@ export default function ProviderOnboardingPage() {
     }
 
     if (parseInt(hourlyRate) < 10) {
-      toast.error('Hourly rate must be at least £10');
+      toast.error('Hourly rate must be at least ₦10,000');
       return;
     }
 
@@ -74,9 +74,9 @@ export default function ProviderOnboardingPage() {
       // First update profile with phone, address, and avatar
       await profileService.updateProfile(user.id, {
         phone,
-        address: `${address}, ${city}, ${postcode}`,
+        address: `${address}, ${city}, ${state}`,
         city,
-        postcode,
+        state,
         avatar_url: avatarUrl || undefined
       });
 
@@ -95,8 +95,8 @@ export default function ProviderOnboardingPage() {
         years_experience: parseInt(yearsExperience) || 0,
         hourly_rate: parseFloat(hourlyRate),
         callout_fee: parseFloat(calloutFee) || 0,
-        service_radius_miles: parseInt(serviceRadius),
-        address: `${address}, ${city}, ${postcode}`
+        service_radius_km: parseInt(serviceRadius),
+        address: `${address}, ${city}, ${state}`
         // location_lat and location_lng are optional and omitted
       });
 
@@ -148,7 +148,7 @@ export default function ProviderOnboardingPage() {
   ];
 
   const availableCertifications = [
-    'Gas Safe', 'NICEIC', 'City & Guilds', 'NVQ Level 3',
+    'COREN Certified', 'SON Certified', 'City & Guilds', 'NVQ Level 3',
     'Manufacturer Certified'
   ];
 
@@ -241,16 +241,16 @@ export default function ProviderOnboardingPage() {
                 </div>
 
                 <div className="mb-4">
-                  <label htmlFor="postcode" className="block text-sm font-medium text-text-secondary mb-2">
-                    Postcode *
+                  <label htmlFor="state" className="block text-sm font-medium text-text-secondary mb-2">
+                    State *
                   </label>
                   <input
-                    id="postcode"
+                    id="state"
                     type="text"
-                    value={postcode}
-                    onChange={(e) => setPostcode(e.target.value)}
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
                     className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-smooth"
-                    placeholder="Enter postcode"
+                    placeholder="e.g., Lagos, Abuja, Rivers"
                     required
                   />
                 </div>
@@ -343,7 +343,7 @@ export default function ProviderOnboardingPage() {
 
                 <div>
                   <label htmlFor="hourlyRate" className="block text-sm font-medium text-text-secondary mb-2">
-                    Hourly Rate (£) *
+                    Hourly Rate (₦) *
                   </label>
                   <input
                     id="hourlyRate"
@@ -359,7 +359,7 @@ export default function ProviderOnboardingPage() {
 
                 <div>
                   <label htmlFor="calloutFee" className="block text-sm font-medium text-text-secondary mb-2">
-                    Callout Fee (£) *
+                    Callout Fee (₦) *
                   </label>
                   <input
                     id="calloutFee"

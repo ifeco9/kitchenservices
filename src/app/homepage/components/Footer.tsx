@@ -69,7 +69,7 @@ const Footer = () => {
               <span className="text-xl font-bold">KitchenServices</span>
             </Link>
             <p className="text-gray-200 mb-6 leading-relaxed">
-              Connecting UK homeowners with verified kitchen appliance technicians for emergency repairs, planned maintenance, and professional installations.
+              Connecting Nigerian homeowners with verified kitchen appliance technicians for emergency repairs, planned maintenance, and professional installations.
             </p>
             <div className="flex items-center space-x-4">
               {socialLinks?.map((social) => (
@@ -142,7 +142,7 @@ const Footer = () => {
           <div className="flex flex-wrap items-center justify-center gap-6 text-gray-200">
             <div className="flex items-center space-x-2">
               <Icon name="ShieldCheckIcon" size={20} className="text-accent" />
-              <span className="text-sm">Gas Safe Registered</span>
+              <span className="text-sm">Professionally Certified</span>
             </div>
             <div className="flex items-center space-x-2">
               <Icon name="DocumentCheckIcon" size={20} className="text-accent" />
@@ -159,7 +159,7 @@ const Footer = () => {
         <div className="border-t border-white/10 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-gray-400 text-sm">
-              &copy; {currentYear} KitchenServices.co.uk. All rights reserved.
+              &copy; {currentYear} KitchenServices.ng. All rights reserved.
             </p>
             <div className="flex items-center space-x-6 text-sm">
               <Link

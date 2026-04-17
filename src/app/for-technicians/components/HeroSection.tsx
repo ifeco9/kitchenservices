@@ -27,30 +27,30 @@ const HeroSection = () => {
   {
     id: 1,
     name: "James Mitchell",
-    location: "Manchester",
+    location: "Lagos",
     image: "https://img.rocket.new/generatedImages/rocket_gen_img_137ad5a3e-1765083592272.png",
     alt: "Professional male technician in blue work uniform holding toolkit in modern kitchen",
-    earnings: "£4,200/month",
+    earnings: "₦4,200,000/month",
     growth: "+180% in 6 months",
     quote: "KitchenServices transformed my business. I went from struggling to find clients to having a fully booked calendar within three months."
   },
   {
     id: 2,
     name: "Sarah Thompson",
-    location: "Birmingham",
+    location: "Abuja",
     image: "https://img.rocket.new/generatedImages/rocket_gen_img_1eade9a84-1765963301821.png",
     alt: "Female technician in grey work shirt smiling while holding repair tools in residential setting",
-    earnings: "£3,800/month",
+    earnings: "₦3,800,000/month",
     growth: "+150% in 4 months",
     quote: "The platform handles all the admin work, so I can focus on what I do best - fixing appliances and building customer relationships."
   },
   {
     id: 3,
     name: "David Chen",
-    location: "London",
+    location: "Kano",
     image: "https://img.rocket.new/generatedImages/rocket_gen_img_1ff09c345-1764769536232.png",
     alt: "Asian male technician in navy uniform examining kitchen appliance with professional tools",
-    earnings: "£5,100/month",
+    earnings: "₦5,100,000/month",
     growth: "+220% in 8 months",
     quote: "I doubled my income and cut my marketing costs to zero. The verification badge gives customers instant confidence in my services."
   }];
@@ -58,7 +58,7 @@ const HeroSection = () => {
 
   const stats = [
   { label: "Active Technicians", value: "2,500+", icon: "UserGroupIcon" },
-  { label: "Average Monthly Earnings", value: "£3,900", icon: "CurrencyPoundIcon" },
+  { label: "Average Monthly Earnings", value: "₦3,900,000", icon: "BanknotesIcon" },
   { label: "Customer Satisfaction", value: "98%", icon: "StarIcon" },
   { label: "Jobs Completed", value: "45,000+", icon: "CheckBadgeIcon" }];
 
@@ -94,7 +94,7 @@ const HeroSection = () => {
             </h1>
 
             <p className="text-lg lg:text-xl text-slate-300 leading-relaxed">
-              Stop chasing leads and start accepting bookings. Join the UK&apos;s most trusted platform for kitchen and appliance technicians. Get verified once, get booked consistently.
+              Stop chasing leads and start accepting bookings. Join Nigeria&apos;s most trusted platform for kitchen and appliance technicians. Get verified once, get booked consistently.
             </p>
 
             {/* Stats Grid */}
@@ -171,7 +171,7 @@ const HeroSection = () => {
                   <p className="text-sm text-slate-300 mb-2">{currentTestimonial.location}</p>
                   <div className="flex items-center space-x-4">
                     <div className="flex items-center space-x-1">
-                      <Icon name="CurrencyPoundIcon" size={16} className="text-accent" />
+                      <Icon name="BanknotesIcon" size={16} className="text-accent" />
                       <span className="text-sm font-semibold text-accent">{currentTestimonial.earnings}</span>
                     </div>
                     <div className="flex items-center space-x-1">

@@ -99,11 +99,11 @@ const TechnicianSelectionCard = ({ technician, isSelected, onSelect }: Technicia
           <div className="flex items-center justify-between pt-3 border-t border-border">
             <div>
               <p className="text-xs text-text-secondary">Call-out fee</p>
-              <p className="text-sm font-semibold text-text-primary">£{technician.callOutFee.toFixed(2)}</p>
+              <p className="text-sm font-semibold text-text-primary">₦{technician.callOutFee.toLocaleString('en-NG')}</p>
             </div>
             <div className="text-right">
               <p className="text-xs text-text-secondary">Hourly rate</p>
-              <p className="text-sm font-semibold text-text-primary">£{technician.hourlyRate.toFixed(2)}/hr</p>
+              <p className="text-sm font-semibold text-text-primary">₦{technician.hourlyRate.toLocaleString('en-NG')}/hr</p>
             </div>
           </div>
 

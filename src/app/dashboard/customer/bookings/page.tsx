@@ -82,7 +82,7 @@ export default function CustomerBookingsPage() {
 
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    return date.toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: 'numeric' });
   };
 
   const getStatusColor = (status: string) => {
@@ -141,7 +141,7 @@ export default function CustomerBookingsPage() {
                           <span className={`px-3 py-1 text-xs font-medium rounded-full ${getStatusColor(booking.status)}`}>
                             {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
                           </span>
-                          <span className="font-semibold text-text-primary">£{booking.totalAmount.toFixed(2)}</span>
+                          <span className="font-semibold text-text-primary">₦{booking.totalAmount?.toLocaleString('en-NG') || '0'}</span>
                         </div>
 
                         <div className="flex space-x-2">

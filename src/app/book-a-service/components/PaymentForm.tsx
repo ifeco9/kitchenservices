@@ -237,7 +237,7 @@ const PaymentForm = ({ onSubmit, totalAmount }: PaymentFormProps) => {
         className="w-full inline-flex items-center justify-center px-6 py-4 text-base font-semibold text-accent-foreground bg-accent rounded-lg hover:bg-success shadow-cta hover:shadow-lg hover:-translate-y-0.5 transition-smooth focus-ring"
       >
         <Icon name="LockClosedIcon" size={20} className="mr-2" />
-        Pay £{totalAmount.toFixed(2)} &amp; Confirm Booking
+        Pay ₦{totalAmount.toLocaleString('en-NG')} & Confirm Booking
       </button>
     </form>
   );

@@ -53,7 +53,7 @@ const RegistrationForm = () => {
   ];
 
   const documentTypes = [
-    { id: 'gas-safe', label: 'Gas Safe Certificate', icon: 'DocumentCheckIcon' },
+    { id: 'coren-cert', label: 'COREN / Trade Certificate', icon: 'DocumentCheckIcon' },
     { id: 'insurance', label: 'Insurance Certificate', icon: 'ShieldCheckIcon' },
     { id: 'photo-id', label: 'Photo ID', icon: 'IdentificationIcon' },
     { id: 'proof-address', label: 'Proof of Address', icon: 'HomeIcon' }
@@ -194,7 +194,7 @@ const RegistrationForm = () => {
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
                     className="w-full px-4 py-3 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition-smooth"
-                    placeholder="07700 900000"
+                    placeholder="080X XXX XXXX"
                     required
                   />
                 </div>
@@ -203,7 +203,7 @@ const RegistrationForm = () => {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="postcode" className="block text-sm font-medium text-primary mb-2">
-                    Postcode *
+                    Area / State *
                   </label>
                   <input
                     type="text"
@@ -211,7 +211,7 @@ const RegistrationForm = () => {
                     value={formData.postcode}
                     onChange={(e) => handleInputChange('postcode', e.target.value)}
                     className="w-full px-4 py-3 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition-smooth"
-                    placeholder="SW1A 1AA"
+                    placeholder="e.g. Ikeja, Lagos"
                     required
                   />
                 </div>
@@ -270,7 +270,7 @@ const RegistrationForm = () => {
 
               <div>
                 <label htmlFor="gasRegNumber" className="block text-sm font-medium text-primary mb-2">
-                  Gas Safe Registration Number *
+                  Professional Registration Number (if applicable)
                 </label>
                 <input
                   type="text"
@@ -282,7 +282,7 @@ const RegistrationForm = () => {
                   required
                 />
                 <p className="text-xs text-text-secondary mt-1">
-                  Enter your 6-digit Gas Safe registration number
+                  Enter your professional registration or certification number (optional)
                 </p>
               </div>
 
@@ -300,7 +300,7 @@ const RegistrationForm = () => {
                   required
                 />
                 <p className="text-xs text-text-secondary mt-1">
-                  Minimum £2 million public liability coverage required
+                  Minimum ₦50 million public liability coverage required
                 </p>
               </div>
 

@@ -54,8 +54,8 @@ const FilterSidebar = ({ onFilterChange, isMobileOpen, onMobileClose }: FilterSi
   ];
 
   const certificationOptions = [
-    'Gas Safe Registered',
-    'NICEIC Approved',
+    'COREN Certified',
+    'SON Certified',
     'Manufacturer Certified',
     'City & Guilds',
     'NVQ Level 3',
@@ -293,9 +293,9 @@ const FilterSidebar = ({ onFilterChange, isMobileOpen, onMobileClose }: FilterSi
             {expandedSections.price && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold text-primary">£{filters.priceRange[0]}</span>
+                  <span className="text-sm font-semibold text-primary">₦{filters.priceRange[0].toLocaleString('en-NG')}</span>
                   <span className="text-sm text-text-secondary">to</span>
-                  <span className="text-sm font-semibold text-primary">£{filters.priceRange[1]}</span>
+                  <span className="text-sm font-semibold text-primary">₦{filters.priceRange[1].toLocaleString('en-NG')}</span>
                 </div>
                 <div className="space-y-2">
                   <input

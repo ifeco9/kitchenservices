@@ -28,14 +28,14 @@ const HeroSearch = ({ onSearch }: HeroSearchProps) => {
   }, []);
 
   const locationSuggestions = [
-    'London',
-    'Manchester',
-    'Birmingham',
-    'Leeds',
-    'Glasgow',
-    'Liverpool',
-    'Newcastle',
-    'Sheffield'
+    'Lagos',
+    'Abuja',
+    'Port Harcourt',
+    'Ibadan',
+    'Kano',
+    'Benin City',
+    'Enugu',
+    'Jos'
   ];
 
   const serviceSuggestions: ServiceSuggestion[] = [
@@ -47,8 +47,6 @@ const HeroSearch = ({ onSearch }: HeroSearchProps) => {
     { id: '6', name: 'Cooker Hood Installation', category: 'Installation' }
   ];
 
-  /* import { useRouter } from 'next/navigation'; */ // Make sure to add this import at the top if not present, checking lines 1-5.
-  // Actually, I should update the imports too. I'll do a larger block replacement.
   const handleSearch = () => {
     if (isHydrated) {
       if (onSearch) {
@@ -57,9 +55,7 @@ const HeroSearch = ({ onSearch }: HeroSearchProps) => {
         // Default behavior: navigate to search page
         const params = new URLSearchParams();
         if (location) params.append('location', location);
-        if (service) params.append('query', service); // Using 'query' or 'service' depending on target page.
-        // Let's assume 'service' based on HeroSearch state, but standard search usually uses 'q' or 'query'. 
-        // FindATechnicianInteractive likely uses these. I will verify in next step but for now use 'service'.
+        if (service) params.append('query', service);
         router.push(`/find-a-technician?${params.toString()}`);
       }
     }
@@ -120,7 +116,7 @@ const HeroSearch = ({ onSearch }: HeroSearchProps) => {
                 setShowLocationSuggestions(e.target.value.length > 0);
               }}
               onFocus={() => setShowLocationSuggestions(location.length > 0)}
-              placeholder="Enter postcode or city"
+              placeholder="Enter state or city (e.g., Lagos, Abuja)"
               className="w-full h-12 pl-10 pr-4 bg-card/90 backdrop-blur-sm border border-white/20 rounded-lg text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent focus:bg-card transition-smooth text-sm font-heading"
             />
           </div>

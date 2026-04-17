@@ -152,11 +152,11 @@ const TechnicianCard = ({ technician, onCompare, isComparing, distance }: Techni
         <div className="mb-4 p-3 bg-surface rounded-lg">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-text-secondary">Hourly Rate</span>
-            <span className="text-lg font-bold text-primary">£{technician.hourly_rate}</span>
+            <span className="text-lg font-bold text-primary">₦{technician.hourly_rate?.toLocaleString()}</span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-xs text-text-secondary">Callout Fee</span>
-            <span className="text-sm font-semibold text-text-primary">£{technician.callout_fee}</span>
+            <span className="text-sm font-semibold text-text-primary">₦{technician.callout_fee?.toLocaleString()}</span>
           </div>
         </div>
 

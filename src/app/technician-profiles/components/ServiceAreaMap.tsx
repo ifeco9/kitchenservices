@@ -70,7 +70,7 @@ const ServiceAreaMap = ({ baseLocation, serviceAreas }: ServiceAreaMapProps) => 
               </div>
               <div className="text-right">
                 <p className="text-sm font-semibold text-text-primary">
-                  {area.travelFee === 0 ? 'Free' : `£${area.travelFee}`}
+                  {area.travelFee === 0 ? 'Free' : `₦${area.travelFee.toLocaleString('en-NG')}`}
                 </p>
                 <p className="text-xs text-text-secondary">Travel fee</p>
               </div>

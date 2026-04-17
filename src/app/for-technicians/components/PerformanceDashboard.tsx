@@ -30,10 +30,10 @@ const PerformanceDashboard = () => {
     },
     {
       label: "Revenue",
-      value: "£4,850",
+      value: "₦4,850,000",
       change: "+18%",
       trend: "up",
-      icon: "CurrencyPoundIcon"
+      icon: "BanknotesIcon"
     },
     {
       label: "Customer Rating",

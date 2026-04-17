@@ -119,7 +119,7 @@ const FeaturedTechnicians = () => {
                     </div>
                     <div className="flex items-center">
                       <Icon name="MapPinIcon" size={16} className="mr-1" />
-                      <span>{technicians[0].address || 'London'}</span>
+                      <span>{technicians[0].address || 'Lagos'}</span>
                     </div>
                   </div>
                 </div>
@@ -181,7 +181,7 @@ const FeaturedTechnicians = () => {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center text-text-secondary text-xs">
                         <Icon name="MapPinIcon" size={12} className="mr-1" />
-                        {tech.address || 'London'}
+                        {tech.address || 'Lagos'}
                       </div>
                       <div className="text-accent text-xs font-medium flex items-center">
                         <span>View</span>

@@ -50,7 +50,7 @@ export default function AdminDashboardPage() {
     );
   }
 
-  const todayStr = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+  const todayStr = new Date().toLocaleDateString('en-NG', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
 
   const navItems = [
     { num: '01', label: 'Overview', href: '/dashboard/admin', active: true },

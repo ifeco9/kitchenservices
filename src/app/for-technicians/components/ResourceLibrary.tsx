@@ -62,7 +62,7 @@ const ResourceLibrary = () => {
     {
       id: 6,
       title: "Invoice Templates",
-      description: "Professional invoice templates with automatic calculation and VAT handling for UK businesses.",
+      description: "Professional invoice templates with automatic tax calculation for Nigerian businesses.",
       type: "template",
       icon: "DocumentTextIcon",
       downloadSize: "650 KB",

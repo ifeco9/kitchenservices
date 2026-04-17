@@ -63,7 +63,7 @@ const ComparisonPanel = ({ technicians, onRemove, onClear }: ComparisonPanelProp
                   <div className="space-y-1">
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-text-secondary">Hourly Rate</span>
-                      <span className="font-semibold text-primary">£{tech.hourly_rate}</span>
+                      <span className="font-semibold text-primary">₦{tech.hourly_rate.toLocaleString('en-NG')}</span>
                     </div>
                     {/* Distance is not available in Technician type yet */}
                     {/* <div className="flex items-center justify-between text-xs">

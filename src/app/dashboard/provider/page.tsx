@@ -106,7 +106,7 @@ export default function ProviderDashboardPage() {
     cancelled:   { bg: '#1e0a0f', text: '#ef4444', border: '#ef4444' },
   };
 
-  const todayStr = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+  const todayStr = new Date().toLocaleDateString('en-NG', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
 
   const navItems = [
     { num: '01', label: 'Dashboard', href: '/dashboard/provider', active: true },
@@ -219,7 +219,7 @@ export default function ProviderDashboardPage() {
               <div style={{ fontSize: '10px', fontWeight: 600, letterSpacing: '2px', color: '#ffffff', fontFamily: '"Space Grotesk", sans-serif' }}>TOTAL EARNINGS</div>
               <div>
                 <div className="text-2xl lg:text-4xl" style={{ fontWeight: 700, color: '#ffffff', fontFamily: '"Space Grotesk", sans-serif', letterSpacing: '-2px', lineHeight: 1 }}>
-                  £{loadingStats ? '—' : earnings.toFixed(0)}
+                  ₦{loadingStats ? '—' : earnings.toLocaleString('en-NG')}
                 </div>
                 <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.8)', fontFamily: 'Inter, sans-serif', marginTop: '4px' }}>All time</div>
               </div>
@@ -318,7 +318,7 @@ export default function ProviderDashboardPage() {
                           </span>
                         </div>
                         <div style={{ flex: 1, fontSize: '14px', fontWeight: 700, color: '#a855f7', fontFamily: '"Space Grotesk", sans-serif' }}>
-                          £{booking.total_amount?.toFixed(2) || '—'}
+                          ₦{booking.total_amount?.toLocaleString('en-NG') || '—'}
                         </div>
                         <div style={{ flex: 1.2, display: 'flex', gap: '8px' }}>
                           {nextStatus && (
@@ -373,7 +373,7 @@ export default function ProviderDashboardPage() {
                             {scheduledDate.toLocaleDateString()} · {scheduledDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                           </div>
                           <div style={{ fontSize: '15px', fontWeight: 700, color: '#a855f7', fontFamily: '"Space Grotesk", sans-serif' }}>
-                            £{booking.total_amount?.toFixed(2) || '—'}
+                            ₦{booking.total_amount?.toLocaleString('en-NG') || '—'}
                           </div>
                         </div>
                         {(nextStatus || (booking.status !== 'cancelled' && booking.status !== 'completed')) && (

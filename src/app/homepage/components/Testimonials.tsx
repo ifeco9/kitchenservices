@@ -27,7 +27,7 @@ const Testimonials = () => {
     {
       id: '1',
       name: 'Emma Richardson',
-      location: 'London',
+      location: 'Lagos',
       rating: 5,
       comment: 'My oven broke down on Christmas Eve and I was panicking. Found a technician through KitchenServices within 30 minutes who came out the same day. Absolutely brilliant service and very reasonable pricing.',
       service: 'Emergency Oven Repair',
@@ -37,7 +37,7 @@ const Testimonials = () => {
     {
       id: '2',
       name: 'Michael O\'Brien',
-      location: 'Manchester',
+      location: 'Abuja',
       rating: 5,
       comment: 'As a landlord managing multiple properties, KitchenServices has been a game-changer. Verified technicians, transparent pricing, and quick response times. Highly recommend for property managers.',
       service: 'Dishwasher Installation',
@@ -47,7 +47,7 @@ const Testimonials = () => {
     {
       id: '3',
       name: 'Priya Patel',
-      location: 'Birmingham',
+      location: 'Port Harcourt',
       rating: 5,
       comment: 'The booking process was so straightforward and the technician was incredibly professional. Fixed my washing machine in under an hour and explained everything clearly. Will definitely use again.',
       service: 'Washing Machine Repair',

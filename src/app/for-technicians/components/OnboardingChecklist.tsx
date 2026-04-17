@@ -32,7 +32,7 @@ const OnboardingChecklist = () => {
     {
       id: 2,
       title: "Upload Certifications",
-      description: "Provide copies of your Gas Safe registration, electrical qualifications, and any appliance-specific certifications.",
+      description: "Provide copies of your professional trade certifications, electrical qualifications, and any appliance-specific credentials.",
       estimatedTime: "10 minutes",
       icon: "DocumentCheckIcon",
       required: true
@@ -40,7 +40,7 @@ const OnboardingChecklist = () => {
     {
       id: 3,
       title: "Insurance Verification",
-      description: "Upload your public liability insurance certificate (minimum £2 million coverage required).",
+      description: "Upload your public liability insurance certificate (minimum ₦50 million coverage required).",
       estimatedTime: "5 minutes",
       icon: "ShieldCheckIcon",
       required: true

@@ -29,21 +29,21 @@ const PricingTable = ({ pricing }: PricingTableProps) => {
             <Icon name="ClockIcon" size={20} className="text-primary" />
             <span className="text-sm font-medium text-text-secondary">Hourly Rate</span>
           </div>
-          <p className="text-2xl font-bold text-text-primary">£{pricing.hourlyRate}/hr</p>
+          <p className="text-2xl font-bold text-text-primary">₦{pricing.hourlyRate.toLocaleString('en-NG')}/hr</p>
         </div>
         <div className="p-4 bg-surface rounded-lg border border-border">
           <div className="flex items-center gap-2 mb-2">
             <Icon name="TruckIcon" size={20} className="text-primary" />
             <span className="text-sm font-medium text-text-secondary">Call-out Fee</span>
           </div>
-          <p className="text-2xl font-bold text-text-primary">£{pricing.callOutFee}</p>
+          <p className="text-2xl font-bold text-text-primary">₦{pricing.callOutFee.toLocaleString('en-NG')}</p>
         </div>
         <div className="p-4 bg-surface rounded-lg border border-border">
           <div className="flex items-center gap-2 mb-2">
             <Icon name="BoltIcon" size={20} className="text-error" />
             <span className="text-sm font-medium text-text-secondary">Emergency Rate</span>
           </div>
-          <p className="text-2xl font-bold text-text-primary">£{pricing.emergencyRate}/hr</p>
+          <p className="text-2xl font-bold text-text-primary">₦{pricing.emergencyRate.toLocaleString('en-NG')}/hr</p>
         </div>
       </div>
 

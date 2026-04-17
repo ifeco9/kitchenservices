@@ -5,7 +5,7 @@ import TechnicianProfilesInteractive from './components/TechnicianProfilesIntera
 
 export const metadata: Metadata = {
   title: 'Technician Profiles - KitchenServices',
-  description: 'View comprehensive professional profiles of verified kitchen appliance technicians with certifications, customer reviews, live availability, and transparent pricing across the UK.',
+  description: 'View comprehensive professional profiles of verified kitchen appliance technicians with certifications, customer reviews, live availability, and transparent pricing across Nigeria.',
 };
 
 export default function TechnicianProfilesPage() {

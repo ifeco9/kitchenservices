@@ -117,19 +117,19 @@ const TechnicianProfilesInteractive = () => {
       {
         service: "Oven Repair",
         description: "Diagnosis and repair of electric and gas ovens",
-        price: "From £85",
+        price: "From ₦85,000",
         icon: "FireIcon"
       },
       {
         service: "Dishwasher Service",
         description: "Installation, repair, and maintenance",
-        price: "From £75",
+        price: "From ₦75,000",
         icon: "WrenchScrewdriverIcon"
       },
       {
         service: "Gas Safety Check",
         description: "Annual gas appliance safety inspection",
-        price: "£120",
+        price: "₦120,000",
         icon: "ShieldCheckIcon"
       }]
   };
@@ -174,7 +174,7 @@ const TechnicianProfilesInteractive = () => {
 
   const handleContactTechnician = () => {
     if (!isHydrated) return;
-    alert('Contact options:\n\nPhone: 07XXX XXXXXX\nEmail: technician@kitchenservices.co.uk');
+    alert('Contact options:\n\nPhone: 0800-XXX-XXXX\nEmail: technician@kitchenservices.ng');
   };
 
   if (!isHydrated || loading) {
@@ -259,7 +259,7 @@ const TechnicianProfilesInteractive = () => {
                 className={`flex-shrink-0 px-6 py-3 text-sm font-semibold rounded-lg transition-smooth focus-ring ${activeTab === 'pricing' ? 'bg-primary text-primary-foreground' : 'bg-surface text-text-secondary hover:bg-muted'}`
                 }>
 
-                <Icon name="CurrencyPoundIcon" size={18} className="inline-block mr-2" />
+                <Icon name="BanknotesIcon" size={18} className="inline-block mr-2" />
                 Pricing
               </button>
             </div>
@@ -279,7 +279,7 @@ const TechnicianProfilesInteractive = () => {
                 </div>
 
                 <WorkGallery images={galleryImages} />
-                <ServiceAreaMap baseLocation={profileData.address || "London"} serviceAreas={serviceAreas} />
+                <ServiceAreaMap baseLocation={profileData.address || "Lagos"} serviceAreas={serviceAreas} />
               </div>
 
               <div className="space-y-8">
