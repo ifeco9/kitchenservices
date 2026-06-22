@@ -15,6 +15,39 @@ interface Testimonial {
   alt: string;
 }
 
+const testimonials: Testimonial[] = [
+  {
+    id: '1',
+    name: 'Emma Richardson',
+    location: 'Lagos',
+    rating: 5,
+    comment: 'My oven broke down on Christmas Eve and I was panicking. Found a technician through KitchenServices within 30 minutes who came out the same day. Absolutely brilliant service and very reasonable pricing.',
+    service: 'Emergency Oven Repair',
+    image: "https://images.unsplash.com/photo-1769636930016-5d9f0ca653aa?w=600&auto=format&fit=crop&q=80",
+    alt: 'Smiling Black woman with curly hair in black t-shirt, professional portrait'
+  },
+  {
+    id: '2',
+    name: 'Michael O\'Brien',
+    location: 'Abuja',
+    rating: 5,
+    comment: 'As a landlord managing multiple properties, KitchenServices has been a game-changer. Verified technicians, transparent pricing, and quick response times. Highly recommend for property managers.',
+    service: 'Dishwasher Installation',
+    image: "https://images.unsplash.com/photo-1769636929354-59165ba73c7e?w=600&auto=format&fit=crop&q=80",
+    alt: 'Smiling Black man with beard in black sweatshirt, professional headshot'
+  },
+  {
+    id: '3',
+    name: 'Priya Patel',
+    location: 'Port Harcourt',
+    rating: 5,
+    comment: 'The booking process was so straightforward and the technician was incredibly professional. Fixed my washing machine in under an hour and explained everything clearly. Will definitely use again.',
+    service: 'Washing Machine Repair',
+    image: "https://images.unsplash.com/photo-1769636929130-56648d6e9c6d?w=600&auto=format&fit=crop&q=80",
+    alt: 'Young Black woman with dark hair smiling broadly in studio portrait'
+  }
+];
+
 const Testimonials = () => {
   const [isHydrated, setIsHydrated] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -22,38 +55,6 @@ const Testimonials = () => {
   useEffect(() => {
     setIsHydrated(true);
   }, []);
-
-  const testimonials: Testimonial[] = [
-    {
-      id: '1',
-      name: 'Emma Richardson',
-      location: 'Lagos',
-      rating: 5,
-      comment: 'My oven broke down on Christmas Eve and I was panicking. Found a technician through KitchenServices within 30 minutes who came out the same day. Absolutely brilliant service and very reasonable pricing.',
-      service: 'Emergency Oven Repair',
-      image: "https://img.rocket.new/generatedImages/rocket_gen_img_1104c87ff-1765607754886.png",
-      alt: 'Smiling woman with long blonde hair in casual blue sweater in bright modern home'
-    },
-    {
-      id: '2',
-      name: 'Michael O\'Brien',
-      location: 'Abuja',
-      rating: 5,
-      comment: 'As a landlord managing multiple properties, KitchenServices has been a game-changer. Verified technicians, transparent pricing, and quick response times. Highly recommend for property managers.',
-      service: 'Dishwasher Installation',
-      image: "https://img.rocket.new/generatedImages/rocket_gen_img_12ef1a455-1763296313102.png",
-      alt: 'Professional man with short dark hair in navy business suit smiling confidently'
-    },
-    {
-      id: '3',
-      name: 'Priya Patel',
-      location: 'Port Harcourt',
-      rating: 5,
-      comment: 'The booking process was so straightforward and the technician was incredibly professional. Fixed my washing machine in under an hour and explained everything clearly. Will definitely use again.',
-      service: 'Washing Machine Repair',
-      image: "https://img.rocket.new/generatedImages/rocket_gen_img_1f953953d-1763294126115.png",
-      alt: 'South Asian woman with long dark hair in professional attire smiling warmly'
-    }];
 
 
   const handlePrevious = () => {

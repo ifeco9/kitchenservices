@@ -10,14 +10,17 @@ import { profileService } from '@/services/profileService';
 const FeaturedTechnicians = () => {
   const [technicians, setTechnicians] = useState<Technician[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchTechnicians = async () => {
       try {
         const data = await profileService.getTechnicians(3);
         setTechnicians(data);
+        setFetchError(null);
       } catch (error) {
         console.error('Error fetching technicians:', error);
+        setFetchError('Failed to load technicians. Please try again later.');
       } finally {
         setLoading(false);
       }
@@ -25,6 +28,32 @@ const FeaturedTechnicians = () => {
 
     fetchTechnicians();
   }, []);
+
+  if (fetchError) {
+    return (
+      <section className="py-16 lg:py-24 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center py-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-primary mb-4">
+              Meet Our Top-Rated Technicians
+            </h2>
+            <p className="text-lg text-text-secondary max-w-2xl mx-auto mb-8">
+              Verified professionals with proven track records and excellent customer reviews
+            </p>
+            <div className="bg-card border border-border rounded-xl p-12 max-w-2xl mx-auto">
+              <p className="text-error text-lg">{fetchError}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="mt-4 px-6 py-3 text-sm font-semibold text-white bg-accent hover:bg-success rounded-lg shadow-cta transition-smooth"
+              >
+                Try Again
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   if (loading) {
     return (

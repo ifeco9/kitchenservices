@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 import Icon from '@/components/ui/AppIcon';
 
 interface HeroSearchProps {
@@ -48,31 +49,29 @@ const HeroSearch = ({ onSearch }: HeroSearchProps) => {
   ];
 
   const handleSearch = () => {
-    if (isHydrated) {
-      if (onSearch) {
-        onSearch(location, service);
-      } else {
-        // Default behavior: navigate to search page
-        const params = new URLSearchParams();
-        if (location) params.append('location', location);
-        if (service) params.append('query', service);
-        router.push(`/find-a-technician?${params.toString()}`);
-      }
+    if (!location && !service) {
+      toast.error('Please enter a location or service to search');
+      return;
+    }
+    if (onSearch) {
+      onSearch(location, service);
+    } else {
+      // Default behavior: navigate to search page
+      const params = new URLSearchParams();
+      if (location) params.append('location', location);
+      if (service) params.append('query', service);
+      router.push(`/find-a-technician?${params.toString()}`);
     }
   };
 
   const handleLocationSelect = (selectedLocation: string) => {
-    if (isHydrated) {
-      setLocation(selectedLocation);
-      setShowLocationSuggestions(false);
-    }
+    setLocation(selectedLocation);
+    setShowLocationSuggestions(false);
   };
 
   const handleServiceSelect = (selectedService: string) => {
-    if (isHydrated) {
-      setService(selectedService);
-      setShowServiceSuggestions(false);
-    }
+    setService(selectedService);
+    setShowServiceSuggestions(false);
   };
 
   if (!isHydrated) {
@@ -121,12 +120,14 @@ const HeroSearch = ({ onSearch }: HeroSearchProps) => {
             />
           </div>
           {showLocationSuggestions && (
-            <div className="absolute z-10 w-full mt-2 bg-card border border-border rounded-lg shadow-lg max-h-48 overflow-y-auto">
+            <div role="listbox" className="absolute z-10 w-full mt-2 bg-card border border-border rounded-lg shadow-lg max-h-48 overflow-y-auto">
               {locationSuggestions
                 .filter((loc) => loc.toLowerCase().includes(location.toLowerCase()))
                 .map((loc) => (
                   <button
                     key={loc}
+                    role="option"
+                    aria-selected={location === loc}
                     onClick={() => handleLocationSelect(loc)}
                     className="w-full px-3 py-2 text-left hover:bg-surface transition-smooth flex items-center space-x-2 text-sm"
                   >
@@ -176,12 +177,14 @@ const HeroSearch = ({ onSearch }: HeroSearchProps) => {
           />
         </div>
         {showServiceSuggestions && (
-          <div className="absolute z-10 w-full mt-2 bg-card border border-border rounded-lg shadow-lg max-h-48 overflow-y-auto">
+          <div role="listbox" className="absolute z-10 w-full mt-2 bg-card border border-border rounded-lg shadow-lg max-h-48 overflow-y-auto">
             {serviceSuggestions
               .filter((svc) => svc.name.toLowerCase().includes(service.toLowerCase()))
               .map((svc) => (
                 <button
                   key={svc.id}
+                  role="option"
+                  aria-selected={service === svc.name}
                   onClick={() => handleServiceSelect(svc.name)}
                   className="w-full px-3 py-2 text-left hover:bg-surface transition-smooth text-sm"
                 >
@@ -199,13 +202,13 @@ const HeroSearch = ({ onSearch }: HeroSearchProps) => {
 
       {/* Quick Links */}
       <div className="mt-4 flex flex-wrap gap-2 animate-fade-in delay-100">
-        <button className="text-xs text-white hover:text-white transition-smooth px-3 py-2 bg-card/10 hover:bg-gradient-sunset rounded-lg backdrop-blur-sm animate-staggered-fade-in magnetic-hover border border-white/20">
+        <button type="button" className="text-xs text-white hover:text-white transition-smooth px-3 py-2 bg-card/10 hover:bg-gradient-sunset rounded-lg backdrop-blur-sm animate-staggered-fade-in magnetic-hover border border-white/20">
           🚨 Emergency Repair
         </button>
-        <button className="text-xs text-white hover:text-white transition-smooth px-3 py-2 bg-card/10 hover:bg-gradient-ocean rounded-lg backdrop-blur-sm animate-staggered-fade-in delay-1 magnetic-hover border border-white/20">
+        <button type="button" className="text-xs text-white hover:text-white transition-smooth px-3 py-2 bg-card/10 hover:bg-gradient-ocean rounded-lg backdrop-blur-sm animate-staggered-fade-in delay-1 magnetic-hover border border-white/20">
           🔧 Planned Maintenance
         </button>
-        <button className="text-xs text-white hover:text-white transition-smooth px-3 py-2 bg-white/10 hover:bg-gradient-emerald rounded-lg backdrop-blur-sm animate-staggered-fade-in delay-2 magnetic-hover border border-white/20">
+        <button type="button" className="text-xs text-white hover:text-white transition-smooth px-3 py-2 bg-white/10 hover:bg-gradient-emerald rounded-lg backdrop-blur-sm animate-staggered-fade-in delay-2 magnetic-hover border border-white/20">
           ⚡ Installation Services
         </button>
       </div>

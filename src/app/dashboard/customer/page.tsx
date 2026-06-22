@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/common/Header';
 import Icon from '@/components/ui/AppIcon';
 import ReviewModal from '@/components/common/ReviewModal';
+import ErrorBoundary from '@/components/common/ErrorBoundary';
 import { bookingService } from '@/services/bookingService';
 import Link from 'next/link';
 
@@ -60,7 +61,7 @@ export default function CustomerDashboardPage() {
     try { await signOut(); router.push('/'); } catch (error) { console.error('Sign out error:', error); }
   };
 
-  const todayStr = new Date().toLocaleDateString('en-NG', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+  const todayStr = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
 
   const statusColors: Record<string, { bg: string; text: string }> = {
     completed:   { bg: '#0d1a0d', text: '#22C55E' },
@@ -114,6 +115,7 @@ export default function CustomerDashboardPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#0a0710' }}>
       <Header />
+      <ErrorBoundary>
       <div className="flex pt-16" style={{ minHeight: 'calc(100vh - 64px)' }}>
 
         {/* Mobile sidebar backdrop */}
@@ -255,6 +257,7 @@ export default function CustomerDashboardPage() {
           </div>
         </main>
       </div>
+      </ErrorBoundary>
 
       {user && (
         <ReviewModal isOpen={isReviewOpen} onClose={() => setIsReviewOpen(false)}

@@ -1,4 +1,5 @@
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@/lib/supabase/client';
+const supabase = createClient();
 import { Booking } from '@/types';
 import { notificationService } from './notificationService';
 
@@ -6,14 +7,14 @@ export const bookingService = {
     async createBooking(booking: Partial<Booking>) {
         // Prevent double booking
         if (booking.technician_id && booking.scheduled_date) {
-            const isAvailable = await this.checkAvailability(
+            const result = await this.checkAvailability(
                 booking.technician_id,
                 booking.scheduled_date,
-                booking.duration_hours || 2 // Use provided duration or default to 2 hours
+                booking.duration_hours || 2
             );
 
-            if (!isAvailable) {
-                throw new Error('Technician is not available at this time');
+            if (!result.available) {
+                throw new Error(result.error || 'Technician is not available at this time');
             }
         }
 
@@ -25,9 +26,15 @@ export const bookingService = {
 
         if (error) throw error;
 
-        // Send dummy notification
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('email')
+            .eq('id', data.customer_id)
+            .maybeSingle();
+        const customerEmail = profile?.email || '';
+
         try {
-            await notificationService.sendBookingConfirmation('user@example.com', data);
+            await notificationService.sendBookingConfirmation(customerEmail, data);
         } catch (e) {
             console.error('Failed to send notification', e);
         }
@@ -35,12 +42,11 @@ export const bookingService = {
         return data as Booking;
     },
 
-    async checkAvailability(technicianId: string, scheduledDate: string, durationHours: number = 2): Promise<boolean> {
+    async checkAvailability(technicianId: string, scheduledDate: string, durationHours: number = 2): Promise<{available: boolean; error?: string}> {
         const dateObj = new Date(scheduledDate);
         const newStart = dateObj.getTime();
         const newEnd = newStart + (durationHours * 60 * 60 * 1000);
 
-        // 1. Check Provider's Weekly Schedule
         const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const dayOfWeek = days[dateObj.getDay()];
 
@@ -49,22 +55,17 @@ export const bookingService = {
             .select('*')
             .eq('technician_id', technicianId)
             .eq('day_of_week', dayOfWeek)
-            .single();
+            .maybeSingle();
 
-        if (scheduleError && scheduleError.code !== 'PGRST116') { // PGRST116 is "no rows found"
+        if (scheduleError) {
             console.error('Error fetching provider schedule:', scheduleError);
-            // Fallback: If no schedule defined, assume unavailable or default hours?
-            // Let's assume unavailable if they haven't set a schedule, or maybe default 9-5?
-            // Sticking to "must have schedule" for now to enforce usage.
-            return false;
+            return { available: false, error: 'Unable to verify availability' };
         }
 
         if (!schedule || !schedule.is_available) {
-            return false; // Technician not working this day
+            return { available: false };
         }
 
-        // Parse schedule times
-        // format is HH:MM:SS
         const [startH, startM] = schedule.start_time.split(':').map(Number);
         const [endH, endM] = schedule.end_time.split(':').map(Number);
 
@@ -74,12 +75,10 @@ export const bookingService = {
         const scheduleEnd = new Date(dateObj);
         scheduleEnd.setHours(endH, endM, 0, 0);
 
-        // Check if booking fits within working hours
         if (newStart < scheduleStart.getTime() || newEnd > scheduleEnd.getTime()) {
-            return false;
+            return { available: false };
         }
 
-        // 2. Check Existing Bookings (Overlaps)
         const dayStart = new Date(scheduledDate);
         dayStart.setHours(0, 0, 0, 0);
         const dayEnd = new Date(scheduledDate);
@@ -95,23 +94,22 @@ export const bookingService = {
 
         if (error) {
             console.error('Error checking existing bookings:', error);
-            throw error;
+            return { available: false, error: 'Unable to check booking conflicts' };
         }
 
         if (bookings && bookings.length > 0) {
             for (const existingBooking of bookings) {
                 const existingStart = new Date(existingBooking.scheduled_date).getTime();
-                const existingDuration = (existingBooking as any).duration_hours || 2; // Use stored duration or default to 2 hours
+                const existingDuration = existingBooking.duration_hours || 2;
                 const existingEnd = existingStart + (existingDuration * 60 * 60 * 1000);
 
-                // Overlap exists if (StartA < EndB) and (EndA > StartB)
                 if (existingStart < newEnd && existingEnd > newStart) {
-                    return false; // Time conflict found
+                    return { available: false };
                 }
             }
         }
 
-        return true;
+        return { available: true };
     },
 
     async getBookingsByCustomer(customerId: string) {
@@ -136,29 +134,44 @@ export const bookingService = {
         return data;
     },
 
-    async getBookingById(bookingId: string) {
+    async getBookingById(bookingId: string): Promise<Booking | null> {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error('Not authenticated');
+
         const { data, error } = await supabase
             .from('bookings')
             .select('*, profiles:customer_id(full_name, avatar_url, email), services:service_id(name), technician:technician_id(full_name)')
             .eq('id', bookingId)
-            .single();
+            .maybeSingle();
 
         if (error) throw error;
-        return data;
+        if (!data) return null;
+
+        if (data.customer_id !== user.id && data.technician_id !== user.id) {
+            throw new Error('Unauthorized: you do not have access to this booking');
+        }
+
+        return data as Booking;
     },
 
     async updateBookingStatus(bookingId: string, newStatus: 'pending' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled') {
-        // Validate status transitions
-        const booking = await this.getBookingById(bookingId);
-        const currentStatus = booking.status;
+        const { data: currentBooking, error: fetchError } = await supabase
+            .from('bookings')
+            .select('status')
+            .eq('id', bookingId)
+            .maybeSingle();
 
-        // Define valid transitions
+        if (fetchError) throw fetchError;
+        if (!currentBooking) throw new Error('Booking not found');
+
+        const currentStatus = currentBooking.status;
+
         const validTransitions: Record<string, string[]> = {
             'pending': ['confirmed', 'cancelled'],
             'confirmed': ['in_progress', 'cancelled'],
             'in_progress': ['completed', 'cancelled'],
-            'completed': [], // Cannot transition from completed
-            'cancelled': [] // Cannot transition from cancelled
+            'completed': [],
+            'cancelled': []
         };
 
         if (!validTransitions[currentStatus]?.includes(newStatus) && currentStatus !== newStatus) {

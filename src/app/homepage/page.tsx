@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import Image from 'next/image';
 import Header from '@/components/common/Header';
 import AuthRedirect from '@/components/common/AuthRedirect';
 import HeroSearch from './components/HeroSearch';
@@ -15,12 +16,7 @@ import Link from 'next/link';
 import Icon from '@/components/ui/AppIcon';
 
 export default function Homepage() {
-  const [scrollY, setScrollY] = useState(0);
-
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -30,10 +26,10 @@ export default function Homepage() {
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
+    // querySelector workaround for scroll-animate sections
     document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
       observer.disconnect();
     };
   }, []);
@@ -118,40 +114,20 @@ export default function Homepage() {
 
                 {/* Headline — staggered lines */}
                 <h1
-                  className="leading-[0.9] mb-2"
-                  style={{
-                    fontSize: 'clamp(52px, 6.5vw, 96px)',
-                    fontFamily: '"Space Grotesk", sans-serif',
-                    fontWeight: 700,
-                    letterSpacing: '-3px',
-                    color: '#ffffff',
-                  }}
-                >
-                  Kitchen
-                </h1>
-                <h1
-                  className="leading-[0.9] mb-2"
-                  style={{
-                    fontSize: 'clamp(52px, 6.5vw, 96px)',
-                    fontFamily: '"Space Grotesk", sans-serif',
-                    fontWeight: 700,
-                    letterSpacing: '-3px',
-                    color: '#ffffff',
-                  }}
-                >
-                  Experts<span style={{ color: '#9333ea' }}>.</span>
-                </h1>
-                <h1
                   className="leading-[0.9] mb-8"
                   style={{
                     fontSize: 'clamp(52px, 6.5vw, 96px)',
                     fontFamily: '"Space Grotesk", sans-serif',
                     fontWeight: 700,
                     letterSpacing: '-3px',
-                    color: '#9333ea',
+                    color: '#ffffff',
                   }}
                 >
-                  At Your Door.
+                  <span>Kitchen</span>
+                  <br />
+                  <span>Experts<span style={{ color: '#9333ea' }}>.</span></span>
+                  <br />
+                  <span style={{ color: '#9333ea' }}>At Your Door.</span>
                 </h1>
 
                 <p
@@ -228,9 +204,11 @@ export default function Homepage() {
                 />
 
                 {/* The massive logo itself */}
-                <img
+                <Image
                   src="/assets/images/logo.png"
                   alt="KitchenServices"
+                  width={120}
+                  height={40}
                   className="relative object-contain animate-float-slow"
                   style={{
                     width: '62.5%', height: '62.5%', maxWidth: '400px', maxHeight: '400px',

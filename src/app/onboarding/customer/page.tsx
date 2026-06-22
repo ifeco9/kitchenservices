@@ -37,7 +37,7 @@ export default function CustomerOnboardingPage() {
         phone,
         address,
         city,
-        postcode,
+        state: postcode,
         preferred_contact: preferredContact,
         avatar_url: avatarUrl || undefined
       });

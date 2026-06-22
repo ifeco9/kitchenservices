@@ -109,7 +109,7 @@ export default function CustomerBookingsPage() {
               <Icon name="CalendarIcon" size={64} className="text-text-secondary mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-text-primary mb-2">No bookings yet</h3>
               <p className="text-text-secondary mb-6">
-                You haven't booked any services yet. Start by booking a service.
+                You haven&apos;t booked any services yet. Start by booking a service.
               </p>
               <button
                 onClick={() => router.push('/book-a-service')}

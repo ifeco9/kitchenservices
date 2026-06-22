@@ -1,20 +1,20 @@
 'use client';
 
 import React from 'react';
-import * as HeroIcons from '@heroicons/react/24/outline';
+import * as HeroIconsOutline from '@heroicons/react/24/outline';
 import * as HeroIconsSolid from '@heroicons/react/24/solid';
 import { QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
 
 type IconVariant = 'outline' | 'solid';
 
 interface IconProps {
-    name: string; // Changed to string to accept dynamic values
+    name: string;
     variant?: IconVariant;
     size?: number;
     className?: string;
+    style?: React.CSSProperties;
     onClick?: () => void;
     disabled?: boolean;
-    [key: string]: any;
 }
 
 function Icon({
@@ -26,7 +26,7 @@ function Icon({
     disabled = false,
     ...props
 }: IconProps) {
-    const iconSet = variant === 'solid' ? HeroIconsSolid : HeroIcons;
+    const iconSet = variant === 'solid' ? HeroIconsSolid : HeroIconsOutline;
     const IconComponent = iconSet[name as keyof typeof iconSet] as React.ComponentType<any>;
 
     if (!IconComponent) {
@@ -36,6 +36,7 @@ function Icon({
                 height={size}
                 className={`text-gray-400 ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}
                 onClick={disabled ? undefined : onClick}
+                aria-disabled={disabled || undefined}
                 {...props}
             />
         );
@@ -47,6 +48,7 @@ function Icon({
             height={size}
             className={`${disabled ? 'opacity-50 cursor-not-allowed' : onClick ? 'cursor-pointer hover:opacity-80' : ''} ${className}`}
             onClick={disabled ? undefined : onClick}
+            aria-disabled={disabled || undefined}
             {...props}
         />
     );

@@ -1,4 +1,5 @@
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@/lib/supabase/client';
+const supabase = createClient();
 import { Review } from '@/types';
 
 export const reviewService = {
@@ -14,13 +15,20 @@ export const reviewService = {
     },
 
     async createReview(review: Partial<Review>) {
-        // Check for duplicate review
-        const { data: existing } = await supabase
+        if (!review.rating || review.rating < 1 || review.rating > 5) {
+            throw new Error('Rating must be between 1 and 5');
+        }
+        if (review.comment && review.comment.length > 1000) {
+            throw new Error('Comment must not exceed 1000 characters');
+        }
+
+        const { data: existing, error: checkError } = await supabase
             .from('reviews')
             .select('id')
             .eq('booking_id', review.booking_id)
-            .single();
+            .maybeSingle();
 
+        if (checkError) throw new Error('Unable to verify duplicate review');
         if (existing) {
             throw new Error('You have already reviewed this booking');
         }
@@ -36,9 +44,9 @@ export const reviewService = {
     },
 
     async getAverageRating(technicianId: string): Promise<{ average: number; count: number }> {
-        const { data, error } = await supabase
+        const { data, error, count } = await supabase
             .from('reviews')
-            .select('rating')
+            .select('rating', { count: 'exact', head: false })
             .eq('technician_id', technicianId);
 
         if (error) throw error;
@@ -51,15 +59,45 @@ export const reviewService = {
         const average = sum / data.length;
 
         return {
-            average: Math.round(average * 10) / 10, // Round to 1 decimal
-            count: data.length
+            average: Math.round(average * 10) / 10,
+            count: count || data.length
         };
     },
 
     async updateReview(reviewId: string, updates: Partial<Review>) {
+        const allowedFields: (keyof Review)[] = ['rating', 'comment'];
+        const filteredUpdates: Partial<Review> = {};
+        for (const key of allowedFields) {
+            if (key in updates) {
+                (filteredUpdates as any)[key] = updates[key];
+            }
+        }
+
+        if ('rating' in filteredUpdates) {
+            const rating = filteredUpdates.rating;
+            if (rating !== undefined && (rating < 1 || rating > 5)) {
+                throw new Error('Rating must be between 1 and 5');
+            }
+        }
+        if ('comment' in filteredUpdates && filteredUpdates.comment && filteredUpdates.comment.length > 1000) {
+            throw new Error('Comment must not exceed 1000 characters');
+        }
+
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error('Not authenticated');
+
+        const { data: existing } = await supabase
+            .from('reviews')
+            .select('customer_id')
+            .eq('id', reviewId)
+            .maybeSingle();
+
+        if (!existing) throw new Error('Review not found');
+        if (existing.customer_id !== user.id) throw new Error('Unauthorized: you can only update your own reviews');
+
         const { data, error } = await supabase
             .from('reviews')
-            .update(updates)
+            .update(filteredUpdates)
             .eq('id', reviewId)
             .select()
             .single();

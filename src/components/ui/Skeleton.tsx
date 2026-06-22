@@ -55,9 +55,9 @@ export default function Skeleton({
 }
 
 // Skeleton Card Component
-export function SkeletonCard() {
+export function SkeletonCard({ className = '' }: { className?: string }) {
     return (
-        <div className="bg-white rounded-xl p-6 shadow-card">
+        <div className={`bg-card rounded-xl p-6 shadow-card ${className}`}>
             <div className="flex items-center space-x-4 mb-4">
                 <Skeleton variant="circular" width="48px" height="48px" />
                 <div className="flex-1">
@@ -72,11 +72,11 @@ export function SkeletonCard() {
 }
 
 // Skeleton List Component
-export function SkeletonList({ count = 3 }: { count?: number }) {
+export function SkeletonList({ count = 3, className = '' }: { count?: number; className?: string }) {
     return (
-        <div className="space-y-4">
+        <div className={`space-y-4 ${className}`}>
             {Array.from({ length: count }).map((_, index) => (
-                <div key={index} className="flex items-center space-x-4 p-4 bg-white rounded-lg shadow-card">
+                <div key={index} className="flex items-center space-x-4 p-4 bg-card rounded-lg shadow-card">
                     <Skeleton variant="circular" width="56px" height="56px" />
                     <div className="flex-1">
                         <Skeleton variant="text" width="70%" />

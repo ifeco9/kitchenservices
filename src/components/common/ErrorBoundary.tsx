@@ -29,7 +29,6 @@ export class ErrorBoundary extends Component<Props, State> {
 
     handleReset = () => {
         this.setState({ hasError: false, error: null });
-        window.location.reload();
     };
 
     render() {
@@ -48,7 +47,7 @@ export class ErrorBoundary extends Component<Props, State> {
                             Something went wrong
                         </h1>
                         <p className="text-text-secondary mb-6">
-                            We're sorry, but something unexpected happened. Please try refreshing the page.
+                            We&apos;re sorry, but something unexpected happened. Please try refreshing the page.
                         </p>
                         {this.state.error && (
                             <details className="mb-6 text-left">
@@ -62,7 +61,7 @@ export class ErrorBoundary extends Component<Props, State> {
                         )}
                         <button
                             onClick={this.handleReset}
-                            className="w-full py-3 px-6 bg-accent text-accent-foreground rounded-lg hover:bg-success transition-smooth font-semibold"
+                            className="w-full py-3 px-6 bg-accent text-accent-foreground rounded-lg hover:bg-accent/90 transition-smooth font-semibold"
                         >
                             Reload Page
                         </button>

@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useState, useEffect, useMemo } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Icon from '@/components/ui/AppIcon';
 import FilterSidebar, { type FilterState } from './FilterSidebar';
 import SearchBar from './SearchBar';
@@ -17,6 +17,7 @@ import { profileService } from '@/services/profileService';
 
 const FindATechnicianInteractive = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [isHydrated, setIsHydrated] = useState(false);
 
   // Initialize state from URL params
@@ -44,15 +45,8 @@ const FindATechnicianInteractive = () => {
 
   useEffect(() => {
     setIsHydrated(true);
-    // If params changed, we might want to refetch or just rely on local filter
-    if (initialQuery || initialLocation) {
-      // Option A: Set state (done above)
-      // Option B: Trigger fetch with these params if fetchTechnicians accepts them
-    }
     fetchTechnicians();
-  }, [searchParams]); // Add searchParams dependency or keep empty if initial only. 
-  // Better to just init state and let the filter logic handle it if it's client side.
-  // displayedTechnicians uses searchQuery, so setting it initally works.
+  }, []);
 
   const fetchTechnicians = async () => {
     setLoading(true);
@@ -93,15 +87,69 @@ const FindATechnicianInteractive = () => {
     setComparedTechnicians([]);
   };
 
-  // Filter logic (client-side for prototype)
-  const displayedTechnicians = technicians.filter(tech => {
-    // Basic text search
-    if (searchQuery && tech.full_name && !tech.full_name.toLowerCase().includes(searchQuery.toLowerCase())) {
-      return false;
-    }
-    // Filter checks can be added here
-    return true;
-  });
+  const removeFilter = (filter: string) => {
+    setFilters(prev => ({
+      ...prev,
+      applianceTypes: prev.applianceTypes.filter(f => f !== filter),
+      availability: prev.availability.filter(f => f !== filter),
+      certifications: prev.certifications.filter(f => f !== filter),
+    }));
+  };
+
+  // Sync search params to URL
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (searchQuery) params.set('query', searchQuery);
+    if (location) params.set('location', location);
+    router.replace(`/find-a-technician?${params.toString()}`, { scroll: false });
+  }, [searchQuery, location, router]);
+
+  const displayedTechnicians = useMemo(() => {
+    return technicians.filter(tech => {
+      // Basic text search
+      if (searchQuery && tech.full_name && !tech.full_name.toLowerCase().includes(searchQuery.toLowerCase())) {
+        return false;
+      }
+
+      // Location filter
+      if (location && tech.address && !tech.address.toLowerCase().includes(location.toLowerCase())) {
+        return false;
+      }
+
+      // Appliance type filter
+      if (filters.applianceTypes.length > 0) {
+        const techSpecializations = tech.specializations?.map(s => s.toLowerCase()) || [];
+        const hasMatch = filters.applianceTypes.some(type =>
+          techSpecializations.some(spec => spec.includes(type.toLowerCase()))
+        );
+        if (!hasMatch) return false;
+      }
+
+      // Availability filter
+      if (filters.availability.length > 0) {
+        if (!tech.availability_status || !filters.availability.includes(tech.availability_status)) {
+          return false;
+        }
+      }
+
+      // Price range filter
+      const techRate = tech.hourly_rate || 0;
+      if (techRate < filters.priceRange[0] || techRate > filters.priceRange[1]) {
+        return false;
+      }
+
+      // Certification filter
+      if (filters.certifications.length > 0) {
+        const techCerts = tech.certifications?.map(c => c.name.toLowerCase()) || [];
+        const hasCert = filters.certifications.some(cert =>
+          techCerts.some(tc => tc.includes(cert.toLowerCase()))
+        );
+        if (!hasCert) return false;
+      }
+
+      return true;
+    });
+  }, [technicians, searchQuery, location, filters]);
 
   const comparedTechnicianData = technicians.filter((tech) =>
     comparedTechnicians.includes(tech.id)
@@ -203,7 +251,7 @@ const FindATechnicianInteractive = () => {
                         className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium text-primary bg-accent/10 rounded-full border border-accent/20">
 
                         <span>{filter}</span>
-                        <button className="hover:text-error transition-smooth">
+                        <button onClick={() => removeFilter(filter)} className="hover:text-error transition-smooth">
                           <Icon name="XMarkIcon" size={14} />
                         </button>
                       </span>
@@ -244,7 +292,7 @@ const FindATechnicianInteractive = () => {
                   Try adjusting your filters or expanding your search area.
                 </p>
                 <p className="text-sm text-text-secondary mb-8">
-                  Our network is growing — if no one is available near you, book via our general form and we'll match you manually.
+                  Our network is growing — if no one is available near you, book via our general form and we&apos;ll match you manually.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                   <button

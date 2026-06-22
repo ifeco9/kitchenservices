@@ -8,7 +8,6 @@ import { profileService } from '@/services/profileService';
 import Header from '@/components/common/Header';
 import ImageUpload from '@/components/common/ImageUpload';
 import { onboardingService } from '@/services/onboardingService';
-import { supabase } from '@/lib/supabaseClient';
 import toast, { Toaster } from 'react-hot-toast';
 
 export default function ProviderOnboardingPage() {
@@ -116,23 +115,14 @@ export default function ProviderOnboardingPage() {
     }
   };
 
-  // Check if technician profile already exists
-  // If it does AND we're not in edit mode, redirect to dashboard
   useEffect(() => {
     const checkTechnicianProfile = async () => {
       try {
-        const { data, error } = await supabase
-          .from('technicians')
-          .select('id')
-          .eq('id', user?.id)
-          .single();
-
-        if (data && !error) {
-          // Profile exists — send them to the profile edit page instead
+        const existing = await onboardingService.getTechnicianProfile(user!.id);
+        if (existing) {
           router.push('/dashboard/provider/profile');
         }
-      } catch (err) {
-        // Profile doesn't exist yet, proceed with onboarding
+      } catch  {
         console.log('No technician profile yet — showing onboarding form');
       }
     };
@@ -376,7 +366,7 @@ export default function ProviderOnboardingPage() {
 
               <div className="mb-8">
                 <label htmlFor="serviceRadius" className="block text-sm font-medium text-text-secondary mb-2">
-                  Service Radius (miles) *
+                  Service Radius (km) *
                 </label>
                 <select
                   id="serviceRadius"
@@ -384,13 +374,13 @@ export default function ProviderOnboardingPage() {
                   onChange={(e) => setServiceRadius(e.target.value)}
                   className="w-full px-4 py-3 bg-surface border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-smooth"
                 >
-                  <option value="5">5 miles</option>
-                  <option value="10">10 miles</option>
-                  <option value="15">15 miles</option>
-                  <option value="20">20 miles</option>
-                  <option value="25">25 miles</option>
-                  <option value="30">30 miles</option>
-                  <option value="50">50 miles</option>
+                  <option value="5">5 km</option>
+                  <option value="10">10 km</option>
+                  <option value="15">15 km</option>
+                  <option value="20">20 km</option>
+                  <option value="25">25 km</option>
+                  <option value="30">30 km</option>
+                  <option value="50">50 km</option>
                 </select>
               </div>
 

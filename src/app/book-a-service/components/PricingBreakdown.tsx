@@ -56,7 +56,7 @@ const PricingBreakdown = ({ callOutFee, hourlyRate, estimatedHours, partsEstimat
           <Icon name="InformationCircleIcon" size={20} className="text-info flex-shrink-0 mt-0.5" />
           <div className="flex-1">
             <p className="text-xs text-text-primary">
-              <strong>Final cost may vary</strong> based on actual time spent and parts required. You'll receive a detailed
+              <strong>Final cost may vary</strong> based on actual time spent and parts required. You&apos;ll receive a detailed
               invoice after service completion.
             </p>
           </div>

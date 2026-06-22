@@ -28,7 +28,7 @@ interface ServiceDetails {
 // However, the UI components (TechnicianSelectionCard) might expect specific props.
 // Let's assume we pass the global Technician (with some extensions if needed)
 interface UITechnician {
-  id: number;
+  id: string;
   name: string;
   image: string;
   alt: string;
@@ -85,8 +85,8 @@ const BookingInteractive = () => {
         // Map global Technician type to UITechnician
         // Note: type assertion needed as data contains Technician + possible extras
         const mappedTechnicians: UITechnician[] = data.map((tech: any) => ({
-          id: parseInt(tech.id) || Math.floor(Math.random() * 1000), // Helper for UI keys if UUID not supported by UI
-          originalId: tech.id, // Important: Use UUID
+          id: tech.id,
+          originalId: tech.id,
           name: tech.full_name,
           image: tech.avatar_url || '/assets/images/technicians/default.jpg',
           alt: tech.full_name,
@@ -169,7 +169,7 @@ const BookingInteractive = () => {
         technician_id: techId,
         service_id: service.id,
         status: 'confirmed',
-        scheduled_date: new Date(`${selectedDate}T${selectedTime}`).toISOString(),
+        scheduled_date: selectedDate && selectedTime ? new Date(`${selectedDate}T${selectedTime}`).toISOString() : new Date().toISOString(),
         total_amount: calculateTotal(),
         description: `${serviceDetails.applianceType} - ${serviceDetails.problemDescription}`,
         address: address ? `${address.addressLine1}, ${address.addressLine2 ? address.addressLine2 + ', ' : ''}${address.city}, ${address.postcode}` : 'Address not provided',
@@ -236,7 +236,7 @@ const BookingInteractive = () => {
     <div className="min-h-screen bg-background">
       {/* Progress Steps — shown on all steps 1-5 */}
       {currentStep < 6 &&
-        <div className="bg-card border-b border-border sticky top-16 z-40">
+        <div className="bg-card border-b border-border sticky top-16 z-40" role="progressbar" aria-valuenow={currentStep} aria-valuemin={1} aria-valuemax={6}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex items-center justify-between overflow-x-auto pb-1">
               {steps.map((step, index) =>
@@ -281,7 +281,7 @@ const BookingInteractive = () => {
           <div className="max-w-2xl mx-auto">
             <div className="mb-8">
               <h1 className="text-3xl font-bold text-text-primary mb-2">Service Details</h1>
-              <p className="text-base text-text-secondary">Tell us about your appliance and the issue you're experiencing</p>
+              <p className="text-base text-text-secondary">Tell us about your appliance and the issue you&apos;re experiencing</p>
             </div>
             <ServiceDetailsForm onNext={handleServiceDetailsSubmit} />
           </div>
@@ -419,7 +419,7 @@ const BookingInteractive = () => {
               <div className="lg:col-span-2">
                 <PaymentForm onSubmit={handlePaymentSubmit} totalAmount={calculateTotal()} />
                 {submitError && (
-                  <div className="mt-4 p-4 bg-red-50 text-red-600 rounded-md border border-red-200">
+                  <div role="alert" className="mt-4 p-4 bg-red-50 text-red-600 rounded-md border border-red-200">
                     {submitError}
                   </div>
                 )}

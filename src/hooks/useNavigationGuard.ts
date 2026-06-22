@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
@@ -42,9 +44,7 @@ export const useNavigationGuard = (
         }
 
         // Case B: Has Role -> Check Profile Completeness (Onboarding)
-        // We use 'phone' as a proxy for completed onboarding for both customers and providers
-        // (Assuming provider onboarding also captures some profile data like phone/address)
-        const isProfileComplete = !!user.profile?.phone;
+        const isProfileComplete = !!user.profile?.phone || !!user.profile?.address || !!user.profile?.city;
 
         if (!isProfileComplete) {
             // Must go to Onboarding

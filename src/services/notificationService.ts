@@ -1,16 +1,25 @@
+import { Booking } from '@/types';
 import { emailService } from './emailService';
 
+function escapeHtml(str: string): string {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
+
+function extractBookingDetails(booking: Booking) {
+    return {
+        service: escapeHtml(booking.service_id || 'Kitchen Appliance Service'),
+        technician: escapeHtml((booking as any).technician_name || 'Assigned Technician'),
+        date: new Date(booking.scheduled_date).toLocaleDateString(),
+        time: new Date(booking.scheduled_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        address: escapeHtml(booking.address || 'Address not provided'),
+        total: booking.total_amount?.toFixed(2) || '0.00'
+    };
+}
+
 export const notificationService = {
-    async sendBookingConfirmation(email: string, booking: any) {
+    async sendBookingConfirmation(email: string, booking: Booking) {
         try {
-            const bookingDetails = {
-                service: booking.service_id || 'Kitchen Appliance Service',
-                technician: booking.technician_name || 'Assigned Technician',
-                date: new Date(booking.scheduled_date).toLocaleDateString(),
-                time: new Date(booking.scheduled_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                address: booking.address || 'Address not provided',
-                total: booking.total_amount?.toFixed(2) || '0.00'
-            };
+            const bookingDetails = extractBookingDetails(booking);
 
             const result = await emailService.sendEmail({
                 to: email,
@@ -29,10 +38,10 @@ export const notificationService = {
         }
     },
 
-    async sendStatusUpdate(email: string, status: string, booking: any) {
+    async sendStatusUpdate(email: string, status: string, booking: Booking) {
         try {
             const bookingDetails = {
-                service: booking.service_name || 'Kitchen Appliance Service',
+                service: escapeHtml((booking as any).service_name || 'Kitchen Appliance Service'),
                 date: new Date(booking.scheduled_date).toLocaleDateString(),
                 time: new Date(booking.scheduled_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             };
@@ -42,6 +51,10 @@ export const notificationService = {
                 subject: `Booking Status Update: ${status}`,
                 html: emailService.templates.bookingStatusUpdate('Customer', status, bookingDetails)
             });
+
+            if (!result.success) {
+                console.warn('Email notification failed:', result.message);
+            }
 
             return result;
         } catch (error) {
@@ -57,6 +70,10 @@ export const notificationService = {
                 subject: 'Welcome to Kitchen Services!',
                 html: emailService.templates.welcomeEmail(userName, role)
             });
+
+            if (!result.success) {
+                console.warn('Email notification failed:', result.message);
+            }
 
             return result;
         } catch (error) {

@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import Icon from '@/components/ui/AppIcon';
 import NotificationDropdown from '@/components/common/NotificationDropdown';
@@ -14,6 +16,7 @@ const Header = ({ className = '' }: HeaderProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { user, loading, signOut } = useAuth();
+  const router = useRouter();
 
   // Handle scroll effect
   useEffect(() => {
@@ -65,9 +68,11 @@ const Header = ({ className = '' }: HeaderProps) => {
           {/* Logo */}
           <Link href="/homepage" className="flex items-center space-x-3 hover:opacity-80 transition-opacity group">
             <div className="flex items-center justify-center w-12 h-12 rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-300">
-              <img
+              <Image
                 src="/assets/images/logo.png"
                 alt="KitchenServices Logo"
+                width={48}
+                height={48}
                 className="w-full h-full object-cover scale-100"
               />
             </div>
@@ -78,7 +83,7 @@ const Header = ({ className = '' }: HeaderProps) => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-1">
+          <nav className="hidden lg:flex items-center space-x-1" aria-label="Main navigation">
             {navigationItems.map((item) => (
               <Link
                 key={item.href}
@@ -97,16 +102,16 @@ const Header = ({ className = '' }: HeaderProps) => {
               <div className="relative">
                 <div className="flex items-center space-x-2">
                   {/* Notification Dropdown */}
-                  <NotificationDropdown />
+                  {user && <NotificationDropdown />}
 
                   <button
                     className="flex items-center space-x-2 px-4 py-2.5 text-sm font-semibold text-accent-foreground bg-accent rounded-lg shadow-cta focus-ring btn-hover"
                     onClick={() => {
                       // In a real app, this would open a dropdown menu
                       if (user.profile?.role === 'technician') {
-                        window.location.href = '/dashboard/provider';
+                        router.push('/dashboard/provider');
                       } else {
-                        window.location.href = '/dashboard/customer';
+                        router.push('/dashboard/customer');
                       }
                     }}
                   >
@@ -117,7 +122,7 @@ const Header = ({ className = '' }: HeaderProps) => {
                     className="flex items-center space-x-2 px-4 py-2.5 text-sm font-semibold text-error-foreground bg-error rounded-lg shadow-cta focus-ring btn-hover"
                     onClick={async () => {
                       await signOut();
-                      window.location.href = '/';
+                      router.push('/');
                     }}
                   >
                     <Icon name="ArrowRightStartOnRectangleIcon" size={18} className="mr-2" />
@@ -174,9 +179,9 @@ const Header = ({ className = '' }: HeaderProps) => {
                     onClick={() => {
                       setIsMobileMenuOpen(false);
                       if (user.profile?.role === 'technician') {
-                        window.location.href = '/dashboard/provider';
+                        router.push('/dashboard/provider');
                       } else {
-                        window.location.href = '/dashboard/customer';
+                        router.push('/dashboard/customer');
                       }
                     }}
                     className="flex items-center justify-center w-full px-6 py-3 mt-4 text-base font-semibold text-accent-foreground bg-accent rounded-lg shadow-cta btn-hover"
@@ -188,7 +193,7 @@ const Header = ({ className = '' }: HeaderProps) => {
                     onClick={async () => {
                       setIsMobileMenuOpen(false);
                       await signOut();
-                      window.location.href = '/';
+                      router.push('/');
                     }}
                     className="flex items-center justify-center w-full px-6 py-3 mt-2 text-base font-semibold text-error bg-error/10 rounded-lg hover:bg-error/20 transition-all duration-300"
                   >

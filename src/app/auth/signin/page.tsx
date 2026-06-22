@@ -28,8 +28,9 @@ export default function SignInPage() {
       await signIn(email, password);
       // After successful sign in, redirect to homepage where role will be properly determined
       router.push('/homepage');
-    } catch (err) {
-      setError('Invalid email or password. Please try again.');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Invalid email or password. Please try again.';
+      setError(message);
       console.error('Sign in error:', err);
     } finally {
       setIsLoading(false);
@@ -55,7 +56,7 @@ export default function SignInPage() {
             </div>
 
             {error && (
-              <div className="mb-6 p-4 bg-error/20 backdrop-blur-sm text-white rounded-xl border border-error/30 animate-bounce-in">
+              <div role="alert" className="mb-6 p-4 bg-error/20 backdrop-blur-sm text-white rounded-xl border border-error/30 animate-bounce-in">
                 <div className="flex items-center space-x-2">
                   <span className="text-lg">⚠️</span>
                   <span className="font-heading">{error}</span>
@@ -105,7 +106,7 @@ export default function SignInPage() {
 
             <div className="mt-8 text-center space-y-4">
               <p className="text-white/70 font-heading">
-                Don't have an account?{' '}
+                Don&apos;t have an account?{' '}
                 <a href="/auth/signup" className="text-white font-semibold hover:text-accent transition-smooth gradient-text-ocean">
                   Sign up
                 </a>

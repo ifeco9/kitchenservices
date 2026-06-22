@@ -1,9 +1,10 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback, ReactNode } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { supabase } from '@/lib/supabaseClient';
-import { Notification } from '@/types';
+import { createClient } from '@/lib/supabase/client';
+const supabase = createClient();
+import { Notification, NotificationType } from '@/types';
 import toast from 'react-hot-toast';
 
 interface NotificationContextType {
@@ -22,7 +23,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     const { user } = useAuth();
 
     // Fetch notifications
-    const fetchNotifications = async () => {
+    const fetchNotifications = useCallback(async () => {
         if (!user?.id) return;
 
         try {
@@ -38,10 +39,9 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         } catch (error) {
             console.error('Error fetching notifications:', error);
         }
-    };
+    }, [user?.id]);
 
-    // Mark notification as read
-    const markAsRead = async (notificationId: string) => {
+    const markAsRead = useCallback(async (notificationId: string) => {
         try {
             const { error } = await supabase
                 .from('notifications')
@@ -56,10 +56,9 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         } catch (error) {
             console.error('Error marking notification as read:', error);
         }
-    };
+    }, []);
 
-    // Mark all notifications as read
-    const markAllAsRead = async () => {
+    const markAllAsRead = useCallback(async () => {
         if (!user?.id) return;
 
         try {
@@ -77,10 +76,9 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         } catch (error) {
             console.error('Error marking all notifications as read:', error);
         }
-    };
+    }, [user?.id]);
 
-    // Delete notification
-    const deleteNotification = async (notificationId: string) => {
+    const deleteNotification = useCallback(async (notificationId: string) => {
         try {
             const { error } = await supabase
                 .from('notifications')
@@ -93,7 +91,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         } catch (error) {
             console.error('Error deleting notification:', error);
         }
-    };
+    }, []);
 
     // Set up real-time subscription
     useEffect(() => {
@@ -148,8 +146,10 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
                     filter: `user_id=eq.${user.id}`
                 },
                 (payload) => {
-                    const deletedId = payload.old.id;
-                    setNotifications(prev => prev.filter(n => n.id !== deletedId));
+                    const deletedId = payload.old?.id;
+                    if (deletedId) {
+                        setNotifications(prev => prev.filter(n => n.id !== deletedId));
+                    }
                 }
             )
             .subscribe();
@@ -186,7 +186,7 @@ export function useNotifications() {
 }
 
 // Helper function to get icon for notification type
-function getNotificationIcon(type: string): string {
+function getNotificationIcon(type: NotificationType): string {
     switch (type) {
         case 'booking_update':
             return '📅';

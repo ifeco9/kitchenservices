@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { useAuth } from '@/context/AuthContext';
@@ -31,8 +32,13 @@ export default function SignUpPage() {
       return;
     }
 
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters');
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters with one uppercase letter and one number');
+      return;
+    }
+
+    if (!/(?=.*[A-Z])(?=.*\d)/.test(password)) {
+      setError('Password must be at least 8 characters with one uppercase letter and one number');
       return;
     }
 
@@ -41,8 +47,9 @@ export default function SignUpPage() {
       await signUp(email, password, name);
       // After successful signup, redirect to role selection
       router.push('/auth/role-selection');
-    } catch (err: any) {
-      setError(err.message || 'Failed to create account. Please try again.');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to create account';
+      setError(message);
       console.error('Sign up error:', err);
     } finally {
       setIsLoading(false);
@@ -59,7 +66,7 @@ export default function SignUpPage() {
             <p className="text-text-secondary mb-8">Join KitchenServices today</p>
 
             {error && (
-              <div className="mb-6 p-3 bg-error/10 text-error rounded-lg border border-error/20">
+              <div role="alert" className="mb-6 p-3 bg-error/10 text-error rounded-lg border border-error/20">
                 {error}
               </div>
             )}
@@ -137,9 +144,9 @@ export default function SignUpPage() {
             <div className="mt-6 text-center">
               <p className="text-text-secondary">
                 Already have an account?{' '}
-                <a href="/auth/signin" className="text-accent hover:underline font-medium">
+                <Link href="/auth/signin" className="text-accent hover:underline font-medium">
                   Sign in
-                </a>
+                </Link>
               </p>
             </div>
           </div>

@@ -1,4 +1,5 @@
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@/lib/supabase/client';
+const supabase = createClient();
 import { Profile, Technician } from '@/types';
 
 export const profileService = {
@@ -14,36 +15,22 @@ export const profileService = {
     },
 
     async updateProfile(userId: string, updates: Partial<Profile>) {
+        const { data: { user: authUser } } = await supabase.auth.getUser();
+
         const { data, error } = await supabase
             .from('profiles')
-            .update(updates)
-            .eq('id', userId)
+            .upsert({
+                id: userId,
+                email: authUser?.email || '',
+                full_name: authUser?.user_metadata?.full_name || '',
+                role: 'customer',
+                ...updates,
+                updated_at: new Date().toISOString()
+            })
             .select()
             .maybeSingle();
 
         if (error) throw error;
-
-        if (!data) {
-            // Profile doesn't exist, create it
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) throw new Error('No authenticated user found');
-
-            const { data: newProfile, error: insertError } = await supabase
-                .from('profiles')
-                .insert({
-                    id: userId,
-                    email: user.email!,
-                    full_name: user.user_metadata.full_name || '',
-                    role: 'customer', // Default role
-                    ...updates
-                })
-                .select()
-                .single();
-
-            if (insertError) throw insertError;
-            return newProfile as Profile;
-        }
-
         return data as Profile;
     },
 
@@ -68,28 +55,27 @@ export const profileService = {
             })
             .eq('id', userId)
             .select()
-            .single();
+            .maybeSingle();
 
         if (error) throw error;
         return data as Profile;
     },
 
-    async getTechnicianProfile(userId: string) {
+    async getTechnicianProfile(userId: string): Promise<Technician | null> {
         const { data, error } = await supabase
-            .from('technicians') // Query the specific table
+            .from('technicians')
             .select(`
-        *,
-        profiles!technicians_id_fkey (*)
-      `) // Join with profiles linked by ID
+                *,
+                profiles!technicians_id_fkey (*)
+            `)
             .eq('id', userId)
-            .single();
+            .maybeSingle();
 
         if (error) throw error;
+        if (!data) return null;
 
-        // Flatten the response to match the Technician interface
-        // data.profiles is an object (single relation) because relation is 1:1 on id
-        const profile = data.profiles as unknown as Profile;
         const { profiles, ...techData } = data;
+        const profile = profiles as Profile;
 
         return { ...profile, ...techData } as Technician;
     },
@@ -105,49 +91,40 @@ export const profileService = {
         return data;
     },
 
-    async getTechnicians(limit?: number) {
-        // First try: verified technicians only
-        let query = supabase
+    async getTechnicians(page = 1, pageSize = 20) {
+        const from = (page - 1) * pageSize;
+        const to = from + pageSize - 1;
+
+        const { data, error } = await supabase
             .from('technicians')
             .select(`
                 *,
                 profiles!technicians_id_fkey (full_name, avatar_url)
             `)
             .eq('is_verified', true)
-            .order('rating', { ascending: false });
+            .order('rating', { ascending: false })
+            .range(from, to);
 
-        if (limit) {
-            query = query.limit(limit);
-        }
-
-        let { data, error } = await query;
         if (error) throw error;
 
-        // Fallback: if no verified technicians, show any technicians
-        if (!data || data.length === 0) {
-            let fallbackQuery = supabase
-                .from('technicians')
-                .select(`
-                    *,
-                    profiles!technicians_id_fkey (full_name, avatar_url)
-                `)
-                .order('created_at', { ascending: false });
-
-            if (limit) {
-                fallbackQuery = fallbackQuery.limit(limit);
-            }
-
-            const fallback = await fallbackQuery;
-            if (!fallback.error) data = fallback.data;
-        }
-
-        return (data || []).map((tech: any) => ({
+        return (data || []).map((tech) => ({
             ...tech,
-            ...tech.profiles // Flatten profile data
+            ...tech.profiles
         })) as Technician[];
     },
 
     async getPendingTechnicians() {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error('Not authenticated');
+
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', user.id)
+            .single();
+
+        if (profile?.role !== 'admin') throw new Error('Unauthorized');
+
         const { data, error } = await supabase
             .from('technicians')
             .select(`
@@ -158,15 +135,13 @@ export const profileService = {
 
         if (error) throw error;
 
-        return data.map((tech: any) => ({
+        return data.map((tech) => ({
             ...tech,
             ...tech.profiles
         })) as Technician[];
     },
 
     async getTechniciansByService(serviceId: string) {
-        // Use !inner to filter technicians who have this service
-        // and where is_active is true
         const { data, error } = await supabase
             .from('technicians')
             .select(`
@@ -181,23 +156,19 @@ export const profileService = {
 
         if (error) throw error;
 
-        return data.map((tech: any) => {
-            // Flatten and include custom price if needed
+        return data.map((tech) => {
             const techService = tech.technician_services[0];
             return {
                 ...tech,
                 ...tech.profiles,
-                // We could override hourly_rate with custom_price here if we wanted, 
-                // but let's keep base rate for now or handle it in UI.
-                // Or maybe attach it?
                 service_price: techService?.custom_price
             };
         }) as (Technician & { service_price?: number })[];
     },
 
-    // Haversine formula to calculate distance between two points
+    // Haversine formula to calculate distance in km
     calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
-        const R = 3959; // Earth's radius in miles
+        const R = 6371; // Earth's radius in km
         const dLat = (lat2 - lat1) * Math.PI / 180;
         const dLon = (lon2 - lon1) * Math.PI / 180;
         const a =
@@ -208,8 +179,7 @@ export const profileService = {
         return R * c;
     },
 
-    async getTechniciansByLocation(customerLat: number, customerLng: number, limit?: number) {
-        // Fetch all verified and available technicians with location data
+    async getTechniciansByLocation(customerLat: number, customerLng: number, page = 1, pageSize = 20) {
         const { data, error } = await supabase
             .from('technicians')
             .select(`
@@ -221,76 +191,87 @@ export const profileService = {
 
         if (error) throw error;
 
-        // Calculate distance and filter by service radius
         const techniciansWithDistance = data
-            .map((tech: any) => {
+            .map((tech) => {
                 const distance = this.calculateDistance(
                     customerLat,
                     customerLng,
-                    tech.location_lat || 0, // Handle missing location
+                    tech.location_lat || 0,
                     tech.location_lng || 0
                 );
                 return {
                     ...tech,
                     ...tech.profiles,
-                    distance: Math.round(distance * 10) / 10 // Round to 1 decimal
+                    distance: Math.round(distance * 10) / 10
                 };
             })
-            .filter((tech: any) => tech.distance <= tech.service_radius_km)
-            .sort((a: any, b: any) => a.distance - b.distance);
+            .filter((tech) => tech.distance <= tech.service_radius_km)
+            .sort((a, b) => a.distance - b.distance);
 
-        if (limit) {
-            return techniciansWithDistance.slice(0, limit) as Technician[];
-        }
+        const from = (page - 1) * pageSize;
+        const to = from + pageSize;
 
-        return techniciansWithDistance as Technician[];
+        return techniciansWithDistance.slice(from, to) as Technician[];
     },
 
-    async getAllUsers() {
+    async getAllUsers(page = 1, pageSize = 20) {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error('Not authenticated');
+
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', user.id)
+            .single();
+
+        if (profile?.role !== 'admin') throw new Error('Unauthorized');
+
+        const from = (page - 1) * pageSize;
+        const to = from + pageSize - 1;
+
         const { data, error } = await supabase
             .from('profiles')
             .select('*')
-            .order('created_at', { ascending: false });
+            .order('created_at', { ascending: false })
+            .range(from, to);
 
         if (error) throw error;
         return data as Profile[];
     },
 
     async getUserStats() {
-        // Get total users
-        const { count: totalUsers, error: usersError } = await supabase
-            .from('profiles')
-            .select('*', { count: 'exact', head: true });
+        const [usersResult, techResult, pendingResult, bookingsResult] = await Promise.all([
+            supabase.from('profiles').select('*', { count: 'exact', head: true }),
+            supabase.from('technicians').select('*', { count: 'exact', head: true }),
+            supabase.from('technicians').select('*', { count: 'exact', head: true }).eq('is_verified', false),
+            supabase.from('bookings').select('*', { count: 'exact', head: true })
+        ]);
 
-        // Get total technicians
-        const { count: totalTechnicians, error: techError } = await supabase
-            .from('technicians')
-            .select('*', { count: 'exact', head: true });
-
-        // Get pending technicians
-        const { count: pendingTechnicians, error: pendingError } = await supabase
-            .from('technicians')
-            .select('*', { count: 'exact', head: true })
-            .eq('is_verified', false);
-
-        // Get total bookings
-        const { count: totalBookings, error: bookingsError } = await supabase
-            .from('bookings')
-            .select('*', { count: 'exact', head: true });
-
-        if (usersError || techError || pendingError || bookingsError) {
-            throw usersError || techError || pendingError || bookingsError;
-        }
+        if (usersResult.error) throw usersResult.error;
+        if (techResult.error) throw techResult.error;
+        if (pendingResult.error) throw pendingResult.error;
+        if (bookingsResult.error) throw bookingsResult.error;
 
         return {
-            totalUsers: totalUsers || 0,
-            totalTechnicians: totalTechnicians || 0,
-            pendingTechnicians: pendingTechnicians || 0,
-            totalBookings: totalBookings || 0
+            totalUsers: usersResult.count || 0,
+            totalTechnicians: techResult.count || 0,
+            pendingTechnicians: pendingResult.count || 0,
+            totalBookings: bookingsResult.count || 0
         };
     },
 
     async verifyTechnician(technicianId: string) {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error('Not authenticated');
+
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', user.id)
+            .single();
+
+        if (profile?.role !== 'admin') throw new Error('Unauthorized');
+
         const { data, error } = await supabase
             .from('technicians')
             .update({ is_verified: true, availability_status: 'available' })

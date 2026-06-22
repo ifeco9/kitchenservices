@@ -8,7 +8,8 @@ import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/common/Header';
 import Icon from '@/components/ui/AppIcon';
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@/lib/supabase/client';
+const supabase = createClient();
 
 export default function RoleSelectionPage() {
   const [selectedRole, setSelectedRole] = useState<'customer' | 'provider' | null>(null);

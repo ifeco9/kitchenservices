@@ -1,5 +1,10 @@
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@/lib/supabase/client';
+const supabase = createClient();
 import { Service } from '@/types';
+
+function getServiceBySlugQuery(slug: string) {
+    return supabase.from('services').select('*').eq('slug', slug);
+}
 
 export const serviceService = {
     async getServices() {
@@ -12,19 +17,14 @@ export const serviceService = {
         return data as Service[];
     },
 
-    async getServiceBySlug(slug: string) {
-        const { data, error } = await supabase
-            .from('services')
-            .select('*')
-            .eq('slug', slug)
-            .single();
+    async getServiceBySlug(slug: string): Promise<Service | null> {
+        const { data, error } = await getServiceBySlugQuery(slug).maybeSingle();
 
         if (error) throw error;
-        return data as Service;
+        return data as Service | null;
     },
 
     async getServiceByApplianceType(applianceType: string): Promise<Service | null> {
-        // Map appliance types to service names/slugs
         const applianceToServiceMap: Record<string, string> = {
             'Oven': 'oven-repair',
             'Dishwasher': 'dishwasher-repair',
@@ -40,32 +40,12 @@ export const serviceService = {
 
         const slug = applianceToServiceMap[applianceType];
         if (!slug) {
-            // Fallback to generic repair service
-            const { data, error } = await supabase
-                .from('services')
-                .select('*')
-                .limit(1)
-                .single();
-
-            if (error) return null;
-            return data as Service;
+            return null;
         }
 
-        const { data, error } = await supabase
-            .from('services')
-            .select('*')
-            .eq('slug', slug)
-            .single();
+        const { data, error } = await getServiceBySlugQuery(slug).maybeSingle();
 
-        if (error) {
-            // If specific service not found, return first available service
-            const { data: fallbackData } = await supabase
-                .from('services')
-                .select('*')
-                .limit(1)
-                .single();
-            return fallbackData as Service | null;
-        }
+        if (error || !data) return null;
 
         return data as Service;
     }

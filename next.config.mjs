@@ -1,10 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  productionBrowserSourceMaps: true,
-  distDir: '.next',
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+  productionBrowserSourceMaps: false,
   images: {
     remotePatterns: [
       {
@@ -29,21 +25,6 @@ const nextConfig = {
         permanent: false,
       },
     ];
-  },
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.(jsx|tsx)$/,
-      exclude: [/node_modules/],
-      use: [{
-        loader: '@dhiwise/component-tagger/nextLoader',
-      }],
-    });
-    return config;
-  },
-  experimental: {
-    turbo: {
-      root: process.cwd(),
-    },
   },
 };
 

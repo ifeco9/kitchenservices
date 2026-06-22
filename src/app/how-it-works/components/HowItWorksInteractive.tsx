@@ -275,24 +275,24 @@ export default function HowItWorksInteractive() {
   {
     name: 'Sarah Mitchell',
     role: 'Homeowner, Lagos',
-    image: "https://img.rocket.new/generatedImages/rocket_gen_img_1af7ed335-1764908799246.png",
-    alt: 'Professional woman with long brown hair smiling warmly at camera in bright indoor setting',
+    image: "https://images.unsplash.com/photo-1769636929131-56dd60238266?w=600&auto=format&fit=crop&q=80",
+    alt: 'Smiling young Black woman in black sweatshirt with logo, studio portrait',
     quote: 'My dishwasher broke on a Sunday evening, and I had guests coming the next day. I found a verified technician through KitchenServices who came the very next morning. The transparent pricing and instant booking saved me so much stress!',
     rating: 5
   },
   {
     name: 'James Thompson',
     role: 'Appliance Technician, Lagos',
-    image: "https://img.rocket.new/generatedImages/rocket_gen_img_116d13f35-1765612681795.png",
-    alt: 'Middle-aged man with short grey hair in blue work shirt smiling confidently outdoors',
+    image: "https://images.unsplash.com/photo-1759300063434-482e4d65f9bf?w=600&auto=format&fit=crop&q=80",
+    alt: 'Dark skinned bearded Nigerian man smiling, professional headshot',
     quote: 'Joining KitchenServices transformed my business. I went from struggling to find clients to having a steady stream of bookings. The platform handles all the admin work, so I can focus on what I do best - fixing appliances.',
     rating: 5
   },
   {
     name: 'Emma Roberts',
     role: 'Property Manager, Abuja',
-    image: "https://img.rocket.new/generatedImages/rocket_gen_img_1f8f896f2-1763299689286.png",
-    alt: 'Young professional woman with blonde hair in business attire smiling in modern office',
+    image: "https://images.unsplash.com/photo-1769636929314-7caaded290ff?w=600&auto=format&fit=crop&q=80",
+    alt: 'Confident young Black woman in black t-shirt with logo, studio portrait',
     quote: 'Managing 50+ rental properties means appliance issues are constant. KitchenServices gives me access to verified technicians across the city with transparent pricing. It\'s made my job so much easier and my tenants happier.',
     rating: 5
   }];

@@ -65,5 +65,6 @@ CREATE TRIGGER on_auth_user_created
 
 -- 5. Force Grant Permissions (Fixes "Database error" often causes by permission denied on trigger)
 GRANT USAGE ON SCHEMA public TO postgres, anon, authenticated, service_role;
-GRANT ALL ON TABLE public.profiles TO postgres, anon, authenticated, service_role;
-GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO postgres, anon, authenticated, service_role;
+GRANT ALL ON TABLE public.profiles TO postgres, authenticated, service_role;
+GRANT SELECT ON TABLE public.profiles TO anon;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO postgres, authenticated, service_role;

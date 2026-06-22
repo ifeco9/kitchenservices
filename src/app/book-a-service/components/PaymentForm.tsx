@@ -209,7 +209,7 @@ const PaymentForm = ({ onSubmit, totalAmount }: PaymentFormProps) => {
           <Icon name="DevicePhoneMobileIcon" size={48} className="mx-auto mb-4 text-text-secondary" />
           <h4 className="text-base font-semibold text-text-primary mb-2">Digital Wallet Payment</h4>
           <p className="text-sm text-text-secondary mb-4">
-            You'll be redirected to complete payment using Apple Pay, Google Pay, or PayPal
+            You&apos;ll be redirected to complete payment using Apple Pay, Google Pay, or PayPal
           </p>
         </div>
       )}

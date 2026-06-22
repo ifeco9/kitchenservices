@@ -198,7 +198,7 @@ const TechnicianProfilesInteractive = () => {
           </div>
           <h2 className="text-2xl font-bold text-text-primary mb-2">Technician Not Found</h2>
           <p className="text-text-secondary mb-8">
-            We couldn't find this technician profile. They may have been removed or the link might be incorrect.
+            We couldn&apos;t find this technician profile. They may have been removed or the link might be incorrect.
           </p>
           <div className="flex flex-col gap-3">
             <a

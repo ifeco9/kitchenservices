@@ -28,8 +28,8 @@ const HeroSection = () => {
     id: 1,
     name: "James Mitchell",
     location: "Lagos",
-    image: "https://img.rocket.new/generatedImages/rocket_gen_img_137ad5a3e-1765083592272.png",
-    alt: "Professional male technician in blue work uniform holding toolkit in modern kitchen",
+    image: "https://images.unsplash.com/photo-1756451182341-6e62d5ec9697?w=600&auto=format&fit=crop&q=80",
+    alt: "Young Black man in tank top, confident portrait",
     earnings: "₦4,200,000/month",
     growth: "+180% in 6 months",
     quote: "KitchenServices transformed my business. I went from struggling to find clients to having a fully booked calendar within three months."
@@ -38,8 +38,8 @@ const HeroSection = () => {
     id: 2,
     name: "Sarah Thompson",
     location: "Abuja",
-    image: "https://img.rocket.new/generatedImages/rocket_gen_img_1eade9a84-1765963301821.png",
-    alt: "Female technician in grey work shirt smiling while holding repair tools in residential setting",
+    image: "https://images.unsplash.com/photo-1755705098259-172041d16a1a?w=600&auto=format&fit=crop&q=80",
+    alt: "Smiling Black woman with locs and beads, happy portrait",
     earnings: "₦3,800,000/month",
     growth: "+150% in 4 months",
     quote: "The platform handles all the admin work, so I can focus on what I do best - fixing appliances and building customer relationships."
@@ -48,8 +48,8 @@ const HeroSection = () => {
     id: 3,
     name: "David Chen",
     location: "Kano",
-    image: "https://img.rocket.new/generatedImages/rocket_gen_img_1ff09c345-1764769536232.png",
-    alt: "Asian male technician in navy uniform examining kitchen appliance with professional tools",
+    image: "https://images.unsplash.com/photo-1769636929354-59165ba73c7e?w=600&auto=format&fit=crop&q=80",
+    alt: "Smiling Black man with beard in black sweatshirt, confident headshot",
     earnings: "₦5,100,000/month",
     growth: "+220% in 8 months",
     quote: "I doubled my income and cut my marketing costs to zero. The verification badge gives customers instant confidence in my services."

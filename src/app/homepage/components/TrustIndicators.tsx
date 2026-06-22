@@ -12,21 +12,10 @@ interface TrustMetric {
 
 const TrustIndicators = () => {
   const [isHydrated, setIsHydrated] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     setIsHydrated(true);
   }, []);
-
-  useEffect(() => {
-    if (!isHydrated) return;
-
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % trustMetrics.length);
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, [isHydrated]);
 
   const trustMetrics: TrustMetric[] = [
     {

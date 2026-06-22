@@ -27,14 +27,14 @@ export default function ForgotPasswordPage() {
                     <div className="bg-card p-8 rounded-xl border border-border shadow-lg">
                         <h1 className="text-3xl font-bold text-text-primary mb-2">Reset Password</h1>
                         <p className="text-text-secondary mb-8">
-                            Enter your email address and we'll send you a link to reset your password.
+                            Enter your email address and we&apos;ll send you a link to reset your password.
                         </p>
 
                         {isSubmitted ? (
                             <div className="text-center py-8">
                                 <p className="text-success mb-4">Check your email!</p>
                                 <p className="text-text-secondary">
-                                    If an account exists with that email, you'll receive password reset instructions.
+                                    If an account exists with that email, you&apos;ll receive password reset instructions.
                                 </p>
                             </div>
                         ) : (

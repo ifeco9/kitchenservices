@@ -5,7 +5,7 @@ import AppImage from '@/components/ui/AppImage';
 import Icon from '@/components/ui/AppIcon';
 
 interface Technician {
-  id: number;
+  id: string;
   name: string;
   image: string;
   alt: string;

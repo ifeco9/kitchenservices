@@ -1,7 +1,8 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { supabase } from '@/lib/supabaseClient';
+import { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react';
+import { createClient } from '@/lib/supabase/client';
+const supabase = createClient();
 import { authService } from '@/services/authService';
 import { profileService } from '@/services/profileService';
 import { Profile } from '@/types';
@@ -15,6 +16,9 @@ interface UserWithProfile extends SupabaseUser {
 interface AuthContextType {
   user: UserWithProfile | null;
   loading: boolean;
+  isCustomer: boolean;
+  isTechnician: boolean;
+  isAdmin: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, name: string) => Promise<void>;
   signOut: () => Promise<void>;
@@ -26,6 +30,9 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<UserWithProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const userRef = useRef(user);
+  const initialized = useRef(false);
+  userRef.current = user;
 
   useEffect(() => {
     // Check active session on mount
@@ -41,16 +48,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.error('Error initializing session:', error);
         setLoading(false);
       }
+      initialized.current = true;
     };
 
     initSession();
 
     // Listen for changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' && !initialized.current) return;
       if (session?.user) {
-        // Only refresh if we don't have the user or it's a difference user
-        // (Optimizing to avoid double fetch if initSession also runs, but onAuthStateChange behavior varies)
-        if (!user || user.id !== session.user.id) {
+        if (!userRef.current || userRef.current.id !== session.user.id) {
           await refreshUserProfile(session.user);
         }
       } else {
@@ -101,23 +108,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     } catch (error) {
       setLoading(false);
-      throw error;
     }
   };
 
   const signUp = async (email: string, password: string, name: string) => {
     setLoading(true);
     try {
-      const { user, session } = await authService.signUp(email, password, name, null);
+      const { user, session } = await authService.signUp(email, password, name);
       if (user && session) {
         await refreshUserProfile(user);
       } else {
-        // Email confirmation required or other case where session is null
         setLoading(false);
       }
     } catch (error) {
       setLoading(false);
-      throw error;
     }
   };
 
@@ -129,12 +133,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      throw error;
     }
   };
 
+  const role = user?.profile?.role;
+  const isCustomer = role === 'customer';
+  const isTechnician = role === 'technician';
+  const isAdmin = role === 'admin';
+
   return (
-    <AuthContext.Provider value={{ user, loading, signIn, signUp, signOut, refreshProfile }}>
+    <AuthContext.Provider value={{ user, loading, isCustomer, isTechnician, isAdmin, signIn, signUp, signOut, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 
-interface AppImageProps {
+interface AppImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'src' | 'alt' | 'width' | 'height'> {
     src: string;
     alt: string;
     width?: number;
@@ -17,7 +17,6 @@ interface AppImageProps {
     sizes?: string;
     onClick?: () => void;
     fallbackSrc?: string;
-    [key: string]: any;
 }
 
 function AppImage({
@@ -39,6 +38,12 @@ function AppImage({
     const [imageSrc, setImageSrc] = useState(src);
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
+
+    useEffect(() => {
+        setImageSrc(src);
+        setHasError(false);
+        setIsLoading(true);
+    }, [src]);
 
     // More reliable external URL detection
     const isExternal = imageSrc.startsWith('http://') || imageSrc.startsWith('https://');
@@ -106,7 +111,6 @@ function AppImage({
         quality,
         placeholder,
         blurDataURL,
-        unoptimized: true,
         onError: handleError,
         onLoad: handleLoad,
         onClick,

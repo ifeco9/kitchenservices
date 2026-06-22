@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import Icon from '@/components/ui/AppIcon';
+import ErrorBoundary from '@/components/common/ErrorBoundary';
 import { bookingService } from '@/services/bookingService';
 import { Booking } from '@/types';
 import toast, { Toaster } from 'react-hot-toast';
@@ -165,6 +166,7 @@ export default function ProviderDashboardPage() {
     <div className="min-h-screen" style={{ backgroundColor: '#0a0710' }}>
       <Header />
       <Toaster position="top-right" />
+      <ErrorBoundary>
       <div className="flex pt-16" style={{ minHeight: 'calc(100vh - 64px)' }}>
 
         {/* Mobile sidebar backdrop */}
@@ -409,6 +411,7 @@ export default function ProviderDashboardPage() {
           </div>
         </main>
       </div>
+      </ErrorBoundary>
     </div>
   );
 }
